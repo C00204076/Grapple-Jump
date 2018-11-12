@@ -1,10 +1,12 @@
 //
 // C00204076
 // Brandon Seah-Dempsey
-// Started at 9:37 31 October 2017
+// Started at 9:37 31 October 2018
 // Finished at
 // Time Taken:
 // Known Bugs:
+
+#include "Game.h"
 
 #ifdef _DEBUG 
 #pragma comment(lib,"sfml-graphics-d.lib") 
@@ -25,6 +27,8 @@
 //
 int main()
 {
+	Game game;
+	game.run();
 
 	return 1;
 	//return 0;

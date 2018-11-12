@@ -1,7 +1,7 @@
 //
 // C00204076
 // Brandon Seah-Dempsey
-// Started at 9:48 31 October 2017
+// Started at 9:48 31 October 2018
 // Finished at
 // Time Taken:
 // Known Bugs:
@@ -10,10 +10,27 @@
 
 //
 Game::Game() :
-	m_window{ sf::VideoMode{800, 600, 32}, "Grapple Jump"},
-	is_running{ true } // When false, game will exit
+	m_window{ sf::VideoMode{2600, 1600, 32}, "Grapple Jump"},
+	is_running{ true }, // When false, game will exit
+	gameState{GameState::GAME}
 {
+	if (!m_playerTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Player.png"))
+	{
+		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+	}
 
+	if (!m_otherTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/OtherPlayer.png"))
+	{
+		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+	}
+
+	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground.png"))
+	{
+		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+	}
+
+	m_player = new Player(m_playerTexture, m_otherTexture);
+	m_ground = new Ground(m_groundTexture);
 }
 
 //
@@ -117,6 +134,7 @@ void Game::processInput()
 		case GameState::MAIN:
 			break;
 		case GameState::GAME:
+
 			break;
 		}
 	}
@@ -126,7 +144,7 @@ void Game::processInput()
 /// 
 /// </summary>
 /// <param name="t_deltaTime"></param>
-void Game::update(sf::Time t_deltaTime)
+void Game::update(sf::Time deltaTime)
 {
 	if (!is_running)
 	{
@@ -143,6 +161,7 @@ void Game::update(sf::Time t_deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+		m_player->update(deltaTime);
 		break;
 	}
 }
@@ -164,6 +183,7 @@ void Game::render()
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+		m_player->render(m_window);
 		break;
 
 	}
