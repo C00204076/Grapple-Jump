@@ -15,6 +15,7 @@
 #include <string>
 #include <math.h>
 
+
 //
 class Game; //Forward delaration for cyclical reference
 
@@ -33,16 +34,16 @@ public:
 
 private:
 	void movePlayer();
-	void jump();
+	void jump(sf::Time deltaTime);
 
 	sf::Keyboard m_keyboard;
 
 	sf::Sprite m_sprite;
 	sf::Texture m_texture, m_otherTexture;
 
-	sf::Vector2f m_gravity, m_position;
+	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position;
 
-
+	bool m_jumping, m_left, m_right;
 };
 
 #include "Game.h"

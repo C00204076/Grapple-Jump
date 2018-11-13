@@ -12,14 +12,15 @@
 Ground::Ground(sf::Texture & texture) :
 	m_texture(texture)
 {
-	m_position = sf::Vector2f(100, 1400);
-	scaleX = 2400;
+	m_position = sf::Vector2f(0, 1400);
+	scaleX = 20;
 	scaleY = 1;
 
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 	m_sprite.setScale(scaleX, scaleY);
+
 }
 
 //

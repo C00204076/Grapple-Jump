@@ -162,6 +162,7 @@ void Game::update(sf::Time deltaTime)
 		break;
 	case GameState::GAME:
 		m_player->update(deltaTime);
+		m_ground->update(deltaTime);
 		break;
 	}
 }
@@ -184,6 +185,7 @@ void Game::render()
 		break;
 	case GameState::GAME:
 		m_player->render(m_window);
+		m_ground->render(m_window);
 		break;
 
 	}

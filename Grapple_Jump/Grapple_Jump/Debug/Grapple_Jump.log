@@ -1,6 +1,3 @@
-﻿  Game.cpp
-  Ground.cpp
-  main.cpp
-  Player.cpp
-  Generating Code...
+﻿  Player.cpp
+c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(96): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Grapple_Jump.vcxproj -> C:\Users\gameuser\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe
