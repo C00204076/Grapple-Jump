@@ -24,6 +24,8 @@ public:
 	void update(sf::Time deltaTime);
 	void render(sf::RenderWindow& window);
 
+	sf::Sprite getSprite();
+
 private:
 
 	sf::Sprite m_sprite;

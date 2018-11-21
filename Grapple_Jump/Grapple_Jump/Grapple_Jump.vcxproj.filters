@@ -27,6 +27,12 @@
     <ClCompile Include="Ground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HookPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ninja_rope_stuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -36,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Ground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HookPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

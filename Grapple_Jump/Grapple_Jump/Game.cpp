@@ -29,8 +29,14 @@ Game::Game() :
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
 	}
 
+	if (!m_hookTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Block.png"))
+	{
+		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+	}
+
 	m_player = new Player(m_playerTexture, m_otherTexture);
 	m_ground = new Ground(m_groundTexture);
+	m_hookPoint = new HookPoint(m_hookTexture);
 }
 
 //
@@ -161,8 +167,9 @@ void Game::update(sf::Time deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
-		m_player->update(deltaTime);
+		m_player->update(deltaTime, *m_ground);
 		m_ground->update(deltaTime);
+		m_hookPoint->update(deltaTime);
 		break;
 	}
 }
@@ -186,6 +193,7 @@ void Game::render()
 	case GameState::GAME:
 		m_player->render(m_window);
 		m_ground->render(m_window);
+		m_hookPoint->render(m_window);
 		break;
 
 	}

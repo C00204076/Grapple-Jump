@@ -41,3 +41,8 @@ void Ground::render(sf::RenderWindow& window)
 	window.draw(m_sprite);
 }
 
+//
+sf::Sprite Ground::getSprite()
+{
+	return m_sprite;
+}

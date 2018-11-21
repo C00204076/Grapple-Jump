@@ -13,7 +13,7 @@ Player::Player(sf::Texture & texture, sf::Texture & otherTexture) :
 	m_texture(texture),
 	m_otherTexture(otherTexture)
 {
-	m_gravity = sf::Vector2f(0, -2.5);
+	m_gravity = sf::Vector2f(0, -3.5);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
 	m_position = sf::Vector2f(100, 1300);
@@ -21,6 +21,8 @@ Player::Player(sf::Texture & texture, sf::Texture & otherTexture) :
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 	m_sprite.setOrigin(50, 50);
+
+	m_speed = 0.2f;
 
 	m_jumping = false;
 	m_left = false;
@@ -40,11 +42,22 @@ void Player::initialise()
 }
 
 //
-void Player::update(sf::Time deltaTime)
+void Player::update(sf::Time deltaTime, Ground ground)
 {
+	if (m_position.y < 1300)
+	{
+		//m_velocity.y -= m_gravity.y;
+	}
+
+	else if (m_position.y > 1300)
+	{
+		/*m_position.y = 1300;
+		m_jumping = false;*/
+	}
+
 	movePlayer();
 	jump(deltaTime);
-
+	collosionWithGround(ground);
 
 }
 
@@ -85,7 +98,7 @@ void Player::jump(sf::Time deltaTime)
 	{
 		std::cout << "Jumping!" << std::endl;
 
-		m_velocity.y = -100;
+		m_velocity.y = -250;
 		m_jumping = true;
 	}
 
@@ -94,6 +107,20 @@ void Player::jump(sf::Time deltaTime)
 	{
 		m_velocity.y -= m_gravity.y;
 		m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
+		//m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
+	}
+}
+
+//
+void Player::collosionWithGround(Ground ground)
+{
+	if (m_sprite.getGlobalBounds().intersects(ground.getSprite().getGlobalBounds()))
+	{
+		m_jumping = false;
+	}
+	else
+	{
+		m_jumping = true;
 	}
 }
 

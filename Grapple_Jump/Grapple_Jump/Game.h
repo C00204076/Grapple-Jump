@@ -16,6 +16,7 @@
 
 class Player;
 class Ground;
+class HookPoint;
 
 //Enum class for switching current gamestate
 enum class GameState
@@ -46,13 +47,15 @@ private:
 	sf::RenderWindow m_window; //SFML window for game
 	bool is_running;
 
-	sf::Texture m_playerTexture, m_otherTexture, m_groundTexture;
+	sf::Texture m_playerTexture, m_otherTexture, m_groundTexture, m_hookTexture;
 
 	Player * m_player;
 	Ground * m_ground;
+	HookPoint * m_hookPoint;
 };
 
 #include "Player.h"
 #include "Ground.h"
+#include "HookPoint.h"
 
 #endif // !GAME_H
