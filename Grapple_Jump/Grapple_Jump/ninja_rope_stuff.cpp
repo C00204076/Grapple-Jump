@@ -1,6 +1,9 @@
 //copied from player.h and player.cpp
 
 #include "SFML/Graphics.hpp"
+#include <Box2D.h>
+
+#include <map>
 
 using namespace sf;
 using namespace std;

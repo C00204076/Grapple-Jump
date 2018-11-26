@@ -44,16 +44,7 @@ void Player::initialise()
 //
 void Player::update(sf::Time deltaTime, Ground ground)
 {
-	if (m_position.y < 1300)
-	{
-		//m_velocity.y -= m_gravity.y;
-	}
-
-	else if (m_position.y > 1300)
-	{
-		/*m_position.y = 1300;
-		m_jumping = false;*/
-	}
+	m_mousePosition = sf::Mouse::getPosition();
 
 	movePlayer();
 	jump(deltaTime);
@@ -130,8 +121,20 @@ void Player::render(sf::RenderWindow& window)
 	window.draw(m_sprite);
 }
 
-//
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
 sf::Vector2f Player::getPosition()
 {
 	return m_position;
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
+sf::Vector2i Player::getMousePosition()
+{
+	return m_mousePosition;
 }
