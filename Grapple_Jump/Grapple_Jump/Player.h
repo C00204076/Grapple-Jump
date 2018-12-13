@@ -61,7 +61,7 @@ private:
 
 	//
 	// Grappling Rope methods 
-	b2Body* shootRope(b2Vec2 &intersectPoint, b2Vec2 &intersectNormal);
+	/*b2Body* shootRope(b2Vec2 &intersectPoint, b2Vec2 &intersectNormal);
 
 	void updateRope();
 
@@ -81,10 +81,28 @@ private:
 
 	void collisionPointToVertex(float &xx, float &yy, sf::Sprite *a);
 	void addRopeEffect(float sx, float sy, float ex, float ey, sf::Sprite *sprite);
+	*/
+	void createHook();
+	
 	//
+
+
 
 	//
 	// Grappling Rope variables
+	/*b2Vec2 m_grav2d = b2Vec2(0, -9.8);
+
+	b2World* m_world = new b2World(m_grav2d, true);
+
+	b2BodyDef* m_dynamicBody;
+	m_dynamicBody.type = b2_dynamicBody;
+	m_dynamicBody.position.Set(-10, 20);
+
+	b2Body* dynamicBody;
+
+	b2CircleShape circleShape;
+	b2FixtureDef m_fixture;
+
 	int m_ropeType;
 	float m_ropeLength;
 

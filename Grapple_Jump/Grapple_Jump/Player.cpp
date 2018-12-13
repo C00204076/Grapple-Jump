@@ -27,6 +27,16 @@ Player::Player(sf::Texture & texture, sf::Texture & otherTexture) :
 	m_jumping = false;
 	m_left = false;
 	m_right = true;
+
+	//
+	/*dynamicBody = m_world->CreateBody(&m_dynamicBody);
+
+	circleShape.m_p.Set(m_position.x, m_position.y);
+	circleShape.m_radius = 1;
+
+	m_fixture.shape = &circleShape;*/
+
+
 }
 
 //
@@ -100,6 +110,17 @@ void Player::jump(sf::Time deltaTime)
 		m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
 		//m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
 	}
+}
+
+//
+void Player::createHook()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		//dynamicBody->CreateFixture(&m_fixture);
+	}
+
+
 }
 
 //
