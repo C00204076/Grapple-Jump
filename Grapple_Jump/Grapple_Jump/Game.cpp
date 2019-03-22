@@ -167,7 +167,7 @@ void Game::update(sf::Time deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
-		m_player->update(deltaTime, *m_ground);
+		m_player->update(deltaTime, m_window, *m_ground);
 		m_ground->update(deltaTime);
 		m_hookPoint->update(deltaTime);
 		break;
