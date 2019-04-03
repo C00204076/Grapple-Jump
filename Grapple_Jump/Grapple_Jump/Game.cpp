@@ -14,15 +14,7 @@ Game::Game() :
 	is_running{ true }, // When false, game will exit
 	gameState{GameState::GAME}
 {
-	if (!m_playerTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Player.png"))
-	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
-	}
-
-	if (!m_otherTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/OtherPlayer.png"))
-	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
-	}
+	
 
 	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground.png"))
 	{
@@ -34,7 +26,7 @@ Game::Game() :
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
 	}
 
-	m_player = new Player(m_playerTexture, m_otherTexture);
+	m_player = new Player();
 	m_ground = new Ground(m_groundTexture);
 	m_hookPoint = new HookPoint(m_hookTexture);
 }

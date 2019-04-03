@@ -74,12 +74,13 @@ class Game; //Forward delaration for cyclical reference
 class Player
 {
 public:
-	Player(sf::Texture & texture, sf::Texture & Othertexture);
+	Player();
 	~Player();
 
 	void update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground);
 	void render(sf::RenderWindow& window);
 	void initialise();
+	void loadTextures();
 
 	sf::Vector2f getPosition();
 
@@ -94,8 +95,8 @@ private:
 
 	sf::Keyboard m_keyboard;
 
-	sf::Sprite m_sprite, m_windowSprite;
-	sf::Texture m_texture, m_otherTexture;
+	sf::Sprite m_sprite, m_windowSprite, m_hookSprite;
+	sf::Texture m_texture, m_otherTexture, m_hookTexture;
 	sf::Vertex m_grapplingLine[2];
 
 	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector;
@@ -103,10 +104,10 @@ private:
 	sf::Vector2i m_mousePosition;
 	float m_mouseX, m_mouseY;
 
-	sf::Vector2f m_pullDirection;
-	float m_directionX, m_directionY, m_pullSpeed;
+	sf::Vector2f m_pullDirection, m_cablePullDir;
+	float m_directionX, m_directionY, m_pullSpeed, m_maxLength, m_cablePullX, m_cablePullY;
 
-	bool m_jumping, m_left, m_right, m_speed, m_line;
+	bool m_jumping, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched;
 
 };
 
