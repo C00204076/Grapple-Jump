@@ -16,6 +16,7 @@ HookPoint::HookPoint(sf::Texture & texture) :
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
+	m_sprite.setScale(0.2f, 0.2f);
 }
 
 //

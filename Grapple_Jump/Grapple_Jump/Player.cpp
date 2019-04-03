@@ -19,15 +19,6 @@ Player::Player(sf::Texture & texture, sf::Texture & otherTexture) :
 {
 	initialise();
 
-	//
-	/*dynamicBody = m_world->CreateBody(&m_dynamicBody);
-
-
-	circleShape.m_p.Set(m_position.x, m_position.y);
-	circleShape.m_radius = 1;
-
-	m_fixture.shape = &circleShape;*/
-
 
 }
 
@@ -62,29 +53,6 @@ void Player::initialise()
 	m_left = false;
 	m_right = true;
 }
-
-//
-/*b2Body Player::addBox()
-{
-	//
-	b2BodyDef m_bodyDef = b2BodyDef();
-	m_bodyDef.position.Set(2600, 1600);
-	//m_bodyDef.type = m_bodyType;
-	//
-	b2PolygonShape m_polygonShape = b2PolygonShape();
-	m_polygonShape.SetAsBox(2600, 1600);
-	//
-	b2FixtureDef m_fixtureDef = b2FixtureDef();
-	m_fixtureDef.shape = m_polygonShape;
-	m_fixtureDef.density = 1;
-	m_fixtureDef.restitution = 0.4;
-	m_fixtureDef.friction = 0.5;
-	//
-	b2Body m_body = m_world.CreateBody(m_bodyDef);
-	m_playerBody.CreateFixture(m_fixtureDef);
-
-	return m_body;
-}*/
 
 //
 void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
@@ -122,7 +90,10 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 		m_position.x -= m_pullDirection.x * m_pullSpeed;
 		m_position.y -= m_pullDirection.y * m_pullSpeed;
 		m_sprite.setPosition(m_position);
+
+		
 	}
+
 	
 }
 

@@ -10,9 +10,8 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
-#include <Box2D.h>
 
-#include "HookPoint.h"
+//#include "HookPoint.h"
 #include "Ground.h"
 
 
@@ -85,22 +84,12 @@ public:
 	sf::Vector2f getPosition();
 
 	sf::Vector2i getMousePosition();
-	
-/*protected:
-	b2World m_world;
-	b2Body m_playerBody;
-	b2DistanceJoint m_distanceJoint;*/
 
 private:
 	void movePlayer();
 	void jump(sf::Time deltaTime);
 	void collosionWithGround(Ground ground);
 	sf::Vector2f normalize(sf::Vector2f vector);
-
-	//
-	//
-	//b2Body addBox();
-	//
 
 
 	sf::Keyboard m_keyboard;
@@ -118,76 +107,6 @@ private:
 	float m_directionX, m_directionY, m_pullSpeed;
 
 	bool m_jumping, m_left, m_right, m_speed, m_line;
-
-	/*
-	// Grappling Rope methods 
-	/*b2Body* shootRope(b2Vec2 &intersectPoint, b2Vec2 &intersectNormal);
-
-	void updateRope();
-
-	void makeRopeJoint();
-	void removeRopeJoint();
-
-	void makeRopeChain();
-	void removeRopeChain();
-
-	void makeRopePrismatic(bool simple, float ix, float iy, sf::Sprite *target, sf::Sprite *player, bool add_point, float speed); //, Map *map);
-	bool updateRopePrismatic(bool simple);// , Map *map);
-	bool ropeReconnect();// Map *map);
-	void removeRopePrismatic(bool objects, bool rest, bool collisions, bool sprites);
-
-	void rope_BeginContact(b2Contact *contact, b2Fixture *fa, b2Fixture *fb);
-	void rope_PreSolve(b2Contact *contact, const b2Manifold *oldManifold, b2Fixture *fa, b2Fixture *fb);
-
-	void collisionPointToVertex(float &xx, float &yy, sf::Sprite *a);
-	void addRopeEffect(float sx, float sy, float ex, float ey, sf::Sprite *sprite);
-	
-	void createHook();
-	
-	//
-
-
-
-	//
-	// Grappling Rope variables
-	/*b2Vec2 m_grav2d = b2Vec2(0, -9.8);
-
-	b2World* m_world = new b2World(m_grav2d, true);
-
-	b2BodyDef* m_dynamicBody;
-	m_dynamicBody.type = b2_dynamicBody;
-	m_dynamicBody.position.Set(-10, 20);
-
-	b2Body* dynamicBody, m_playerBody;
-	b2DistanceJoint m_distanceJoint;
-
-	b2CircleShape circleShape;
-	b2FixtureDef m_fixture;
-
-	int m_ropeType;
-	float m_ropeLength;
-
-	bool m_isHooked
-
-	sf::Sprite *m_spriteRope; // Grappling rope hook
-	sf::Sprite *m_spriteSlider; // Grappling rope body connected to hook
-	sf::Sprite *m_spriteRotor; //
-	sf::Sprite *m_ropeBreak;
-
-	std::vector<sf::Sprite*> m_ropeSprites;
-	std::vector<b2Vec2> m_ropeSpriteVetices;
-
-	std::vector<sf::Vector3f> m_ropePoints;
-	std::vector<sf::Vector3f> m_ropeBreakpoints;
-
-	std::vector<b2Fixture*> m_beginFixtures;
-	
-	/*
-	Map				*rope_map;
-	EntityJoint		*rope;
-	EntityJoint		*rope_revolute_i;
-	ParticleEffect	*rope_effect;
-	*/
 
 };
 
