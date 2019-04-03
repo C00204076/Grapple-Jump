@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include <Box2D.h>
 
+#include "HookPoint.h"
 #include "Ground.h"
 
 
@@ -94,6 +95,7 @@ private:
 	void movePlayer();
 	void jump(sf::Time deltaTime);
 	void collosionWithGround(Ground ground);
+	sf::Vector2f normalize(sf::Vector2f vector);
 
 	//
 	//
@@ -103,16 +105,16 @@ private:
 
 	sf::Keyboard m_keyboard;
 
-	sf::Sprite m_sprite;
+	sf::Sprite m_sprite, m_windowSprite;
 	sf::Texture m_texture, m_otherTexture;
 	sf::Vertex m_grapplingLine[2];
 
-	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition;
+	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector;
 		
 	sf::Vector2i m_mousePosition;
 	float m_mouseX, m_mouseY;
 
-	sf::Vector2u m_pullDirection;
+	sf::Vector2f m_pullDirection;
 	float m_directionX, m_directionY, m_pullSpeed;
 
 	bool m_jumping, m_left, m_right, m_speed, m_line;
