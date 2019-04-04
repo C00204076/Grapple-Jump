@@ -47,7 +47,14 @@ private:
 	sf::RenderWindow m_window; //SFML window for game
 	bool is_running;
 
-	sf::Texture m_playerTexture, m_otherTexture, m_groundTexture, m_hookTexture;
+	sf::Sprite  m_targetSprite;
+	sf::Texture m_playerTexture, m_otherTexture, m_groundTexture, m_hookTexture, m_targetTexture;
+	sf::Vector2i m_mousePosition;
+	sf::Vector2f m_mouseVector;
+
+	float m_mouseX;
+	float m_mouseY;
+	
 
 	Player * m_player;
 	Ground * m_ground;

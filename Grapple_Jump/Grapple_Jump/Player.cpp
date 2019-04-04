@@ -68,6 +68,7 @@ void Player::initialise()
 	//
 	m_hookSprite.setTexture(m_hookTexture);
 	m_hookSprite.setOrigin(5, 5);
+	
 
 	m_speed = 0.2f;
 	m_pullSpeed = 8.0f;
@@ -84,6 +85,12 @@ void Player::initialise()
 //
 void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 {
+	m_mousePosition = sf::Mouse::getPosition(window);
+
+	m_mouseX = m_mousePosition.x;
+	m_mouseY = m_mousePosition.y;
+	m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
+
 	movePlayer();
 	jump(deltaTime);
 	collosionWithGround(ground);
@@ -91,15 +98,6 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 	//
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-	
-		m_mousePosition = sf::Mouse::getPosition(window);
-
-		/*std::cout << m_mousePosition.x << std::endl;
-		std::cout << m_mousePosition.y << std::endl;*/
-
-		m_mouseX = m_mousePosition.x;
-		m_mouseY = m_mousePosition.y;
-		m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
 
 		m_grapplingLine[0].position = sf::Vector2f(m_position.x, m_position.y);
 		m_grapplingLine[0].color = sf::Color::White;
@@ -141,8 +139,10 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 			m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
 			m_hookSprite.setPosition(m_hookPosition);
 
-			if (m_hookPosition.x > m_mouseVector.x && 
-				m_hookPosition.y > m_mouseVector.y)
+
+
+			if (m_hookPosition.x >= m_mouseVector.x && 
+				m_hookPosition.y >= m_mouseVector.y)
 			{
 				m_hookLatched = true;
 			}
@@ -164,7 +164,17 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 		m_fired = false;
 	}
 
-	
+	//
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && m_hookLatched == true)
+	{
+		//
+		if (m_hookLatched == true)
+		{
+			m_position.x -= m_pullDirection.x * m_pullSpeed;
+			m_position.y -= m_pullDirection.y * m_pullSpeed;
+			m_sprite.setPosition(m_position);
+		}
+	}
 }
 
 /// <summary>
@@ -197,8 +207,6 @@ void Player::movePlayer()
 		//
 		m_sprite.setPosition(m_position);
 	}
-
-	
 }
 
 /// <summary>

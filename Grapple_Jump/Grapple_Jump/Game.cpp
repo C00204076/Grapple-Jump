@@ -14,7 +14,7 @@ Game::Game() :
 	is_running{ true }, // When false, game will exit
 	gameState{GameState::GAME}
 {
-	
+	m_window.setMouseCursorVisible(false);
 
 	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground.png"))
 	{
@@ -25,6 +25,14 @@ Game::Game() :
 	{
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
 	}
+
+	if (!m_targetTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Target_Cursor.png"))
+	{
+		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+	}
+
+	m_targetSprite.setTexture(m_targetTexture);
+	m_targetSprite.setOrigin(25, 25);
 
 	m_player = new Player();
 	m_ground = new Ground(m_groundTexture);
@@ -47,6 +55,12 @@ void Game::run()
 	sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 	while (m_window.isOpen())
 	{
+		m_mousePosition = sf::Mouse::getPosition(m_window);
+
+		m_mouseX = m_mousePosition.x;
+		m_mouseY = m_mousePosition.y;
+		m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
+
 		processEvents();
 		timeSinceLastUpdate += clock.restart();
 		while (timeSinceLastUpdate > timePerFrame)
@@ -56,6 +70,9 @@ void Game::run()
 			update(timeSinceLastUpdate);
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
+
+		m_targetSprite.setPosition(m_mouseVector);
+
 		render();
 	}
 }
@@ -149,6 +166,9 @@ void Game::update(sf::Time deltaTime)
 		m_window.close();
 	}
 
+	
+
+
 	//Updates game based on current state
 	switch (gameState)
 	{
@@ -159,6 +179,7 @@ void Game::update(sf::Time deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+
 		m_player->update(deltaTime, m_window, *m_ground);
 		m_ground->update(deltaTime);
 		m_hookPoint->update(deltaTime);
@@ -189,6 +210,8 @@ void Game::render()
 		break;
 
 	}
+
+	m_window.draw(m_targetSprite);
 
 	m_window.display();
 }
