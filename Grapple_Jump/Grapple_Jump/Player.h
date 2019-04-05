@@ -89,6 +89,7 @@ public:
 private:
 	void movePlayer();
 	void jump(sf::Time deltaTime);
+	void grapplingHook();
 	void collosionWithGround(Ground ground);
 	sf::Vector2f normalize(sf::Vector2f vector);
 
@@ -99,7 +100,7 @@ private:
 	sf::Texture m_texture, m_otherTexture, m_hookTexture;
 	sf::Vertex m_grapplingLine[2];
 
-	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector;
+	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector, m_tempMouseVec;
 		
 	sf::Vector2i m_mousePosition;
 	float m_mouseX, m_mouseY;
@@ -107,7 +108,7 @@ private:
 	sf::Vector2f m_pullDirection, m_cablePullDir;
 	float m_directionX, m_directionY, m_pullSpeed, m_maxLength, m_cablePullX, m_cablePullY;
 
-	bool m_jumping, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched;
+	bool m_jumping, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled;
 
 };
 
