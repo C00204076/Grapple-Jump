@@ -12,7 +12,7 @@
 HookPoint::HookPoint(sf::Texture & texture) :
 	m_texture(texture)
 {
-	m_position = sf::Vector2f(700, 600);
+	m_position = sf::Vector2f(700, 50);//600);
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);

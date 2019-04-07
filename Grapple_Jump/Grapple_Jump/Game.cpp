@@ -10,7 +10,7 @@
 
 //
 Game::Game() :
-	m_window{ sf::VideoMode{2600, 1600, 32}, "Grapple Jump"},
+	m_window{ sf::VideoMode{1500, 900, 32}, "Grapple Jump" },//m_window{ sf::VideoMode{2600, 1600, 32}, "Grapple Jump"},
 	is_running{ true }, // When false, game will exit
 	gameState{GameState::GAME}
 {

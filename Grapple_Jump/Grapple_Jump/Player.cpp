@@ -59,11 +59,14 @@ void Player::initialise()
 	m_gravity = sf::Vector2f(0, -3.5);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
-	m_position = sf::Vector2f(100, 1300);
+	m_position = sf::Vector2f(100, 800);//sf::Vector2f(100, 1300);
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 	m_sprite.setOrigin(50, 50);
+	//
+	m_sprite.setScale(0.7f, 0.7f);
+	//
 
 	//
 	m_hookSprite.setTexture(m_hookTexture);
@@ -72,6 +75,7 @@ void Player::initialise()
 
 	m_speed = 0.2f;
 	m_pullSpeed = 8.0f;
+	m_maxLength = 600.0f;
 
 	m_jumping = false;
 	m_left = false;
@@ -80,6 +84,7 @@ void Player::initialise()
 	m_hookLatched = false;
 	m_cableAdjust = false;
 	m_pulled = false;
+	m_extend = false;
 }
 
 //
@@ -164,7 +169,7 @@ void Player::jump(sf::Time deltaTime)
 //
 void Player::grapplingHook()
 {
-	//
+	// Launches the grappling hook if the Left Mouse button is pressed
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		//
@@ -178,6 +183,20 @@ void Player::grapplingHook()
 			m_hookPosition = m_mouseVector;*/
 
 			m_fired = true;
+		}
+	}
+
+	// Detaches the grappling hook if the Right Mouse button is pressed
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		//
+		if (m_hookLatched == true)
+		{
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_pulled = false;
+			m_extend = false;
 		}
 	}
 
@@ -224,8 +243,8 @@ void Player::grapplingHook()
 		}*/
 	}
 
-	//
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && m_hookLatched == true)
+	// The W key is press to retract the grappling hook
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_hookLatched == true)
 	{
 		//
 		m_pulled = true;
@@ -250,32 +269,91 @@ void Player::grapplingHook()
 			m_pulled = false;
 		}
 	}
-	//
+	// Else if W key is not pressed
 	else
 	{
 		m_pulled = false;
 	}
 
+	// The S key is pressed to extend the grappling hook
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_hookLatched == true)
+	{
+		//
+		m_extend = true;
+		m_cableAdjust = true;
+		//
+		m_pullDirection = normalize(m_position - m_tempMouseVec);
+		m_directionX = m_pullDirection.x;
+		m_directionY = m_pullDirection.y;
+		//
+		m_position.x += m_pullDirection.x * m_pullSpeed;
+		m_position.y += m_pullDirection.y * m_pullSpeed;
+		m_sprite.setPosition(m_position);
+		//
+		if (m_position.x >= m_tempMouseVec.x - 10 &&
+			m_position.x <= m_tempMouseVec.x + 10 &&
+			m_position.y >= m_tempMouseVec.y - 10 &&
+			m_position.y <= m_tempMouseVec.y + 10)
+		{
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_extend = false;
+		}// End if
+	}// End if
+	// Else if S key is not pressed
+	else
+	{
+		m_extend = false;
+	}
+
 	//
 	if (m_cableAdjust == true)
 	{
-		// If player is above grappling hook
-		if (m_position.y < m_tempMouseVec.y)
+		//
+		if (m_pulled == false && m_extend == false)
 		{
-			m_position.y += 3;
-			m_sprite.setPosition(m_position);
-		}
-		// If player is below grappling hook
-		if (m_position.y > m_tempMouseVec.y)
-		{
-			if (m_position.x >= m_tempMouseVec.x - 10 &&
-				m_position.x <= m_tempMouseVec.x + 10)
+			// If player is above grappling hook
+			if (m_position.y < m_tempMouseVec.y + 100)
 			{
-				m_position.y += 1;
+				m_position.y += 10;
+				
+				// Right side of grappling hook
+				if (m_position.x >= m_tempMouseVec.x - 10)
+				{
+					m_position.x -= 4;
+				}
+				// Left side of grappling hook
+				else if (m_position.x <= m_tempMouseVec.x + 10)
+				{
+					m_position.x += 4;
+				}
+
 				m_sprite.setPosition(m_position);
-			}
-		}
-	}
+			} // End if
+
+			// If player is below grappling hook
+			if (m_position.y > m_tempMouseVec.y)
+			{
+				//  Right side of grappling hook
+				if (m_position.x > m_tempMouseVec.x + 10)
+				{
+					m_position.x -= 2;
+				}
+				// Left side of grappling hook
+				else if (m_position.x < m_tempMouseVec.x - 10)
+				{
+					m_position.x += 2;
+				}
+				else if (m_position == m_tempMouseVec)
+				{ 
+
+				}
+
+				m_sprite.setPosition(m_position);
+			}// End if
+		} // End if
+	}// End if
 }
 
 //
@@ -294,12 +372,13 @@ void Player::collosionWithGround(Ground ground)
 //
 sf::Vector2f Player::normalize(sf::Vector2f vector)
 {
-	float lenght = sqrt((vector.x * vector.x) + (vector.y * vector.y));
+	float length = sqrt((vector.x * vector.x) + (vector.y * vector.y));
 
 	//
-	if (lenght != 0)
+	if (length != 0)
 	{
-		return sf::Vector2f(vector.x / lenght, vector.y / lenght);
+		//std::cout << length << std::endl;
+		return sf::Vector2f(vector.x / length, vector.y / length);
 	}
 	//
 	else

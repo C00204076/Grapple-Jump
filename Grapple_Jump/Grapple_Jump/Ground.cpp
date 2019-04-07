@@ -12,7 +12,7 @@
 Ground::Ground(sf::Texture & texture) :
 	m_texture(texture)
 {
-	m_position = sf::Vector2f(0, 1400);
+	m_position = sf::Vector2f(0, 850);//1400);
 	scaleX = 20;
 	scaleY = 1;
 

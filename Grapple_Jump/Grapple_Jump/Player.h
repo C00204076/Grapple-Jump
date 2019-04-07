@@ -91,6 +91,7 @@ private:
 	void jump(sf::Time deltaTime);
 	void grapplingHook();
 	void collosionWithGround(Ground ground);
+	void grapplePointCollision();
 	sf::Vector2f normalize(sf::Vector2f vector);
 
 
@@ -106,9 +107,9 @@ private:
 	float m_mouseX, m_mouseY;
 
 	sf::Vector2f m_pullDirection, m_cablePullDir;
-	float m_directionX, m_directionY, m_pullSpeed, m_maxLength, m_cablePullX, m_cablePullY;
+	float m_directionX, m_directionY, m_pullSpeed, m_length, m_maxLength, m_cablePullX, m_cablePullY;
 
-	bool m_jumping, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled;
+	bool m_jumping, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
 
 };
 
