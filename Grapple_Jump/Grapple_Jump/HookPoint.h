@@ -6,6 +6,9 @@
 // Time Taken:
 // Known Bugs:
 
+#ifndef HOOKPOINT_H
+#define HOOKPOINT_H
+
 #include "SFML/Graphics.hpp"
 
 #include <iostream>
@@ -22,6 +25,7 @@ public:
 	void render(sf::RenderWindow& window);
 
 	sf::Sprite getSprite();
+	void setPosition(sf::Vector2f position);
 
 private:
 	sf::Sprite m_sprite;
@@ -30,3 +34,5 @@ private:
 	sf::Vector2f m_position;
 
 };
+
+#endif // !HOOKPOINT_H

@@ -12,8 +12,9 @@
 Ground::Ground(sf::Texture & texture) :
 	m_texture(texture)
 {
-	m_position = sf::Vector2f(0, 850);//1400);
-	scaleX = 20;
+	// Y = 850 for at home work
+	m_position = sf::Vector2f(0, 1400);
+	scaleX = 50;
 	scaleY = 1;
 
 
@@ -39,6 +40,13 @@ void Ground::update(sf::Time deltaTime)
 void Ground::render(sf::RenderWindow& window)
 {
 	window.draw(m_sprite);
+}
+
+//
+void Ground::setPosition(sf::Vector2f position)
+{
+	m_position = position;
+	m_sprite.setPosition(m_position);
 }
 
 //

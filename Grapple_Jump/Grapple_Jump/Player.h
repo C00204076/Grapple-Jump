@@ -11,14 +11,13 @@
 
 #include <SFML/Graphics.hpp>
 
-//#include "HookPoint.h"
+#include "HookPoint.h"
 #include "Ground.h"
 
 
 #include <iostream>
-#include <string>
-#include <vector>
 #include <math.h>
+
 
 //SFML - Move object towards coord
 /*
@@ -77,10 +76,15 @@ public:
 	Player();
 	~Player();
 
-	void update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground);
+	void update(sf::Time deltaTime, sf::RenderWindow& window);
 	void render(sf::RenderWindow& window);
 	void initialise();
 	void loadTextures();
+
+	void collosionWithGround(Ground ground);
+	void grapplePointCollision(HookPoint hookPoint);
+
+	void resetPlayer();
 
 	sf::Vector2f getPosition();
 
@@ -90,8 +94,7 @@ private:
 	void movePlayer();
 	void jump(sf::Time deltaTime);
 	void grapplingHook();
-	void collosionWithGround(Ground ground);
-	void grapplePointCollision();
+	
 	sf::Vector2f normalize(sf::Vector2f vector);
 
 
@@ -107,9 +110,9 @@ private:
 	float m_mouseX, m_mouseY;
 
 	sf::Vector2f m_pullDirection, m_cablePullDir;
-	float m_directionX, m_directionY, m_pullSpeed, m_length, m_maxLength, m_cablePullX, m_cablePullY;
+	float m_directionX, m_directionY, m_pullSpeed, m_length, m_maxLength, m_cablePullX, m_cablePullY, m_maxHeight;
 
-	bool m_jumping, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
+	bool m_jumping, m_falling, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
 
 };
 

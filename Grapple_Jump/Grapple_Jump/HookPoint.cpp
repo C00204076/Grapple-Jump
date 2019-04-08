@@ -12,11 +12,12 @@
 HookPoint::HookPoint(sf::Texture & texture) :
 	m_texture(texture)
 {
-	m_position = sf::Vector2f(700, 50);//600);
+	// Y = 50 for at home work
+	//m_position = sf::Vector2f(700, 600);
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
-	m_sprite.setScale(0.2f, 0.2f);
+	m_sprite.setScale(0.3f, 0.3f);
 }
 
 //
@@ -35,6 +36,13 @@ void HookPoint::update(sf::Time deltaTime)
 void HookPoint::render(sf::RenderWindow& window)
 {
 	window.draw(m_sprite);
+}
+
+//
+void HookPoint::setPosition(sf::Vector2f position)
+{
+	m_position = position;
+	m_sprite.setPosition(m_position);
 }
 
 //

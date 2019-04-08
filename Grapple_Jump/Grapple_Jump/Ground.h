@@ -25,6 +25,7 @@ public:
 	void render(sf::RenderWindow& window);
 
 	sf::Sprite getSprite();
+	void setPosition(sf::Vector2f position);
 
 private:
 

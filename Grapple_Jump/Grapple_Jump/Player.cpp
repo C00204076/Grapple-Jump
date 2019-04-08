@@ -59,13 +59,14 @@ void Player::initialise()
 	m_gravity = sf::Vector2f(0, -3.5);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
-	m_position = sf::Vector2f(100, 800);//sf::Vector2f(100, 1300);
+	// Vector2f = (100, 800) for at home work
+	m_position = sf::Vector2f(100, 1300);
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 	m_sprite.setOrigin(50, 50);
 	//
-	m_sprite.setScale(0.7f, 0.7f);
+	//m_sprite.setScale(0.7f, 0.7f);
 	//
 
 	//
@@ -74,10 +75,11 @@ void Player::initialise()
 	
 
 	m_speed = 0.2f;
-	m_pullSpeed = 8.0f;
-	m_maxLength = 600.0f;
+	m_pullSpeed = 14.0f;
+	m_maxLength = 500.0f;
 
 	m_jumping = false;
+	m_falling = true;
 	m_left = false;
 	m_right = true;
 	m_fired = false; 
@@ -88,7 +90,7 @@ void Player::initialise()
 }
 
 //
-void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
+void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 {
 	m_mousePosition = sf::Mouse::getPosition(window);
 
@@ -99,7 +101,6 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 	movePlayer();
 	jump(deltaTime);
 	grapplingHook();
-	collosionWithGround(ground);
 
 	m_grapplingLine[0].position = sf::Vector2f(m_position.x, m_position.y);
 	m_grapplingLine[0].color = sf::Color::White;
@@ -114,7 +115,7 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, Ground ground)
 void Player::movePlayer()
 {
 	//
-	if (m_keyboard.isKeyPressed(sf::Keyboard::A))
+	if (m_keyboard.isKeyPressed(sf::Keyboard::A) && m_cableAdjust == false && m_hookLatched == false)
 	{
 		//std::cout << "Moving Left!" << std::endl;
 		m_left = true;
@@ -127,7 +128,7 @@ void Player::movePlayer()
 	}
 
 	//
-	if (m_keyboard.isKeyPressed(sf::Keyboard::D))
+	if (m_keyboard.isKeyPressed(sf::Keyboard::D) && m_cableAdjust == false && m_hookLatched == false)
 	{
 		//std::cout << "Moving Right!" << std::endl;
 		m_left = false;
@@ -135,6 +136,24 @@ void Player::movePlayer()
 
 		m_position.x += 7;
 		m_sprite.setTexture(m_texture);
+		//
+		m_sprite.setPosition(m_position);
+	}
+
+	//
+	if (m_keyboard.isKeyPressed(sf::Keyboard::A) && m_hookLatched == true && (m_cableAdjust == true || m_position.y < 1380))
+	{
+
+
+		//
+		m_sprite.setPosition(m_position);
+	}
+
+	//
+	if (m_keyboard.isKeyPressed(sf::Keyboard::D) && m_hookLatched == true && (m_cableAdjust == true || m_position.y < 1380))
+	{
+
+
 		//
 		m_sprite.setPosition(m_position);
 	}
@@ -147,26 +166,49 @@ void Player::movePlayer()
 void Player::jump(sf::Time deltaTime)
 {
 	//
-	if (m_keyboard.isKeyPressed(sf::Keyboard::Space) && m_jumping == false)
+	if (m_keyboard.isKeyPressed(sf::Keyboard::Space) && m_jumping == false && m_hookLatched == false)
 	{
 		//std::cout << "Jumping!" << std::endl;
 
 		m_velocity.y = -250;
+		m_maxLength = m_position.y - 450;
+
 		m_jumping = true;
 	}
 
 	//
 	if (m_jumping == true)
 	{
-		m_velocity.y -= m_gravity.y;
-		m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
+		//m_velocity.y -= m_gravity.y;
 		//m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
+		//m_position.y = m_position.y + ((m_velocity.y * deltaTime.asSeconds()) + (0.5 * m_gravity.y) * (deltaTime.asSeconds() * deltaTime.asSeconds()));
+		//
+		m_position.y -= 12;
+
+		//
+		if (m_position.y <= m_maxLength)
+		{
+			m_jumping = false;
+			m_falling = true;
+		}
+
 		//
 		m_sprite.setPosition(m_position);
 	}
+
+	if (m_falling == true)
+	{
+		//
+		m_position.y += 15;
+		//
+		m_sprite.setPosition(m_position);
+	}
+	
 }
 
-//
+/// <summary>
+/// 
+/// </summary>
 void Player::grapplingHook()
 {
 	// Launches the grappling hook if the Left Mouse button is pressed
@@ -177,7 +219,7 @@ void Player::grapplingHook()
 		{
 			m_hookSprite.setPosition(m_sprite.getPosition());
 			m_hookPosition = m_sprite.getPosition();
-			m_tempMouseVec = m_mouseVector;
+			m_tempMouseVec = m_mouseVector;;
 
 			/*m_hookSprite.setPosition(m_mouseVector);
 			m_hookPosition = m_mouseVector;*/
@@ -192,11 +234,14 @@ void Player::grapplingHook()
 		//
 		if (m_hookLatched == true)
 		{
+			m_hookSprite.setPosition(m_sprite.getPosition());
+			m_hookPosition = m_sprite.getPosition();
 			m_hookLatched = false;
 			m_fired = false;
 			m_cableAdjust = false;
 			m_pulled = false;
 			m_extend = false;
+			m_falling = true;
 		}
 	}
 
@@ -212,13 +257,20 @@ void Player::grapplingHook()
 		m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
 		m_hookSprite.setPosition(m_hookPosition);
 		//
-		if (m_hookPosition.x >= m_tempMouseVec.x - 15 &&
-			m_hookPosition.x <= m_tempMouseVec.x + 15 &&
-			m_hookPosition.y >= m_tempMouseVec.y - 15 &&
-			m_hookPosition.y <= m_tempMouseVec.y + 15)
+		if (m_hookPosition.x >= m_tempMouseVec.x - 3 &&
+			m_hookPosition.x <= m_tempMouseVec.x + 3 &&
+			m_hookPosition.y >= m_tempMouseVec.y - 3 &&
+			m_hookPosition.y <= m_tempMouseVec.y + 3 &&
+			m_hookLatched == false)
 		{
-			m_hookLatched = true;
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_pulled = false;
+			m_extend = false;
 		}
+
+
 	}
 
 	//
@@ -267,6 +319,7 @@ void Player::grapplingHook()
 			m_fired = false;
 			m_cableAdjust = false;
 			m_pulled = false;
+			m_falling = true;
 		}
 	}
 	// Else if W key is not pressed
@@ -307,7 +360,8 @@ void Player::grapplingHook()
 		m_extend = false;
 	}
 
-	//
+	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the player's
+	// position, thus adjusting the cable
 	if (m_cableAdjust == true)
 	{
 		//
@@ -338,16 +392,12 @@ void Player::grapplingHook()
 				//  Right side of grappling hook
 				if (m_position.x > m_tempMouseVec.x + 10)
 				{
-					m_position.x -= 2;
+					m_position.x -= 6;
 				}
 				// Left side of grappling hook
 				else if (m_position.x < m_tempMouseVec.x - 10)
 				{
-					m_position.x += 2;
-				}
-				else if (m_position == m_tempMouseVec)
-				{ 
-
+					m_position.x += 6;
 				}
 
 				m_sprite.setPosition(m_position);
@@ -356,20 +406,42 @@ void Player::grapplingHook()
 	}// End if
 }
 
-//
+/// <summary>
+/// 
+/// </summary>
+/// <param name="ground"></param>
 void Player::collosionWithGround(Ground ground)
 {
 	if (m_sprite.getGlobalBounds().intersects(ground.getSprite().getGlobalBounds()))
 	{
 		m_jumping = false;
+		m_falling = false;
+		//m_sprite.setPosition(m_position);
 	}
 	else
 	{
-		//m_jumping = true;
+		//m_falling = true;
 	}
 }
 
-//
+/// <summary>
+/// 
+/// </summary>
+/// <param name="hookPoint"></param>
+void Player::grapplePointCollision(HookPoint hookPoint)
+{
+	if (m_hookSprite.getGlobalBounds().intersects(hookPoint.getSprite().getGlobalBounds()) && m_fired == true)
+	{
+		m_hookLatched = true;
+		m_falling = false;
+	}
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="vector"></param>
+/// <returns></returns>
 sf::Vector2f Player::normalize(sf::Vector2f vector)
 {
 	float length = sqrt((vector.x * vector.x) + (vector.y * vector.y));
@@ -424,4 +496,29 @@ sf::Vector2f Player::getPosition()
 sf::Vector2i Player::getMousePosition()
 {
 	return m_mousePosition;
+}
+
+/// <summary>
+/// 
+/// </summary>
+void Player::resetPlayer()
+{
+	m_position = sf::Vector2f(100, 1300);
+
+	m_sprite.setPosition(m_position);
+	m_sprite.setTexture(m_texture);
+
+	m_speed = 0.2f;
+	m_pullSpeed = 14.0f;
+	m_maxLength = 500.0f;
+
+	m_jumping = false;
+	m_falling = true;
+	m_left = false;
+	m_right = true;
+	m_fired = false;
+	m_hookLatched = false;
+	m_cableAdjust = false;
+	m_pulled = false;
+	m_extend = false;
 }

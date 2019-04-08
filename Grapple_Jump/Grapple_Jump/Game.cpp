@@ -10,9 +10,10 @@
 
 //
 Game::Game() :
-	m_window{ sf::VideoMode{1500, 900, 32}, "Grapple Jump" },//m_window{ sf::VideoMode{2600, 1600, 32}, "Grapple Jump"},
+	// sf::VideoMode{1500, 900, 32}, "Grapple Jump" } for at home work
+	m_window{ sf::VideoMode{2600, 1600, 32}, "Grapple Jump" },
 	is_running{ true }, // When false, game will exit
-	gameState{GameState::GAME}
+	gameState{ GameState::GAME }
 {
 	m_window.setMouseCursorVisible(false);
 
@@ -35,8 +36,28 @@ Game::Game() :
 	m_targetSprite.setOrigin(25, 25);
 
 	m_player = new Player();
-	m_ground = new Ground(m_groundTexture);
-	m_hookPoint = new HookPoint(m_hookTexture);
+	//
+	for (int i = 0; i < 2; i++)
+	{
+		m_ground[i] = new Ground(m_groundTexture);
+	}
+	//
+	m_ground[0]->setPosition(sf::Vector2f(0, 1400));
+	m_ground[1]->setPosition(sf::Vector2f(2300, 650));
+
+	//
+	for (int i = 0; i < 6; i++)
+	{
+		m_hookPoint[i] = new HookPoint(m_hookTexture);
+	}
+	//
+	m_hookPoint[0]->setPosition(sf::Vector2f(80, 1000));
+	m_hookPoint[1]->setPosition(sf::Vector2f(700, 600));
+	m_hookPoint[2]->setPosition(sf::Vector2f(1500, 400));
+	m_hookPoint[3]->setPosition(sf::Vector2f());
+	m_hookPoint[4]->setPosition(sf::Vector2f());
+	m_hookPoint[5]->setPosition(sf::Vector2f());
+
 }
 
 //
@@ -179,10 +200,21 @@ void Game::update(sf::Time deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+		//
+		for (int i = 0; i < 2; i++)
+		{
+			m_ground[i]->update(deltaTime);
+			m_player->collosionWithGround(*m_ground[i]);
+		}
 
-		m_player->update(deltaTime, m_window, *m_ground);
-		m_ground->update(deltaTime);
-		m_hookPoint->update(deltaTime);
+		//
+		for (int i = 0; i < 6; i++) 
+		{
+			m_hookPoint[i]->update(deltaTime);
+			m_player->grapplePointCollision(*m_hookPoint[i]);
+		}
+		m_player->update(deltaTime, m_window);
+		
 		break;
 	}
 }
@@ -205,10 +237,18 @@ void Game::render()
 		break;
 	case GameState::GAME:
 		m_player->render(m_window);
-		m_ground->render(m_window);
-		m_hookPoint->render(m_window);
-		break;
+		//
+		for (int i = 0; i < 2; i++)
+		{
+			m_ground[i]->render(m_window);
+		}
 
+		//
+		for (int i = 0; i < 6; i++)
+		{
+			m_hookPoint[i]->render(m_window);
+		}
+		break;
 	}
 
 	m_window.draw(m_targetSprite);
