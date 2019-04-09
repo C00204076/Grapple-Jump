@@ -56,7 +56,7 @@ void Player::initialise()
 {
 	loadTextures();
 
-	m_gravity = sf::Vector2f(0, -3.5);
+	m_gravity = sf::Vector2f(0, 4.0f);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
 	// Vector2f = (100, 800) for at home work
@@ -73,10 +73,11 @@ void Player::initialise()
 	m_hookSprite.setTexture(m_hookTexture);
 	m_hookSprite.setOrigin(5, 5);
 	
-
-	m_speed = 0.2f;
 	m_pullSpeed = 14.0f;
 	m_maxLength = 500.0f;
+
+
+	
 
 	m_jumping = false;
 	m_falling = true;
@@ -92,8 +93,9 @@ void Player::initialise()
 //
 void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 {
+	//
 	m_mousePosition = sf::Mouse::getPosition(window);
-
+	//
 	m_mouseX = m_mousePosition.x;
 	m_mouseY = m_mousePosition.y;
 	m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
@@ -101,11 +103,6 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 	movePlayer();
 	jump(deltaTime);
 	grapplingHook();
-
-	m_grapplingLine[0].position = sf::Vector2f(m_position.x, m_position.y);
-	m_grapplingLine[0].color = sf::Color::White;
-	m_grapplingLine[1].position = sf::Vector2f(m_hookPosition.x, m_hookPosition.y);
-	m_grapplingLine[1].color = sf::Color::White;
 
 }
 
@@ -146,7 +143,7 @@ void Player::movePlayer()
 
 
 		//
-		m_sprite.setPosition(m_position);
+		//m_sprite.setPosition(m_position);
 	}
 
 	//
@@ -155,7 +152,7 @@ void Player::movePlayer()
 
 
 		//
-		m_sprite.setPosition(m_position);
+		//m_sprite.setPosition(m_position);
 	}
 }
 
@@ -404,6 +401,12 @@ void Player::grapplingHook()
 			}// End if
 		} // End if
 	}// End if
+
+	 //
+	m_grapplingLine[0].position = sf::Vector2f(m_position.x, m_position.y);
+	m_grapplingLine[0].color = sf::Color::White;
+	m_grapplingLine[1].position = sf::Vector2f(m_hookPosition.x, m_hookPosition.y);
+	m_grapplingLine[1].color = sf::Color::White;
 }
 
 /// <summary>
@@ -508,7 +511,6 @@ void Player::resetPlayer()
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 
-	m_speed = 0.2f;
 	m_pullSpeed = 14.0f;
 	m_maxLength = 500.0f;
 

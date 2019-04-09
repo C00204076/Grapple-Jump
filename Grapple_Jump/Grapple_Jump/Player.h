@@ -18,6 +18,8 @@
 #include <iostream>
 #include <math.h>
 
+#define PI 3.14159265358979323846
+
 
 //SFML - Move object towards coord
 /*
@@ -110,9 +112,16 @@ private:
 	float m_mouseX, m_mouseY;
 
 	sf::Vector2f m_pullDirection, m_cablePullDir;
-	float m_directionX, m_directionY, m_pullSpeed, m_length, m_maxLength, m_cablePullX, m_cablePullY, m_maxHeight;
+	float m_directionX, m_directionY; 
+	float m_pullSpeed; 
+	float m_length, m_maxLength, m_maxHeight;
+	float  m_cablePullX, m_cablePullY;
+	float  m_angle, m_aAccel, m_aVel, m_rLength, m_damping;
 
-	bool m_jumping, m_falling, m_left, m_right, m_speed, m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
+	bool m_jumping, m_falling; 
+	bool m_left, m_right; 
+	bool m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
+	bool m_dragging;
 
 };
 
