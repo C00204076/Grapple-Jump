@@ -57,8 +57,8 @@ private:
 	
 
 	Player * m_player;
-	Ground * m_ground[2];
-	HookPoint * m_hookPoint[6];
+	Ground * m_ground;
+	HookPoint * m_hookPoint[7];
 };
 
 #include "Player.h"

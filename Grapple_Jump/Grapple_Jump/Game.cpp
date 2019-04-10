@@ -8,13 +8,16 @@
 
 #include "Game.h"
 
-//
+/// <summary>
+/// Default constructor
+/// </summary>
 Game::Game() :
 	// sf::VideoMode{1500, 900, 32}, "Grapple Jump" } for at home work
 	m_window{ sf::VideoMode{2600, 1600, 32}, "Grapple Jump" },
 	is_running{ true }, // When false, game will exit
 	gameState{ GameState::GAME }
 {
+	// Sets the mouse cursor's visiblility to false
 	m_window.setMouseCursorVisible(false);
 
 	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground.png"))
@@ -31,43 +34,41 @@ Game::Game() :
 	{
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
 	}
-
+	// Sets the texture and origin of the new mouse Sprite
 	m_targetSprite.setTexture(m_targetTexture);
 	m_targetSprite.setOrigin(25, 25);
 
 	m_player = new Player();
-	//
-	for (int i = 0; i < 2; i++)
-	{
-		m_ground[i] = new Ground(m_groundTexture);
-	}
-	//
-	m_ground[0]->setPosition(sf::Vector2f(0, 1400));
-	m_ground[1]->setPosition(sf::Vector2f(2300, 650));
+	// Sets the default constructor and texture of the Ground
+	m_ground = new Ground(m_groundTexture);
+	// Sets the psition of the Ground
+	m_ground->setPosition(sf::Vector2f(0, 1400));
 
-	//
-	for (int i = 0; i < 6; i++)
+	// Sets the default constructor and texture of the Hook Points
+	for (int i = 0; i < 7; i++)
 	{
 		m_hookPoint[i] = new HookPoint(m_hookTexture);
 	}
-	//
-	m_hookPoint[0]->setPosition(sf::Vector2f(80, 1000));
-	m_hookPoint[1]->setPosition(sf::Vector2f(700, 600));
-	m_hookPoint[2]->setPosition(sf::Vector2f(1500, 400));
-	m_hookPoint[3]->setPosition(sf::Vector2f());
-	m_hookPoint[4]->setPosition(sf::Vector2f());
-	m_hookPoint[5]->setPosition(sf::Vector2f());
-
+	// Sets the positions of the Hook Points
+	m_hookPoint[0]->setPosition(sf::Vector2f(600, 1000));
+	m_hookPoint[1]->setPosition(sf::Vector2f(1250, 500));
+	m_hookPoint[2]->setPosition(sf::Vector2f(0, 0));
+	m_hookPoint[3]->setPosition(sf::Vector2f(2100, 250));
+	m_hookPoint[4]->setPosition(sf::Vector2f(2570, 0));
+	m_hookPoint[5]->setPosition(sf::Vector2f(2570, 1350));
+	m_hookPoint[6]->setPosition(sf::Vector2f(0, 1350));
 }
 
-//
+/// <summary>
+/// Default deconstructor
+/// </summary>
 Game::~Game()
 {
 	std::cout << "Game object destroyed" << std::endl;
 }
 
 /// <summary>
-/// 
+/// Calls all methods needed to run game, such as update and render
 /// </summary>
 void Game::run()
 {
@@ -76,8 +77,10 @@ void Game::run()
 	sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 	while (m_window.isOpen())
 	{
+		// Gets the mouse position relative to the game's window
 		m_mousePosition = sf::Mouse::getPosition(m_window);
-
+		// Set the mouse X and Y to floats, then to Vector2f; as a means of converting Vector2i
+		// to Vector2f
 		m_mouseX = m_mousePosition.x;
 		m_mouseY = m_mousePosition.y;
 		m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
@@ -143,7 +146,7 @@ void Game::processGameEvents(sf::Event& event)
 }
 
 /// <summary>
-/// 
+///  
 /// </summary>
 void Game::processInput()
 {
@@ -177,7 +180,7 @@ void Game::processInput()
 }
 
 /// <summary>
-/// 
+/// Calls and updates any method of game objects needed for gameplay
 /// </summary>
 /// <param name="t_deltaTime"></param>
 void Game::update(sf::Time deltaTime)
@@ -186,9 +189,6 @@ void Game::update(sf::Time deltaTime)
 	{
 		m_window.close();
 	}
-
-	
-
 
 	//Updates game based on current state
 	switch (gameState)
@@ -200,27 +200,23 @@ void Game::update(sf::Time deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
-		//
-		for (int i = 0; i < 2; i++)
-		{
-			m_ground[i]->update(deltaTime);
-			m_player->collosionWithGround(*m_ground[i]);
-		}
-
-		//
-		for (int i = 0; i < 6; i++) 
+		// Updates the Ground and check if it is colliding with the player
+		m_ground->update(deltaTime);
+		m_player->collosionWithGround(*m_ground);
+		// Updates the array of Hook Points and checks if the Grappling Hook is colliding with any
+		// Hook Point
+		for (int i = 0; i < 7; i++) 
 		{
 			m_hookPoint[i]->update(deltaTime);
 			m_player->grapplePointCollision(*m_hookPoint[i]);
 		}
 		m_player->update(deltaTime, m_window);
-		
 		break;
 	}
 }
 
 /// <summary>
-/// 
+/// Renders and draws the Sprites of the different game object sprites
 /// </summary>
 void Game::render()
 {
@@ -236,15 +232,12 @@ void Game::render()
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
 		m_player->render(m_window);
-		//
-		for (int i = 0; i < 2; i++)
-		{
-			m_ground[i]->render(m_window);
-		}
-
-		//
-		for (int i = 0; i < 6; i++)
+		// Renders and draws the Ground Sprite
+		m_ground->render(m_window);
+		// Renders and draws the array of Hook Point Sprites
+		for (int i = 0; i < 7; i++)
 		{
 			m_hookPoint[i]->render(m_window);
 		}
@@ -257,7 +250,7 @@ void Game::render()
 }
 
 /// <summary>
-/// 
+/// Sets the game state to the given arguement
 /// </summary>
 /// <param name="gameMode"></param>
 void Game::setGameState(GameState gameMode)
@@ -266,7 +259,7 @@ void Game::setGameState(GameState gameMode)
 }
 
 /// <summary>
-/// 
+/// Returns the current value of the game state
 /// </summary>
 /// <returns></returns>
 GameState Game::getGameState()

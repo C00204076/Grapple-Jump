@@ -67,6 +67,16 @@ Similarly, Yc = Ya + (AC * (Yb - Ya) / AB)
 Note that this also works if C is between A and B, the only (obvious) restriction is if A and B are the same point (AB = 0, conveys no direction information and rightly yields a division by zero).
 */
 
+//Moving an object in a circular path
+
+/*
+X := originX + cos(angle)*radius;
+Y := originY + sin(angle)*radius;
+
+(originX, originY) is the center of your circle. radius is its radius. That's it.
+
+This works because the sine and cosine are mathematically related to the unit circle.
+*/
 
 //
 class Game; //Forward delaration for cyclical reference
@@ -77,7 +87,7 @@ class Player
 public:
 	Player();
 	~Player();
-
+	
 	void update(sf::Time deltaTime, sf::RenderWindow& window);
 	void render(sf::RenderWindow& window);
 	void initialise();
@@ -86,16 +96,16 @@ public:
 	void collosionWithGround(Ground ground);
 	void grapplePointCollision(HookPoint hookPoint);
 
-	void resetPlayer();
-
 	sf::Vector2f getPosition();
 
 	sf::Vector2i getMousePosition();
 
 private:
 	void movePlayer();
+	void boundaryCheck();
 	void jump(sf::Time deltaTime);
 	void grapplingHook();
+	void resetHook();
 	
 	sf::Vector2f normalize(sf::Vector2f vector);
 
@@ -121,8 +131,6 @@ private:
 	bool m_jumping, m_falling; 
 	bool m_left, m_right; 
 	bool m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
-	bool m_dragging;
-
 };
 
 #include "Game.h"

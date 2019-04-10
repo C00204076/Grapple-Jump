@@ -1,6 +1,4 @@
 ﻿  Player.cpp
-c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(79): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(82): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(102): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(103): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(94): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(95): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Grapple_Jump.vcxproj -> C:\Users\gameuser\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe
