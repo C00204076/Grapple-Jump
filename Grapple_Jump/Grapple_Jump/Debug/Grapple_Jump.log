@@ -1,4 +1,4 @@
-﻿  Game.cpp
-c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(84): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(85): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+﻿  Player.cpp
+c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(94): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\gameuser\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(95): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Grapple_Jump.vcxproj -> C:\Users\gameuser\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe

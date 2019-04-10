@@ -303,10 +303,10 @@ void Player::grapplingHook()
 		m_sprite.setPosition(m_position);
 		// If the Player reaches the destination position, Grappling Hook is reset and 
 		// Player is set to fall
-		if (m_position.x >= m_tempMouseVec.x - 8 &&
-			m_position.x <= m_tempMouseVec.x + 8 &&
-			m_position.y >= m_tempMouseVec.y - 8 &&
-			m_position.y <= m_tempMouseVec.y + 8)
+		if (m_position.x >= m_tempMouseVec.x - 12 &&
+			m_position.x <= m_tempMouseVec.x + 12 &&
+			m_position.y >= m_tempMouseVec.y - 12 &&
+			m_position.y <= m_tempMouseVec.y + 12)
 		{
 			m_hookLatched = false;
 			m_fired = false;
