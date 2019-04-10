@@ -52,11 +52,11 @@ Game::Game() :
 	// Sets the positions of the Hook Points
 	m_hookPoint[0]->setPosition(sf::Vector2f(600, 1000));
 	m_hookPoint[1]->setPosition(sf::Vector2f(1250, 500));
-	m_hookPoint[2]->setPosition(sf::Vector2f(0, 0));
+	m_hookPoint[2]->setPosition(sf::Vector2f(50, 0));
 	m_hookPoint[3]->setPosition(sf::Vector2f(2100, 250));
-	m_hookPoint[4]->setPosition(sf::Vector2f(2570, 0));
-	m_hookPoint[5]->setPosition(sf::Vector2f(2570, 1350));
-	m_hookPoint[6]->setPosition(sf::Vector2f(0, 1350));
+	m_hookPoint[4]->setPosition(sf::Vector2f(2550, 20));
+	m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
+	m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
 }
 
 /// <summary>

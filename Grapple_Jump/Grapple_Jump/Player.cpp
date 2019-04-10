@@ -70,7 +70,7 @@ void Player::initialise()
 	m_hookSprite.setTexture(m_hookTexture);
 	m_hookSprite.setOrigin(5, 5);
 	
-	m_pullSpeed = 14.0f;
+	m_pullSpeed = 30.0f;
 	m_maxLength = 500.0f;
 
 	m_jumping = false;
@@ -108,7 +108,7 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 void Player::movePlayer()
 {
 	//
-	if (m_keyboard.isKeyPressed(sf::Keyboard::A) && (m_cableAdjust == false || m_jumping == true || m_falling == true))
+	if (m_keyboard.isKeyPressed(sf::Keyboard::A) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
 	{
 		m_left = true;
 		m_right = false;
@@ -120,7 +120,7 @@ void Player::movePlayer()
 	}
 
 	//
-	if (m_keyboard.isKeyPressed(sf::Keyboard::D) && (m_cableAdjust == false || m_jumping == true || m_falling == true))
+	if (m_keyboard.isKeyPressed(sf::Keyboard::D) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
 	{
 		m_left = false;
 		m_right = true;
@@ -146,6 +146,7 @@ void Player::jump(sf::Time deltaTime)
 		m_maxLength = m_position.y - 450;
 
 		m_jumping = true;
+		m_cableAdjust = true;
 	}
 
 	// While Player is jumping
@@ -247,10 +248,10 @@ void Player::grapplingHook()
 		m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
 		m_hookSprite.setPosition(m_hookPosition);
 		// If the Grappling Hook gets to the position of the Hook Point but doesn't latch onto it
-		if (m_hookPosition.x >= m_tempMouseVec.x - 9 &&
-			m_hookPosition.x <= m_tempMouseVec.x + 9 &&
-			m_hookPosition.y >= m_tempMouseVec.y - 9 &&
-			m_hookPosition.y <= m_tempMouseVec.y + 9 &&
+		if (m_hookPosition.x >= m_tempMouseVec.x - 7 &&
+			m_hookPosition.x <= m_tempMouseVec.x + 7 &&
+			m_hookPosition.y >= m_tempMouseVec.y - 7 &&
+			m_hookPosition.y <= m_tempMouseVec.y + 7 &&
 			m_hookLatched == false)
 		{
 			m_hookLatched = false;
@@ -302,10 +303,10 @@ void Player::grapplingHook()
 		m_sprite.setPosition(m_position);
 		// If the Player reaches the destination position, Grappling Hook is reset and 
 		// Player is set to fall
-		if (m_position.x >= m_tempMouseVec.x - 10 &&
-			m_position.x <= m_tempMouseVec.x + 10 &&
-			m_position.y >= m_tempMouseVec.y - 10 &&
-			m_position.y <= m_tempMouseVec.y + 10)
+		if (m_position.x >= m_tempMouseVec.x - 8 &&
+			m_position.x <= m_tempMouseVec.x + 8 &&
+			m_position.y >= m_tempMouseVec.y - 8 &&
+			m_position.y <= m_tempMouseVec.y + 8)
 		{
 			m_hookLatched = false;
 			m_fired = false;
@@ -354,7 +355,7 @@ void Player::grapplingHook()
 
 	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the 
 	//player's position, thus adjusting the cable
-	if (m_cableAdjust == true)
+	if (m_cableAdjust == true && m_hookLatched == true)
 	{
 		// If the Grappling Hook cable is not retracting or extending
 		if (m_pulled == false && m_extend == false)
@@ -365,14 +366,14 @@ void Player::grapplingHook()
 				m_position.y += 10;
 				
 				// Right side of grappling hook
-				if (m_position.x >= m_tempMouseVec.x - 10)
+				if (m_position.x > m_tempMouseVec.x - 5)
 				{
-					m_position.x -= 4;
+					m_position.x -= 10;
 				}
 				// Left side of grappling hook
-				else if (m_position.x <= m_tempMouseVec.x + 10)
+				else if (m_position.x < m_tempMouseVec.x + 5)
 				{
-					m_position.x += 4;
+					m_position.x += 10;
 				}
 
 				m_sprite.setPosition(m_position);
@@ -381,15 +382,18 @@ void Player::grapplingHook()
 			// If player is below grappling hook
 			if (m_position.y > m_tempMouseVec.y)
 			{
+				
 				//  Right side of grappling hook
-				if (m_position.x > m_tempMouseVec.x + 10)
+				if (m_position.x > m_tempMouseVec.x + 8)
 				{
-					m_position.x -= 6;
+					m_position.y += 4;
+					m_position.x -= 12;
 				}
 				// Left side of grappling hook
-				else if (m_position.x < m_tempMouseVec.x - 10)
+				else if (m_position.x < m_tempMouseVec.x - 8)
 				{
-					m_position.x += 6;
+					m_position.y += 4;
+					m_position.x += 12;
 				}
 
 				m_sprite.setPosition(m_position);
@@ -414,6 +418,7 @@ void Player::collosionWithGround(Ground ground)
 	{
 		m_jumping = false;
 		m_falling = false;
+		m_cableAdjust = false;
 		m_position.y = 1350;
 		m_sprite.setPosition(m_position);
 	}
