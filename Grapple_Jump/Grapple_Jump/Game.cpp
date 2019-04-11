@@ -1,10 +1,10 @@
-//
+// Sets the methods, functions and changes of the variables related to Game header file
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 9:48 31 October 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 4 hours 39 minutes
+// Known Bugs: None
 
 #include "Game.h"
 

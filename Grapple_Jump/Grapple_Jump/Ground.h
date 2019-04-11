@@ -1,10 +1,10 @@
-//
+// Ground header file used for methods and functions related to Ground
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 13:44 7 November 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 30 minutes
+// Known Bugs: None
 
 #ifndef GROUND_H
 #define GROUND_H
@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-//
+// Ground class
 class Ground
 {
 public:

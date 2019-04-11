@@ -1,10 +1,11 @@
-//
+// Player header file used for methods and functions related to Player and Grappling Hook
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 9:53 7 November 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 6 hours 24 minutes
+// Known Bugs: Grappling Hook may get stuck in place if it is not 
+// latched onto a Hook Point
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -68,7 +69,6 @@ Note that this also works if C is between A and B, the only (obvious) restrictio
 */
 
 //Moving an object in a circular path
-
 /*
 X := originX + cos(angle)*radius;
 Y := originY + sin(angle)*radius;
@@ -78,10 +78,9 @@ Y := originY + sin(angle)*radius;
 This works because the sine and cosine are mathematically related to the unit circle.
 */
 
-//
 class Game; //Forward delaration for cyclical reference
 
-//
+// Player class
 class Player
 {
 public:

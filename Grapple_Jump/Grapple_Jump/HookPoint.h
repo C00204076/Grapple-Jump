@@ -1,10 +1,10 @@
-//
+// Hook Point header file used for methods and functions related to Hook Point
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 13:43 21 November 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 30 minutes
+// Known Bugs: None
 
 #ifndef HOOKPOINT_H
 #define HOOKPOINT_H
@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-//
+// HookPoint class
 class HookPoint
 {
 public:

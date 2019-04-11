@@ -1,10 +1,11 @@
-//
+// Sets the methods, functions and changes of the variables related to Player header file
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 10:39 7 November 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 6 hours 24 minutes
+// Known Bugs: Grappling Hook may get stuck in place if it is not 
+// latched onto a Hook Point
 
 #include "Player.h"
 
@@ -84,7 +85,11 @@ void Player::initialise()
 	m_extend = false;
 }
 
-//
+/// <summary>
+/// 
+/// </summary>
+/// <param name="deltaTime"></param>
+/// <param name="window"></param>
 void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 {
 	// Gets the current position of the mouse cursor, relative to the game window
@@ -107,7 +112,8 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 /// </summary>
 void Player::movePlayer()
 {
-	//
+	// If the A key is pressed and the Player is is jumping, not falling and  the
+	// Grappling Hook cable is adjusting itself
 	if (m_keyboard.isKeyPressed(sf::Keyboard::A) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
 	{
 		m_left = true;
@@ -119,7 +125,8 @@ void Player::movePlayer()
 		m_sprite.setPosition(m_position);
 	}
 
-	//
+	// If the D key is pressed and the Player is is jumping, not falling and  the
+	// Grappling Hook cable is adjusting itself
 	if (m_keyboard.isKeyPressed(sf::Keyboard::D) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
 	{
 		m_left = false;
@@ -166,9 +173,8 @@ void Player::jump(sf::Time deltaTime)
 
 	if (m_falling == true)
 	{
-		//
 		m_position.y += 15;
-		//
+
 		m_sprite.setPosition(m_position);
 	}
 	
@@ -248,10 +254,10 @@ void Player::grapplingHook()
 		m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
 		m_hookSprite.setPosition(m_hookPosition);
 		// If the Grappling Hook gets to the position of the Hook Point but doesn't latch onto it
-		if (m_hookPosition.x >= m_tempMouseVec.x - 7 &&
-			m_hookPosition.x <= m_tempMouseVec.x + 7 &&
-			m_hookPosition.y >= m_tempMouseVec.y - 7 &&
-			m_hookPosition.y <= m_tempMouseVec.y + 7 &&
+		if (m_hookPosition.x >= m_tempMouseVec.x - 10 &&
+			m_hookPosition.x <= m_tempMouseVec.x + 10 &&
+			m_hookPosition.y >= m_tempMouseVec.y - 10 &&
+			m_hookPosition.y <= m_tempMouseVec.y + 10 &&
 			m_hookLatched == false)
 		{
 			m_hookLatched = false;
@@ -303,10 +309,10 @@ void Player::grapplingHook()
 		m_sprite.setPosition(m_position);
 		// If the Player reaches the destination position, Grappling Hook is reset and 
 		// Player is set to fall
-		if (m_position.x >= m_tempMouseVec.x - 12 &&
-			m_position.x <= m_tempMouseVec.x + 12 &&
-			m_position.y >= m_tempMouseVec.y - 12 &&
-			m_position.y <= m_tempMouseVec.y + 12)
+		if (m_position.x >= m_tempMouseVec.x - 20 &&
+			m_position.x <= m_tempMouseVec.x + 20 &&
+			m_position.y >= m_tempMouseVec.y - 20 &&
+			m_position.y <= m_tempMouseVec.y + 20)
 		{
 			m_hookLatched = false;
 			m_fired = false;
@@ -414,6 +420,7 @@ void Player::grapplingHook()
 /// <param name="ground"></param>
 void Player::collosionWithGround(Ground ground)
 {
+	// If the Player Sprite intersects with the Ground Sprite
 	if (m_sprite.getGlobalBounds().intersects(ground.getSprite().getGlobalBounds()))
 	{
 		m_jumping = false;
@@ -430,6 +437,7 @@ void Player::collosionWithGround(Ground ground)
 /// <param name="hookPoint"></param>
 void Player::grapplePointCollision(HookPoint hookPoint)
 {
+	// If the Grappling Hook Sprite intersects with any Hook Point Sprite
 	if (m_hookSprite.getGlobalBounds().intersects(hookPoint.getSprite().getGlobalBounds()) && m_fired == true)
 	{
 		m_hookLatched = true;

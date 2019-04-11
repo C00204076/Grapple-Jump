@@ -1,10 +1,10 @@
-//
+// Sets the methods, functions and changes of the variables related to Ground header file
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 13:44 7 November 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 30 minutes
+// Known Bugs: None
 
 #include "Ground.h"
 
@@ -36,7 +36,7 @@ Ground::~Ground()
 }
 
 /// <summary>
-/// 
+/// Call and updates the Ground methods and variables
 /// </summary>
 /// <param name="deltaTime"></param>
 void Ground::update(sf::Time deltaTime)
@@ -45,7 +45,7 @@ void Ground::update(sf::Time deltaTime)
 }
 
 /// <summary>
-/// 
+/// Renders and draws the Ground Sprites
 /// </summary>
 /// <param name="window"></param>
 void Ground::render(sf::RenderWindow& window)
@@ -54,7 +54,7 @@ void Ground::render(sf::RenderWindow& window)
 }
 
 /// <summary>
-/// 
+/// Sets the value of position with the given arguement
 /// </summary>
 /// <param name="position"></param>
 void Ground::setPosition(sf::Vector2f position)
@@ -64,7 +64,7 @@ void Ground::setPosition(sf::Vector2f position)
 }
 
 /// <summary>
-/// 
+/// Gets the current value of the Ground Sprite
 /// </summary>
 /// <returns></returns>
 sf::Sprite Ground::getSprite()

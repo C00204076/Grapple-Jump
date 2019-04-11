@@ -1,10 +1,10 @@
-//
+// Game header file used for methods and functions related to Game
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 9:42 31 October 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 4 hours 39 minutes
+// Known Bugs: None
 
 #ifndef GAME_H
 #define GAME_H
@@ -24,7 +24,7 @@ enum class GameState
 	SPLASH, LICENSE, MAIN, GAME
 };
 
-//
+// Game class
 class Game
 {
 public:

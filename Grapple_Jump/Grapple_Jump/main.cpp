@@ -1,10 +1,10 @@
-//
+// Main file used for running the game
 // C00204076
 // Brandon Seah-Dempsey
 // Started at 9:37 31 October 2018
-// Finished at
-// Time Taken:
-// Known Bugs:
+// Finished at 15:07 11 April 2019
+// Time Taken: 10 minutes
+// Known Bugs: None
 
 #include "Game.h"
 
