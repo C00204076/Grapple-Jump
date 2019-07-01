@@ -130,17 +130,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HookPoint.cpp" />
+    <ClCompile Include="Idle.cpp" />
+    <ClCompile Include="Jump.cpp" />
+    <ClCompile Include="Land.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HookPoint.h" />
+    <ClInclude Include="Idle.h" />
+    <ClInclude Include="Jump.h" />
+    <ClInclude Include="Land.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="State.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

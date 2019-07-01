@@ -15,9 +15,9 @@
 #include "HookPoint.h"
 #include "Ground.h"
 
-
 #include <iostream>
 #include <math.h>
+#include <stdlib.h>
 
 #define PI 3.14159265358979323846
 
@@ -79,6 +79,7 @@ This works because the sine and cosine are mathematically related to the unit ci
 */
 
 class Game; //Forward delaration for cyclical reference
+class Animation;
 
 // Player class
 class Player
@@ -99,26 +100,40 @@ public:
 
 	sf::Vector2i getMousePosition();
 
+	sf::IntRect getSourceRectSprite();
+	void setSourceRectSprite(sf::IntRect rectangle);
+
+	bool getLeft(), getRight();
+	bool getMoving(), getJumping(), getFalling();
+
 private:
 	void movePlayer();
 	void boundaryCheck();
 	void jump(sf::Time deltaTime);
 	void grapplingHook();
 	void resetHook();
+	void changeSpriteSheet();
 	
 	sf::Vector2f normalize(sf::Vector2f vector);
 
+	Animation *m_fsm;
 
 	sf::Keyboard m_keyboard;
 
+	sf::IntRect m_sourceRectSprite;
 	sf::Sprite m_sprite, m_windowSprite, m_hookSprite;
-	sf::Texture m_texture, m_otherTexture, m_hookTexture;
+	sf::Texture m_idleRightText, m_idleLeftText, m_idleRightTextTwo, 
+		m_idleLeftTextTwo, m_moveRightText,m_moveLeftText, 
+		m_jumpRightText, m_jumpLeftText, m_landRightText, m_landLeftText;
+	sf::Texture m_JumpTexture, m_otherTexture, m_hookTexture;
 	sf::Vertex m_grapplingLine[2];
 
 	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector, m_tempMouseVec;
 		
 	sf::Vector2i m_mousePosition;
 	float m_mouseX, m_mouseY;
+
+	int m_ranNumber, m_jumpPrep;
 
 	sf::Vector2f m_pullDirection, m_cablePullDir;
 	float m_directionX, m_directionY; 
@@ -127,10 +142,11 @@ private:
 	float  m_cablePullX, m_cablePullY;
 	float  m_angle, m_aAccel, m_aVel, m_rLength, m_damping;
 
-	bool m_jumping, m_falling; 
+	bool m_jumping, m_falling, m_moving, m_landing, m_jump; 
 	bool m_left, m_right; 
 	bool m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
 };
 
 #include "Game.h"
+#include "Animation.h"
 #endif // !PLAYER_H

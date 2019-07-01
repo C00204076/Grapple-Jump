@@ -16,7 +16,7 @@ Ground::Ground(sf::Texture & texture) :
 	m_texture(texture)
 {
 	// Y = 850 for at home work
-	m_position = sf::Vector2f(0, 1400);
+	m_position = sf::Vector2f(0, 875);//1400);
 	scaleX = 50;
 	scaleY = 1;
 

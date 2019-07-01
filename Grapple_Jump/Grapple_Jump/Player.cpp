@@ -32,20 +32,82 @@ Player::~Player()
 /// </summary>
 void Player::loadTextures()
 {
-	if (!m_texture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Player.png"))
-	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
-	}
-
-	if (!m_otherTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/OtherPlayer.png"))
-	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
-	}
-
 	if (!m_hookTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Hook.png"))
 	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+		std::cout << "Error! Unable to load Hook.png from game files!" << std::endl;
 	}
+
+	//
+
+	//
+	if (!m_idleRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-idle(right-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-idle(right-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_idleLeftText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-idle(left-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-idle(left-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_idleRightTextTwo.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-idle(right-small-2).png"))
+	{
+		std::cout << "Error! Unable to load Player-idle(right-small-2).png from game files!" << std::endl;
+	}
+	//
+	if (!m_idleLeftTextTwo.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-idle(left-small-2).png"))
+	{
+		std::cout << "Error! Unable to load Player-idle(left-small-2).png from game files!" << std::endl;
+	}
+	//
+
+	//
+	if (!m_moveRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-move(right-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-move(right-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_moveLeftText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-move(left-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-move(left-small).png from game files!" << std::endl;
+	}
+	//
+
+	//
+	/*if (!m_jumpRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-preparing-to-jump(right-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-preparing-to-jump(right-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_jumpLeftText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-preparing-to-jump(left-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-preparing-to-jump(left-small).png from game files!" << std::endl;
+	}*/
+	//
+	if (!m_jumpRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-jumping(right-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-jumping(right-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_jumpLeftText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-jumping(left-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-jumping(left-small).png from game files!" << std::endl;
+	}
+	//
+
+	//
+	if (!m_landRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-landing(right-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-landing(right-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_landLeftText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-landing(left-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-landing(left-small).png from game files!" << std::endl;
+	}
+	//
+
+	//
 }
 
 /// <summary>
@@ -55,14 +117,17 @@ void Player::initialise()
 {
 	loadTextures();
 
+	m_fsm = new Animation();
 	m_gravity = sf::Vector2f(0, 4.0f);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
-	// Vector2f = (100, 800) for at home work
-	m_position = sf::Vector2f(100, 1300);
+	// Vector2f = (100, 700) for at home work
+	m_position = sf::Vector2f(100, 700);//1300);
+	m_sourceRectSprite = sf::IntRect(1, 4, 75, 75);
 
+	m_sprite.setTextureRect(m_sourceRectSprite);
 	m_sprite.setPosition(m_position);
-	m_sprite.setTexture(m_texture);
+	//m_sprite.setTexture(m_idleRightText);
 	m_sprite.setOrigin(50, 50);
 	//
 	//m_sprite.setScale(0.7f, 0.7f);
@@ -71,10 +136,14 @@ void Player::initialise()
 	m_hookSprite.setTexture(m_hookTexture);
 	m_hookSprite.setOrigin(5, 5);
 	
+	m_ranNumber = 1;
+	m_jumpPrep = 0;
 	m_pullSpeed = 30.0f;
 	m_maxLength = 500.0f;
 
+	m_moving = false;
 	m_jumping = false;
+	m_jump = false;
 	m_falling = true;
 	m_left = false;
 	m_right = true;
@@ -100,11 +169,14 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 	m_mouseY = m_mousePosition.y;
 	m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
 
+	
+	m_fsm->update(this);
 	movePlayer();
 	jump(deltaTime);
 	grapplingHook();
 	boundaryCheck();
 	resetHook();
+	changeSpriteSheet();
 }
 
 /// <summary>
@@ -119,23 +191,48 @@ void Player::movePlayer()
 		m_left = true;
 		m_right = false;
 
+		//
+		if (m_jumping == false)
+		{
+			m_moving = true;
+		}
+		//
+		else 
+		{
+			m_moving = false;
+		}
+
 		m_position.x -= 7;
-		m_sprite.setTexture(m_otherTexture);
 
 		m_sprite.setPosition(m_position);
 	}
 
 	// If the D key is pressed and the Player is is jumping, not falling and  the
 	// Grappling Hook cable is adjusting itself
-	if (m_keyboard.isKeyPressed(sf::Keyboard::D) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
+	else if (m_keyboard.isKeyPressed(sf::Keyboard::D) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
 	{
 		m_left = false;
 		m_right = true;
+		
+		//
+		if (m_jumping == false)
+		{
+			m_moving = true;
+		}
+		//
+		else
+		{
+			m_moving = false;
+		}
 
 		m_position.x += 7;
-		m_sprite.setTexture(m_texture);
 
 		m_sprite.setPosition(m_position);
+	}
+	//
+	else
+	{
+		m_moving = false;
 	}
 
 }
@@ -426,7 +523,7 @@ void Player::collosionWithGround(Ground ground)
 		m_jumping = false;
 		m_falling = false;
 		m_cableAdjust = false;
-		m_position.y = 1350;
+		m_position.y = 850;//1350;
 		m_sprite.setPosition(m_position);
 	}
 }
@@ -470,6 +567,96 @@ sf::Vector2f Player::normalize(sf::Vector2f vector)
 	
 }
 
+//
+void Player::changeSpriteSheet()
+{
+	//
+	if (m_left == true && m_right == false)
+	{
+		//
+		if (m_moving == false)
+		{
+			//
+			if (m_ranNumber == 1)
+			{
+				m_sprite.setTexture(m_idleLeftText);
+			}
+			//
+			if (m_ranNumber == 2)
+			{
+				m_sprite.setTexture(m_idleLeftTextTwo);
+			}
+		}
+
+		//
+		else if (m_moving == true)
+		{
+			m_sprite.setTexture(m_moveLeftText);
+		}
+
+		//
+		if (m_jumping == true)
+		{
+			m_sprite.setTexture(m_jumpLeftText);
+		}
+
+		//
+		else if (m_falling == true)
+		{
+
+		}
+
+		//
+		else if (m_landing == true)
+		{
+
+		}
+	}
+
+	//
+	else if (m_left == false && m_right == true)
+	{
+		//
+		if (m_moving == false)
+		{
+			//
+			if (m_ranNumber == 1)
+			{
+				m_sprite.setTexture(m_idleRightText);
+			}
+			//
+			else if (m_ranNumber == 2)
+			{
+				m_sprite.setTexture(m_idleRightTextTwo);
+			}
+		}
+
+		//
+		else if (m_moving == true)
+		{
+			m_sprite.setTexture(m_moveRightText);
+		}
+
+		//
+		if (m_jumping == true)
+		{
+			m_sprite.setTexture(m_jumpRightText);
+		}
+
+		//
+		else if (m_falling == true)
+		{
+
+		}
+
+		//
+		else if (m_landing == true)
+		{
+
+		}
+	}
+}
+
 /// <summary>
 /// Renders and draws Grappling Hook and Player
 /// </summary>
@@ -505,6 +692,49 @@ sf::Vector2f Player::getPosition()
 sf::Vector2i Player::getMousePosition()
 {
 	return m_mousePosition;
+}
+
+//
+bool Player::getLeft()
+{
+	return m_left;
+}
+
+//
+bool Player::getRight()
+{
+	return m_right;
+}
+
+//
+bool Player::getMoving()
+{
+	return m_moving;
+}
+
+//
+bool Player::getJumping()
+{
+	return m_jumping;
+}
+
+//
+bool Player::getFalling()
+{
+	return m_falling;
+}
+
+//
+sf::IntRect Player::getSourceRectSprite() 
+{
+	return m_sourceRectSprite;
+}
+
+//
+void Player::setSourceRectSprite(sf::IntRect rectangle)
+{
+	m_sourceRectSprite = rectangle;
+	m_sprite.setTextureRect(m_sourceRectSprite);
 }
 
 /// <summary>
