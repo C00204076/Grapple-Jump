@@ -14,6 +14,8 @@
 #include <iostream>
 #include <string>
 
+#include "AABB.h"
+
 // Ground class
 class Ground
 {
@@ -23,9 +25,13 @@ public:
 
 	void update(sf::Time deltaTime);
 	void render(sf::RenderWindow& window);
-
+ 	
 	sf::Sprite getSprite();
 	void setPosition(sf::Vector2f position);
+	sf::Vector2f getPosition();
+
+	AABB *getAABB();
+	
 
 private:
 
@@ -33,6 +39,9 @@ private:
 	sf::Texture m_texture;
 
 	sf::Vector2f m_position;
+	sf::IntRect m_sourceRectSprite;
+
+	AABB * m_AABB;
 
 	float scaleX, scaleY;
 };

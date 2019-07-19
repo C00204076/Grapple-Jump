@@ -62,8 +62,8 @@ void Animation::moving(Player* player)
 //
 void Animation::jumping(Player* player)
 {
-	player->setSourceRectSprite(sf::IntRect(1, 4, 75, 75));
 	m_clock.restart();
+	player->setSourceRectSprite(sf::IntRect(1, 4, 75, 82));
 	m_current->jumping(this);
 
 	//
@@ -83,13 +83,22 @@ void Animation::jumping(Player* player)
 }
 
 //
+void Animation::falling(Player* player)
+{
+	m_clock.restart();
+	player->setSourceRectSprite(sf::IntRect(1, 4, 75, 63));
+	m_current->falling(this);
+}
+
+//
 void Animation::landing(Player* player)
 {
+
 	m_current->landing(this);
 
 
 	//
-	if (m_clock.getElapsedTime().asSeconds() > 0.1f)
+	/*if (m_clock.getElapsedTime().asSeconds() > 0.1f)
 	{
 		//
 		if (player->getSourceRectSprite().left >= 925)
@@ -101,13 +110,13 @@ void Animation::landing(Player* player)
 		{
 			player->setSourceRectSprite(sf::IntRect(player->getSourceRectSprite().left + 77, 4, 75, 75));
 		}
-	}
+	}*/
 }
 
 //
 void Animation::update(Player* player)
 {
-
+	//
 	if (player->getMoving() == false && player->getJumping() == false)
 	{
 		idle(player);
@@ -116,14 +125,15 @@ void Animation::update(Player* player)
 	{
 		moving(player);
 	}
-	
+
+	//
 	if (player->getJumping() == true)
 	{
 		jumping(player);
 	}
 	else if (player->getFalling() == true)
 	{
-		
+		falling(player);
 	}
 }
 

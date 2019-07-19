@@ -24,6 +24,7 @@ public:
 	void idle(Animation* animation);
 	void moving(Animation* animation);
 	void jumping(Animation* animation);
+	void falling(Animation * animation);
 	void landing(Animation* animation);
 };
 

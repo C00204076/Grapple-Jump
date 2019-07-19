@@ -45,6 +45,14 @@ void Idle::jumping(Animation * animation)
 }
 
 //
+void Idle::falling(Animation * animation)
+{
+	std::cout << "Falling" << std::endl;
+	animation->setCurrent(new Idle());
+	delete this;
+}
+
+//
 void Idle::landing(Animation * animation)
 {
 	std::cout << "Landing" << std::endl;

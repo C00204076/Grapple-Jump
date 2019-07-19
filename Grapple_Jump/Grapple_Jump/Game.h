@@ -51,13 +51,14 @@ private:
 	sf::Texture m_playerTexture, m_otherTexture, m_groundTexture, m_hookTexture, m_targetTexture;
 	sf::Vector2i m_mousePosition;
 	sf::Vector2f m_mouseVector;
+	sf::Vector2f m_penetrationVector;
 
 	float m_mouseX;
 	float m_mouseY;
 	
 
 	Player * m_player;
-	Ground * m_ground;
+	Ground * m_ground[4];
 	HookPoint * m_hookPoint[7];
 };
 

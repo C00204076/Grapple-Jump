@@ -17,10 +17,13 @@ Game::Game() :
 	is_running{ true }, // When false, game will exit
 	gameState{ GameState::GAME }
 {
+	//
+	m_penetrationVector = sf::Vector2f(0, 0);
+
 	// Sets the mouse cursor's visiblility to false
 	m_window.setMouseCursorVisible(false);
 
-	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground.png"))
+	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground-(small).png"))
 	{
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
 	}
@@ -40,7 +43,16 @@ Game::Game() :
 
 	m_player = new Player();
 	// Sets the default constructor and texture of the Ground
-	m_ground = new Ground(m_groundTexture);
+	for (int i = 0; i < 4; i++)
+	{
+		m_ground[i] = new Ground(m_groundTexture);
+	}
+
+	//
+	//m_ground[1]->setPosition(sf::Vector2f(50, 350));
+	m_ground[2]->setPosition(sf::Vector2f(120, 800));
+
+	//m_ground = new Ground(m_groundTexture);
 	// Sets the psition of the Ground
 	//m_ground->setPosition(sf::Vector2f(0, 1400));
 
@@ -201,8 +213,29 @@ void Game::update(sf::Time deltaTime)
 		break;
 	case GameState::GAME:
 		// Updates the Ground and check if it is colliding with the player
-		m_ground->update(deltaTime);
-		m_player->collosionWithGround(*m_ground);
+		for (int i = 0; i < 4; i++)
+		{
+			m_ground[i]->update(deltaTime);
+			m_player->checkAABBCollision(m_ground[i]->getAABB());
+			AABB md = m_ground[i]->getAABB()->minkowskiDifference(m_player->getAABB());
+
+			/*if (md.getMin().x <= 0 &&
+				md.getMax().x >= 0 &&
+				md.getMin().y <= 0 &&
+				md.getMax().y >= 0)
+			{
+				m_penetrationVector += m_player->getAABB()->closestPointOnBoundsToPoint(m_ground[i]->getPosition());
+				m_player->getAABB()->setCenter(m_player->getAABB()->getCenter().x + m_penetrationVector.x, 
+					m_player->getAABB()->getCenter().y + m_penetrationVector.y);
+					
+				m_player->setSourceRectSprite(sf::IntRect(m_player->getPosition().x + m_penetrationVector.x, 
+														  m_player->getPosition().y + m_penetrationVector.y, 75, 75));
+				m_player->setPosition(sf::Vector2f(m_player->getPosition().x + m_penetrationVector.x, m_player->getPosition().y + m_penetrationVector.y));
+			}*/
+		}
+		//m_ground->update(deltaTime);
+		//m_player->collosionWithGround(*m_ground);
+		//m_player->checkAABBCollision(m_ground->getAABB());
 		// Updates the array of Hook Points and checks if the Grappling Hook is colliding with any
 		// Hook Point
 		for (int i = 0; i < 7; i++) 
@@ -235,7 +268,12 @@ void Game::render()
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
 		m_player->render(m_window);
 		// Renders and draws the Ground Sprite
-		m_ground->render(m_window);
+		for (int i = 0; i < 4; i++)
+		{
+			m_ground[i]->render(m_window);
+		}
+
+		//m_ground->render(m_window);
 		// Renders and draws the array of Hook Point Sprites
 		for (int i = 0; i < 7; i++)
 		{

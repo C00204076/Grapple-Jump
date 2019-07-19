@@ -32,13 +32,6 @@ Player::~Player()
 /// </summary>
 void Player::loadTextures()
 {
-	if (!m_hookTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Hook.png"))
-	{
-		std::cout << "Error! Unable to load Hook.png from game files!" << std::endl;
-	}
-
-	//
-
 	//
 	if (!m_idleRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-idle(right-small).png"))
 	{
@@ -118,6 +111,8 @@ void Player::initialise()
 	loadTextures();
 
 	m_fsm = new Animation();
+	m_grapplinghook = new GrapplingHook();
+
 	m_gravity = sf::Vector2f(0, 4.0f);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
@@ -133,12 +128,11 @@ void Player::initialise()
 	//m_sprite.setScale(0.7f, 0.7f);
 	//
 
-	m_hookSprite.setTexture(m_hookTexture);
-	m_hookSprite.setOrigin(5, 5);
+	m_AABB = new AABB(m_position.x, m_position.y, m_sourceRectSprite.width, m_sourceRectSprite.height);
+
 	
 	m_ranNumber = 1;
 	m_jumpPrep = 0;
-	m_pullSpeed = 30.0f;
 	m_maxLength = 500.0f;
 
 	m_moving = false;
@@ -147,11 +141,6 @@ void Player::initialise()
 	m_falling = true;
 	m_left = false;
 	m_right = true;
-	m_fired = false; 
-	m_hookLatched = false;
-	m_cableAdjust = false;
-	m_pulled = false;
-	m_extend = false;
 }
 
 /// <summary>
@@ -169,14 +158,13 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 	m_mouseY = m_mousePosition.y;
 	m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
 
-	
 	m_fsm->update(this);
+	m_grapplinghook->update(this, m_mouseVector);	
 	movePlayer();
 	jump(deltaTime);
-	grapplingHook();
 	boundaryCheck();
-	resetHook();
 	changeSpriteSheet();
+
 }
 
 /// <summary>
@@ -186,7 +174,7 @@ void Player::movePlayer()
 {
 	// If the A key is pressed and the Player is is jumping, not falling and  the
 	// Grappling Hook cable is adjusting itself
-	if (m_keyboard.isKeyPressed(sf::Keyboard::A) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
+	if (m_keyboard.isKeyPressed(sf::Keyboard::A))// && (m_cableAdjust == false))
 	{
 		m_left = true;
 		m_right = false;
@@ -209,7 +197,7 @@ void Player::movePlayer()
 
 	// If the D key is pressed and the Player is is jumping, not falling and  the
 	// Grappling Hook cable is adjusting itself
-	else if (m_keyboard.isKeyPressed(sf::Keyboard::D) && (m_cableAdjust == false || m_jumping == true || m_falling == false))
+	else if (m_keyboard.isKeyPressed(sf::Keyboard::D))// && (m_cableAdjust == false))
 	{
 		m_left = false;
 		m_right = true;
@@ -244,13 +232,13 @@ void Player::movePlayer()
 void Player::jump(sf::Time deltaTime)
 {
 	// If Space key is pressed and Grappling Hook is not latched onto a Hook Point
-	if (m_keyboard.isKeyPressed(sf::Keyboard::Space) && m_jumping == false && m_hookLatched == false)
+	if (m_keyboard.isKeyPressed(sf::Keyboard::Space) && m_jumping == false)// && m_hookLatched == false)
 	{
 		// Gets the max jumping height using the Player position
 		m_maxLength = m_position.y - 450;
 
 		m_jumping = true;
-		m_cableAdjust = true;
+		//m_cableAdjust = true;
 	}
 
 	// While Player is jumping
@@ -303,215 +291,6 @@ void Player::boundaryCheck()
 }
 
 /// <summary>
-/// Method used to fire and control the Player's Grappling Hook
-/// </summary>
-void Player::grapplingHook()
-{
-	// Launches the Grappling Hook if the Left Mouse button is pressed
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		// Fires Grappling Hook only if m_fired is false
-		if (m_fired == false)
-		{
-			// Sets the hooks position to the Player's and it's destination position to the mouse's
-			m_hookSprite.setPosition(m_sprite.getPosition());
-			m_hookPosition = m_sprite.getPosition();
-			m_tempMouseVec = m_mouseVector;;
-
-			m_fired = true;
-		}
-	}
-
-	// Detaches the Grappling Hook if the Right Mouse button is pressed...
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-	{
-		//...but only if Grappling Hook is latched onto a Hook Point
-		if (m_hookLatched == true)
-		{
-			m_hookSprite.setPosition(m_sprite.getPosition());
-			m_hookPosition = m_sprite.getPosition();
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_pulled = false;
-			m_extend = false;
-			m_falling = true;
-		}
-	}
-
-	// If Grappling Hook is fired, but latched onto a Hook Point
-	if (m_fired == true && m_hookLatched == false)
-	{
-		// Normalises vector used for direction the Grappling Hook cable is pulled in
-		m_cablePullDir = normalize(m_hookPosition - m_tempMouseVec);
-		m_cablePullX = m_cablePullDir.x;
-		m_cablePullY = m_cablePullDir.y;
-		// Gets the new position of the hook on the Grappling Hook an sets it's new position
-		m_hookPosition.x -= m_cablePullDir.x * m_pullSpeed;
-		m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
-		m_hookSprite.setPosition(m_hookPosition);
-		// If the Grappling Hook gets to the position of the Hook Point but doesn't latch onto it
-		if (m_hookPosition.x >= m_tempMouseVec.x - 10 &&
-			m_hookPosition.x <= m_tempMouseVec.x + 10 &&
-			m_hookPosition.y >= m_tempMouseVec.y - 10 &&
-			m_hookPosition.y <= m_tempMouseVec.y + 10 &&
-			m_hookLatched == false)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_pulled = false;
-			m_extend = false;
-		}// End if
-	}// End if
-
-	// Can be used to automatically pull Player towards Hook Point without hold retract key;
-	// code within statement must be uncommented
-	if (m_hookLatched == true)
-	{
-		//
-		/*m_pullDirection = normalize(m_position - m_tempMouseVec);
-		m_directionX = m_pullDirection.x;
-		m_directionY = m_pullDirection.y;
-		//
-		m_position.x -= m_pullDirection.x * m_pullSpeed;
-		m_position.y -= m_pullDirection.y * m_pullSpeed;
-		m_sprite.setPosition(m_position);
-		//
-		if (m_position.x >= m_tempMouseVec.x - 10 &&
-			m_position.x <= m_tempMouseVec.x + 10 &&
-			m_position.y >= m_tempMouseVec.y - 10 &&
-			m_position.y <= m_tempMouseVec.y + 10)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-		}*/
-	}
-
-	// The W key is press to retract the grappling hook
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_hookLatched == true)
-	{
-		// Pull and cable adjust are true
-		m_pulled = true;
-		m_cableAdjust = true;
-		// The pull direction is acquired by normalising the player position minus the destination
-		// position
-		m_pullDirection = normalize(m_position - m_tempMouseVec);
-		m_directionX = m_pullDirection.x;
-		m_directionY = m_pullDirection.y;
-		// The new Player's is found and set, making it look as though the Grappling Hook is 
-		// pulling them towards their destination
-		m_position.x -= m_pullDirection.x * m_pullSpeed;
-		m_position.y -= m_pullDirection.y * m_pullSpeed;
-		m_sprite.setPosition(m_position);
-		// If the Player reaches the destination position, Grappling Hook is reset and 
-		// Player is set to fall
-		if (m_position.x >= m_tempMouseVec.x - 20 &&
-			m_position.x <= m_tempMouseVec.x + 20 &&
-			m_position.y >= m_tempMouseVec.y - 20 &&
-			m_position.y <= m_tempMouseVec.y + 20)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_pulled = false;
-			m_falling = true;
-		}// End if
-	}// End if
-	// Else if W key is not pressed
-	else
-	{
-		m_pulled = false;
-	}
-
-	// The S key is pressed to extend the grappling hook
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_hookLatched == true)
-	{
-		m_extend = true;
-		m_cableAdjust = true;
-		// While is uses the same variable, the extend direction is acquired by 
-		//normalising the player position minus the destination position
-		m_pullDirection = normalize(m_position - m_tempMouseVec);
-		m_directionX = m_pullDirection.x;
-		m_directionY = m_pullDirection.y;
-
-		m_position.x += m_pullDirection.x * m_pullSpeed;
-		m_position.y += m_pullDirection.y * m_pullSpeed;
-		m_sprite.setPosition(m_position);
-		// If, somehow, the Player reaches the destination position 
-		if (m_position.x >= m_tempMouseVec.x - 10 &&
-			m_position.x <= m_tempMouseVec.x + 10 &&
-			m_position.y >= m_tempMouseVec.y - 10 &&
-			m_position.y <= m_tempMouseVec.y + 10)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_extend = false;
-		}// End if
-	}// End if
-	// Else if S key is not pressed
-	else
-	{
-		m_extend = false;
-	}
-
-	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the 
-	//player's position, thus adjusting the cable
-	if (m_cableAdjust == true && m_hookLatched == true)
-	{
-		// If the Grappling Hook cable is not retracting or extending
-		if (m_pulled == false && m_extend == false)
-		{
-			// If player is above grappling hook
-			if (m_position.y < m_tempMouseVec.y + 100)
-			{
-				m_position.y += 10;
-				
-				// Right side of grappling hook
-				if (m_position.x > m_tempMouseVec.x - 5)
-				{
-					m_position.x -= 10;
-				}
-				// Left side of grappling hook
-				else if (m_position.x < m_tempMouseVec.x + 5)
-				{
-					m_position.x += 10;
-				}
-
-				m_sprite.setPosition(m_position);
-			} // End if
-
-			// If player is below grappling hook
-			if (m_position.y > m_tempMouseVec.y)
-			{
-				
-				//  Right side of grappling hook
-				if (m_position.x > m_tempMouseVec.x + 8)
-				{
-					m_position.y += 4;
-					m_position.x -= 12;
-				}
-				// Left side of grappling hook
-				else if (m_position.x < m_tempMouseVec.x - 8)
-				{
-					m_position.y += 4;
-					m_position.x += 12;
-				}
-
-				m_sprite.setPosition(m_position);
-			}// End if
-		} // End if
-	}// End if
-
-	// Sets the start and end positions; and colours of the Grappling Hooks cable
-	m_grapplingLine[0].position = sf::Vector2f(m_position.x, m_position.y);
-	m_grapplingLine[0].color = sf::Color::White;
-	m_grapplingLine[1].position = sf::Vector2f(m_hookPosition.x, m_hookPosition.y);
-	m_grapplingLine[1].color = sf::Color::White;
-}
-
-/// <summary>
 /// Detects the collisions between the Player and Ground
 /// </summary>
 /// <param name="ground"></param>
@@ -522,7 +301,7 @@ void Player::collosionWithGround(Ground ground)
 	{
 		m_jumping = false;
 		m_falling = false;
-		m_cableAdjust = false;
+		//m_cableAdjust = false;
 		m_position.y = 850;//1350;
 		m_sprite.setPosition(m_position);
 	}
@@ -534,12 +313,87 @@ void Player::collosionWithGround(Ground ground)
 /// <param name="hookPoint"></param>
 void Player::grapplePointCollision(HookPoint hookPoint)
 {
-	// If the Grappling Hook Sprite intersects with any Hook Point Sprite
-	if (m_hookSprite.getGlobalBounds().intersects(hookPoint.getSprite().getGlobalBounds()) && m_fired == true)
+	m_grapplinghook->grapplePointCollision(this, hookPoint);
+}
+
+//
+void Player::checkAABBCollision(AABB * other)
+{
+	bool collision = false;
+
+	/*if (m_position.x < other->getX() + other->getWidth() &&
+		m_position.x + m_AABB->getWidth() > other->getWidth() &&
+		m_position.y + m_AABB->getHeight() > other->getY() &&
+		m_position.y > other->getY() + other->getHeight())
 	{
-		m_hookLatched = true;
-		m_falling = false;
+		std::cout << "AABB Collision!" << std::endl;
+	}*/
+
+	//
+	float w = (m_AABB->getWidth() + other->getWidth()) / 2.0;
+	float h = (m_AABB->getHeight() + other->getHeight()) / 2.0;
+	//
+	float dx = (m_position.x + (m_AABB->getWidth() / 2.0)) - (other->getX() + (other->getWidth() / 2.0));
+	float dy = (m_position.y + (m_AABB->getHeight() / 2.0)) - (other->getY() + (other->getHeight() / 2.0));
+	//
+	float diff = 0;
+	
+	//
+	if (abs(dx) <= w && abs(dy) <= h)
+	{
+		//
+		collision = true;
+		//
+		float wy = w * dy;
+		float hx = h * dx;
+
+		//
+		if (wy < hx)
+		{
+			// Check collision at right axis of other
+			/*if (wy < -hx)
+			{
+				float diff = abs(m_position.x - (other->getX() + other->getWidth()));
+				//m_position.x = diff;
+			}*/
+
+			// Check collision at top axis of other
+			if (wy > -hx)
+			{
+				if (m_falling == true)
+				{
+					float diff = abs((m_position.y + m_AABB->getHeight()) - other->getY());
+					m_position.y -= diff * 1.1;
+					m_falling = false;
+					m_sprite.setPosition(m_position);
+				}
+			}
+
+			else 
+			{
+				m_falling = true;
+			}
+		}
+
+		/*else if (wy > hx)
+		{
+			// Check collision at bottom axis of other
+ 			if (wy > -hx)
+			{
+				//diff = abs(m_position.y - (other->getY() + other->getHeight()));
+				//m_position.y += diff;
+			}
+
+			// Check collision at left axis of other
+			else
+			{
+				float diff = abs((m_position.x + m_AABB->getWidth()) - other->getX());
+				//m_position.x -= diff;
+			}
+		}*/	
 	}
+
+
 }
 
 /// <summary>
@@ -562,9 +416,6 @@ sf::Vector2f Player::normalize(sf::Vector2f vector)
 	{
 		return vector;
 	}
-
-
-	
 }
 
 //
@@ -603,7 +454,7 @@ void Player::changeSpriteSheet()
 		//
 		else if (m_falling == true)
 		{
-
+			m_sprite.setTexture(m_landLeftText);
 		}
 
 		//
@@ -646,7 +497,7 @@ void Player::changeSpriteSheet()
 		//
 		else if (m_falling == true)
 		{
-
+			m_sprite.setTexture(m_landRightText);
 		}
 
 		//
@@ -663,14 +514,7 @@ void Player::changeSpriteSheet()
 /// <param name="window"></param>
 void Player::render(sf::RenderWindow& window)
 {
-	// If the Grappling Hook is fired
-	if (m_fired == true)
-	{
-		// The Grappling Hook cable and...
-		window.draw(m_grapplingLine, 2, sf::Lines);
-		// ...hook are drawn
-		window.draw(m_hookSprite);
-	}
+	m_grapplinghook->draw(window);
 
 	// Draws Player Sprite
 	window.draw(m_sprite);
@@ -692,6 +536,12 @@ sf::Vector2f Player::getPosition()
 sf::Vector2i Player::getMousePosition()
 {
 	return m_mousePosition;
+}
+
+//
+sf::Sprite Player::getSprite()
+{
+	return m_sprite;
 }
 
 //
@@ -725,6 +575,19 @@ bool Player::getFalling()
 }
 
 //
+AABB * Player::getAABB()
+{
+	return m_AABB;
+}
+
+//
+void Player::setPosition(sf::Vector2f position)
+{
+	m_position = position;
+	m_sprite.setPosition(m_position);
+}
+
+//
 sf::IntRect Player::getSourceRectSprite() 
 {
 	return m_sourceRectSprite;
@@ -737,21 +600,10 @@ void Player::setSourceRectSprite(sf::IntRect rectangle)
 	m_sprite.setTextureRect(m_sourceRectSprite);
 }
 
-/// <summary>
-/// Resets the Grappling Hook in case any errors occur
-/// </summary>
-void Player::resetHook()
+//
+void Player::setFalling(bool falling)
 {
-	// Resets Grappling Hook if the R key is pressed
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-	{
-		m_hookSprite.setPosition(m_sprite.getPosition());
-		m_hookPosition = m_sprite.getPosition();
-		m_hookLatched = false;
-		m_fired = false;
-		m_cableAdjust = false;
-		m_pulled = false;
-		m_extend = false;
-		m_falling = true;
-	}
+	m_falling = falling;
 }
+
+

@@ -21,31 +21,31 @@ public:
 	//
 	virtual void idle(Animation * animation)
 	{
-		std::cout << "Idling" << std::endl;
+		//std::cout << "Idling" << std::endl;
 	}
 
 	//
 	virtual void moving(Animation * animation)
 	{
-		std::cout << "Moving" << std::endl;
+		//std::cout << "Moving" << std::endl;
 	}
 
 	//
 	virtual void jumping(Animation * animation)
 	{
-		std::cout << "Jumping" << std::endl;
+		//std::cout << "Jumping" << std::endl;
 	}
 
 	//
 	virtual void falling(Animation * animation)
 	{
-		std::cout << "falling" << std::endl;
+		//std::cout << "falling" << std::endl;
 	}
 
 	//
 	virtual void landing(Animation * animation)
 	{
-		std::cout << "Landing" << std::endl;
+		//std::cout << "Landing" << std::endl;
 	}
 
 };

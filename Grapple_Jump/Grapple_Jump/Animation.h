@@ -29,7 +29,7 @@ public:
 	void idle(Player* player);
 	void moving(Player* player);
 	void jumping(Player* player);
-	//void falling(Player * player);
+	void falling(Player * player);
 	void landing(Player* player);
 
 	void update(Player* player);

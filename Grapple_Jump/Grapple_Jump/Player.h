@@ -14,6 +14,7 @@
 
 #include "HookPoint.h"
 #include "Ground.h"
+#include "AABB.h"
 
 #include <iostream>
 #include <math.h>
@@ -80,6 +81,7 @@ This works because the sine and cosine are mathematically related to the unit ci
 
 class Game; //Forward delaration for cyclical reference
 class Animation;
+class GrapplingHook;
 
 // Player class
 class Player
@@ -96,37 +98,46 @@ public:
 	void collosionWithGround(Ground ground);
 	void grapplePointCollision(HookPoint hookPoint);
 
+	void checkAABBCollision(AABB * other);
+	
 	sf::Vector2f getPosition();
+	void setPosition(sf::Vector2f position);
 
 	sf::Vector2i getMousePosition();
+
+	sf::Sprite getSprite();
 
 	sf::IntRect getSourceRectSprite();
 	void setSourceRectSprite(sf::IntRect rectangle);
 
 	bool getLeft(), getRight();
 	bool getMoving(), getJumping(), getFalling();
+	void setFalling(bool falling);
+
+	AABB * getAABB();
 
 private:
 	void movePlayer();
 	void boundaryCheck();
 	void jump(sf::Time deltaTime);
-	void grapplingHook();
-	void resetHook();
 	void changeSpriteSheet();
 	
 	sf::Vector2f normalize(sf::Vector2f vector);
 
 	Animation *m_fsm;
+	GrapplingHook *m_grapplinghook;
+
+	AABB * m_AABB;
 
 	sf::Keyboard m_keyboard;
 
 	sf::IntRect m_sourceRectSprite;
-	sf::Sprite m_sprite, m_windowSprite, m_hookSprite;
+	sf::Sprite m_sprite, m_windowSprite;
 	sf::Texture m_idleRightText, m_idleLeftText, m_idleRightTextTwo, 
 		m_idleLeftTextTwo, m_moveRightText,m_moveLeftText, 
 		m_jumpRightText, m_jumpLeftText, m_landRightText, m_landLeftText;
-	sf::Texture m_JumpTexture, m_otherTexture, m_hookTexture;
-	sf::Vertex m_grapplingLine[2];
+	sf::Texture m_JumpTexture, m_otherTexture;
+	
 
 	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector, m_tempMouseVec;
 		
@@ -135,8 +146,6 @@ private:
 
 	int m_ranNumber, m_jumpPrep;
 
-	sf::Vector2f m_pullDirection, m_cablePullDir;
-	float m_directionX, m_directionY; 
 	float m_pullSpeed; 
 	float m_length, m_maxLength, m_maxHeight;
 	float  m_cablePullX, m_cablePullY;
@@ -144,9 +153,9 @@ private:
 
 	bool m_jumping, m_falling, m_moving, m_landing, m_jump; 
 	bool m_left, m_right; 
-	bool m_line, m_fired, m_hookLatched, m_cableAdjust, m_pulled, m_extend;
 };
 
 #include "Game.h"
 #include "Animation.h"
+#include "GrapplingHook.h"
 #endif // !PLAYER_H

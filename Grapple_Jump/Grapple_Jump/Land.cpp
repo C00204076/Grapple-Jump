@@ -45,6 +45,14 @@ void Land::jumping(Animation * animation)
 }
 
 //
+void Land::falling(Animation * animation)
+{
+	std::cout << "Falling" << std::endl;
+	animation->setCurrent(new Land());
+	delete this;
+}
+
+//
 void Land::landing(Animation * animation)
 {
 	std::cout << "Landing" << std::endl;
