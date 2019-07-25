@@ -17,12 +17,20 @@ Game::Game() :
 	is_running{ true }, // When false, game will exit
 	gameState{ GameState::GAME }
 {
-	//
-	m_penetrationVector = sf::Vector2f(0, 0);
+	initialise();
+}
 
-	// Sets the mouse cursor's visiblility to false
-	m_window.setMouseCursorVisible(false);
+/// <summary>
+/// Default deconstructor
+/// </summary>
+Game::~Game()
+{
+	std::cout << "Game object destroyed" << std::endl;
+}
 
+//
+void Game::loadTextures()
+{
 	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground-(small).png"))
 	{
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
@@ -37,6 +45,29 @@ Game::Game() :
 	{
 		std::cout << "Error! Unable to load .png from game files!" << std::endl;
 	}
+}
+
+//
+void Game::initialise()
+{
+	loadTextures();
+
+	m_playerView.setCenter(m_window.getSize().x / 2, m_window.getSize().y / 2);
+	m_playerView.setSize(1500, 900);
+	m_playerView.zoom(1.0f);
+	//m_playerView.zoom(2.0f);
+
+	m_miniMapView.reset(sf::FloatRect(0, 0, m_window.getSize().x / 2, m_window.getSize().y / 2));
+	m_miniMapView.setViewport(sf::FloatRect(1.2f - (1.0f * m_miniMapView.getSize().x) / m_window.getSize().x - 0.04f,
+											0.3f - (1.0f* m_miniMapView.getSize().y) / m_window.getSize().y - 0.02f,
+											(1.0f * m_miniMapView.getSize().x) / m_window.getSize().x, 
+											(1.0f * m_miniMapView.getSize().y) / m_window.getSize().y));
+	m_miniMapView.zoom(3.0f);
+
+	// Sets the mouse cursor's visiblility to false
+	m_window.setMouseCursorVisible(false);
+
+
 	// Sets the texture and origin of the new mouse Sprite
 	m_targetSprite.setTexture(m_targetTexture);
 	m_targetSprite.setOrigin(25, 25);
@@ -62,21 +93,16 @@ Game::Game() :
 		m_hookPoint[i] = new HookPoint(m_hookTexture);
 	}
 	// Sets the positions of the Hook Points
-	m_hookPoint[0]->setPosition(sf::Vector2f(600, 1000));
-	m_hookPoint[1]->setPosition(sf::Vector2f(1250, 500));
+	//m_hookPoint[0]->setPosition(sf::Vector2f(600, 1000));
+	//m_hookPoint[1]->setPosition(sf::Vector2f(1250, 500));
 	m_hookPoint[2]->setPosition(sf::Vector2f(50, 0));
-	m_hookPoint[3]->setPosition(sf::Vector2f(2100, 250));
-	m_hookPoint[4]->setPosition(sf::Vector2f(2550, 20));
-	m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
-	m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
-}
+	//m_hookPoint[3]->setPosition(sf::Vector2f(2100, 250));
+	//m_hookPoint[4]->setPosition(sf::Vector2f(2550, 20));
+	//m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
+	//m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
 
-/// <summary>
-/// Default deconstructor
-/// </summary>
-Game::~Game()
-{
-	std::cout << "Game object destroyed" << std::endl;
+	m_tileMap = new TileMap();
+	m_miniMap = new MiniMap();
 }
 
 /// <summary>
@@ -89,14 +115,6 @@ void Game::run()
 	sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 	while (m_window.isOpen())
 	{
-		// Gets the mouse position relative to the game's window
-		m_mousePosition = sf::Mouse::getPosition(m_window);
-		// Set the mouse X and Y to floats, then to Vector2f; as a means of converting Vector2i
-		// to Vector2f
-		m_mouseX = m_mousePosition.x;
-		m_mouseY = m_mousePosition.y;
-		m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
-
 		processEvents();
 		timeSinceLastUpdate += clock.restart();
 		while (timeSinceLastUpdate > timePerFrame)
@@ -107,7 +125,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
-		m_targetSprite.setPosition(m_mouseVector);
+		m_targetSprite.setPosition(m_player->getMousePosition());
 
 		render();
 	}
@@ -212,6 +230,9 @@ void Game::update(sf::Time deltaTime)
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+		//
+		m_miniMap->update(deltaTime, m_player);
+
 		// Updates the Ground and check if it is colliding with the player
 		for (int i = 0; i < 4; i++)
 		{
@@ -243,7 +264,7 @@ void Game::update(sf::Time deltaTime)
 			m_hookPoint[i]->update(deltaTime);
 			m_player->grapplePointCollision(*m_hookPoint[i]);
 		}
-		m_player->update(deltaTime, m_window);
+		m_player->update(deltaTime, m_window, m_playerView);
 		break;
 	}
 }
@@ -265,6 +286,21 @@ void Game::render()
 	case GameState::MAIN:
 		break;
 	case GameState::GAME:
+		for (int k = 0, l = 0;
+			k < 4, l < 7;
+			k++, l++)
+		{
+			m_miniMap->draw(m_window, m_miniMapView, m_player, m_ground[k], m_hookPoint[l]);
+		}
+
+		//
+		m_window.setView(m_playerView);
+
+		
+
+		//
+		//m_tileMap->draw(m_window);
+
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
 		m_player->render(m_window);
 		// Renders and draws the Ground Sprite
@@ -275,9 +311,9 @@ void Game::render()
 
 		//m_ground->render(m_window);
 		// Renders and draws the array of Hook Point Sprites
-		for (int i = 0; i < 7; i++)
+		for (int j = 0; j < 7; j++)
 		{
-			m_hookPoint[i]->render(m_window);
+			m_hookPoint[j]->render(m_window);
 		}
 		break;
 	}

@@ -17,15 +17,15 @@ Ground::Ground(sf::Texture & texture) :
 {
 	// Y = 850 for at home work
 	m_position = sf::Vector2f(50, 800);//1400);
-	scaleX = 1;
-	scaleY = 3;
+	scaleX = 3;
+	scaleY = 1;
 
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
-	//m_sprite.setScale(scaleX, scaleY);
+	m_sprite.setScale(scaleX, scaleY);
 
-	m_AABB = new AABB(m_position.x, m_position.y, 60, 60);
+	m_AABB = new AABB(m_position.x, m_position.y, 120, m_sprite.getTextureRect().height);
 }
 
 /// <summary>
@@ -61,7 +61,7 @@ void Ground::render(sf::RenderWindow& window)
 void Ground::setPosition(sf::Vector2f position)
 {
 	m_position = position;
-	m_AABB = new AABB(position.x, position.y, 60, 60);
+	m_AABB = new AABB(position.x, position.y, 120, m_sprite.getTextureRect().height);
 	m_sprite.setPosition(m_position);
 }
 

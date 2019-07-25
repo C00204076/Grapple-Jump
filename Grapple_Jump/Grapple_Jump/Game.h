@@ -17,6 +17,8 @@
 class Player;
 class Ground;
 class HookPoint;
+class TileMap;
+class MiniMap;
 
 //Enum class for switching current gamestate
 enum class GameState
@@ -33,6 +35,9 @@ public:
 	void setGameState(GameState gameMode);
 	GameState getGameState();
 	void run();
+
+	void loadTextures();
+	void initialise();
 
 protected:
 	GameState gameState;
@@ -53,6 +58,8 @@ private:
 	sf::Vector2f m_mouseVector;
 	sf::Vector2f m_penetrationVector;
 
+	sf::View m_playerView, m_miniMapView;
+
 	float m_mouseX;
 	float m_mouseY;
 	
@@ -60,10 +67,14 @@ private:
 	Player * m_player;
 	Ground * m_ground[4];
 	HookPoint * m_hookPoint[7];
+	TileMap * m_tileMap;
+	MiniMap * m_miniMap;
 };
 
 #include "Player.h"
 #include "Ground.h"
 #include "HookPoint.h"
+#include "TileMap.h"
+#include "MiniMap.h"
 
 #endif // !GAME_H

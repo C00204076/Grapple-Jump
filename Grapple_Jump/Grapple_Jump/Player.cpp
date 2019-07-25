@@ -148,7 +148,7 @@ void Player::initialise()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="window"></param>
-void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
+void Player::update(sf::Time deltaTime, sf::RenderWindow& window, sf::View & v)
 {
 	// Gets the current position of the mouse cursor, relative to the game window
 	m_mousePosition = sf::Mouse::getPosition(window);
@@ -156,15 +156,17 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window)
 	// to Vector2f
 	m_mouseX = m_mousePosition.x;
 	m_mouseY = m_mousePosition.y;
-	m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
+	m_mouseVector = window.mapPixelToCoords(m_mousePosition, v);
+	//m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
 
 	m_fsm->update(this);
 	m_grapplinghook->update(this, m_mouseVector);	
 	movePlayer();
 	jump(deltaTime);
-	boundaryCheck();
+	//boundaryCheck();
 	changeSpriteSheet();
 
+	v.setCenter(m_sprite.getPosition());
 }
 
 /// <summary>
@@ -533,9 +535,9 @@ sf::Vector2f Player::getPosition()
 /// Returns the Mouse's current position
 /// </summary>
 /// <returns></returns>
-sf::Vector2i Player::getMousePosition()
+sf::Vector2f Player::getMousePosition()
 {
-	return m_mousePosition;
+	return m_mouseVector;
 }
 
 //

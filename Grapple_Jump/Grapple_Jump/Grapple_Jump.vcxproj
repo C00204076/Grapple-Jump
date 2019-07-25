@@ -141,6 +141,7 @@
     <ClCompile Include="Jump.cpp" />
     <ClCompile Include="Land.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Idle.h" />
     <ClInclude Include="Jump.h" />
     <ClInclude Include="Land.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="State.h" />

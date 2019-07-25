@@ -90,7 +90,7 @@ public:
 	Player();
 	~Player();
 	
-	void update(sf::Time deltaTime, sf::RenderWindow& window);
+	void update(sf::Time deltaTime, sf::RenderWindow& window, sf::View & v);
 	void render(sf::RenderWindow& window);
 	void initialise();
 	void loadTextures();
@@ -103,7 +103,7 @@ public:
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f position);
 
-	sf::Vector2i getMousePosition();
+	sf::Vector2f getMousePosition();
 
 	sf::Sprite getSprite();
 

@@ -19,28 +19,30 @@ Tile::Tile(sf::Vector2f position, sf::Sprite sprite, int t)
 	m_sprite = sprite;
 	m_position = position;
 	m_type = t;
+	m_width = 75;
+	m_height = 75;
 	m_sprite.setScale(sf::Vector2f(2, 2));
 	m_alive = true;
 
-	m_sprite.setPosition(m_position.x * m_sprite.getTextureRect().width * m_sprite.getScale().x, m_position.y * m_sprite.getTextureRect().height * m_sprite.getScale().y);
+	m_sprite.setPosition(m_position.x * m_sprite.getTextureRect().width * m_cTileSize, 
+						 m_position.y * m_sprite.getTextureRect().height * m_cTileSize);
 }
 
 //
 Tile::~Tile()
 {
-	delete this;
+	//delete this;
 }
 
 /// <summary>
 /// 
 /// </summary>
 /// <param name="window"></param>
-void Tile::draw(sf::RenderWindow *window)
+void Tile::draw(sf::RenderWindow &window)
 {
-	if (m_alive == true)
-	{
-		window->draw(m_sprite);
-	}
+	
+		window.draw(m_sprite);
+	
 }
 
 /// <summary>
@@ -50,6 +52,25 @@ void Tile::draw(sf::RenderWindow *window)
 sf::Vector2f Tile::getPosition()
 {
 	return m_position;
+}
+
+//
+sf::Vector2f Tile::getMapTileAtPoint(float x, float y)
+{
+	return sf::Vector2f((x * m_sprite.getTextureRect().width * m_cTileSize),
+						(y * m_sprite.getTextureRect().height * m_cTileSize));
+}
+
+//
+float Tile::getMapTileXAtPoint(float x)
+{
+	return float(x * m_sprite.getTextureRect().width * m_cTileSize);
+}
+
+//
+float Tile::getMapTileYAtPoint(float y)
+{
+	return float (y * m_sprite.getTextureRect().height * m_cTileSize);
 }
 
 /// <summary>
