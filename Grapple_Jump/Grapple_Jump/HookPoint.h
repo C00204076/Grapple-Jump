@@ -18,7 +18,8 @@
 class HookPoint
 {
 public:
-	HookPoint(sf::Texture & texture);
+	HookPoint();
+	HookPoint(int x, int y);
 	~HookPoint();
 
 	void update(sf::Time deltaTime);
@@ -27,7 +28,10 @@ public:
 	sf::Sprite getSprite();
 	void setPosition(sf::Vector2f position);
 
+	void setTilePosition(int x, int y);
+
 private:
+	void loadTexture();
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 

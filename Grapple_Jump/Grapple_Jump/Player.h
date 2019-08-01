@@ -90,10 +90,12 @@ public:
 	Player();
 	~Player();
 	
-	void update(sf::Time deltaTime, sf::RenderWindow& window, sf::View & v);
-	void render(sf::RenderWindow& window);
+	void update(sf::Time deltaTime, sf::View & v, bool grapple);
+	void render(sf::RenderWindow& window, sf::Vector2f scale);
 	void initialise();
 	void loadTextures();
+
+	void mouseCursor(sf::RenderWindow& window, sf::View & v);
 
 	void collosionWithGround(Ground ground);
 	void grapplePointCollision(HookPoint hookPoint);
@@ -106,6 +108,7 @@ public:
 	sf::Vector2f getMousePosition();
 
 	sf::Sprite getSprite();
+	void setTexture(sf::Texture texture);
 
 	sf::IntRect getSourceRectSprite();
 	void setSourceRectSprite(sf::IntRect rectangle);

@@ -20,20 +20,24 @@
 class Ground
 {
 public:
-	Ground(sf::Texture & texture);
+	Ground();
+	Ground(int x, int y);
 	~Ground();
 
 	void update(sf::Time deltaTime);
 	void render(sf::RenderWindow& window);
- 	
+	
 	sf::Sprite getSprite();
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
+
+	void setTilePosition(int x, int y);
 
 	AABB *getAABB();
 	
 
 private:
+	void loadTexture();
 
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;

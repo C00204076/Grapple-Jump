@@ -12,9 +12,9 @@
 /// Default constructor
 /// </summary>
 /// <param name="texture"></param>
-Ground::Ground(sf::Texture & texture) :
-	m_texture(texture)
+Ground::Ground()
 {
+	loadTexture();
 	// Y = 850 for at home work
 	m_position = sf::Vector2f(50, 800);//1400);
 	scaleX = 3;
@@ -23,9 +23,25 @@ Ground::Ground(sf::Texture & texture) :
 
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
-	m_sprite.setScale(scaleX, scaleY);
+	//m_sprite.setScale(scaleX, scaleY);
 
-	m_AABB = new AABB(m_position.x, m_position.y, 120, m_sprite.getTextureRect().height);
+	m_AABB = new AABB(m_position.x, m_position.y, m_sprite.getTextureRect().width, m_sprite.getTextureRect().height);
+}
+
+//
+Ground::Ground(int x, int y)
+{
+	loadTexture();
+	m_position = sf::Vector2f(x, y);
+
+	m_sprite.setPosition(m_position.x * m_sprite.getTextureRect().width * m_sprite.getScale().x,
+						 m_position.y * m_sprite.getTextureRect().height * m_sprite.getScale().y);
+	
+	m_sprite.setTexture(m_texture);
+
+	m_AABB = new AABB(m_position.x * m_sprite.getTextureRect().width * m_sprite.getScale().x,
+					  m_position.y * m_sprite.getTextureRect().height * m_sprite.getScale().y,
+		              m_sprite.getTextureRect().width, m_sprite.getTextureRect().height);
 }
 
 /// <summary>
@@ -34,6 +50,16 @@ Ground::Ground(sf::Texture & texture) :
 Ground::~Ground()
 {
 
+}
+
+//
+void Ground::loadTexture()
+{
+	//
+	if (!m_texture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground-(small).png"))
+	{
+		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+	}
 }
 
 /// <summary>
@@ -61,8 +87,18 @@ void Ground::render(sf::RenderWindow& window)
 void Ground::setPosition(sf::Vector2f position)
 {
 	m_position = position;
-	m_AABB = new AABB(position.x, position.y, 120, m_sprite.getTextureRect().height);
+	m_AABB = new AABB(position.x, position.y, m_sprite.getTextureRect().width, m_sprite.getTextureRect().height);
 	m_sprite.setPosition(m_position);
+}
+
+//
+void Ground::setTilePosition(int x, int y)
+{
+	m_position = sf::Vector2f(x, y);
+	m_AABB = new AABB(m_position.x, m_position.y, m_sprite.getTextureRect().width, m_sprite.getTextureRect().height);
+
+	m_sprite.setPosition(m_position.x * m_sprite.getTextureRect().width * m_sprite.getScale().x,
+						 m_position.y * m_sprite.getTextureRect().height * m_sprite.getScale().y);
 }
 
 /// <summary>
@@ -85,5 +121,3 @@ AABB *Ground::getAABB()
 {
 	return m_AABB;
 }
-
-

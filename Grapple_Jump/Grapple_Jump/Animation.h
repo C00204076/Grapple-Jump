@@ -4,7 +4,7 @@
 // Started at 17:38 26 June 2019
 // Finished at 
 // Time taken:
-// Known bugs:
+// Known bugs: Player character may appear as green box
 
 #ifndef ANIMATION_H
 #define ANIMATION_H

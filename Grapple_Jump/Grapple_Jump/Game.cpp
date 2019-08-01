@@ -15,7 +15,7 @@ Game::Game() :
 	// sf::VideoMode{1500, 900, 32}, "Grapple Jump" } for at home work
 	m_window{ sf::VideoMode{1500, 900, 32}, "Grapple Jump" } ,//sf::VideoMode{2600, 1600, 32}, "Grapple Jump" },
 	is_running{ true }, // When false, game will exit
-	gameState{ GameState::GAME }
+	gameState{ GameState::SPLASH}
 {
 	initialise();
 }
@@ -31,19 +31,15 @@ Game::~Game()
 //
 void Game::loadTextures()
 {
-	if (!m_groundTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Ground-(small).png"))
-	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
-	}
-
-	if (!m_hookTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Block.png"))
-	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
-	}
 
 	if (!m_targetTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Target_Cursor.png"))
 	{
-		std::cout << "Error! Unable to load .png from game files!" << std::endl;
+		std::cout << "Error! Unable to load Target_Cursor.png from game files!" << std::endl;
+	}
+
+	if (!m_miniMapTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Player_Head(mini-map).png"))
+	{
+		std::cout << "Error! Unable to load Player_Head(mini-map).png from game files!" << std::endl;
 	}
 }
 
@@ -51,6 +47,10 @@ void Game::loadTextures()
 void Game::initialise()
 {
 	loadTextures();
+
+	m_splashScreen = new Splash();
+	m_licenseScreen = new License();
+	m_mainMenu = new MainMenu();
 
 	m_playerView.setCenter(m_window.getSize().x / 2, m_window.getSize().y / 2);
 	m_playerView.setSize(1500, 900);
@@ -62,7 +62,7 @@ void Game::initialise()
 											0.3f - (1.0f* m_miniMapView.getSize().y) / m_window.getSize().y - 0.02f,
 											(1.0f * m_miniMapView.getSize().x) / m_window.getSize().x, 
 											(1.0f * m_miniMapView.getSize().y) / m_window.getSize().y));
-	m_miniMapView.zoom(3.0f);
+	m_miniMapView.zoom(25.0f);
 
 	// Sets the mouse cursor's visiblility to false
 	m_window.setMouseCursorVisible(false);
@@ -73,10 +73,12 @@ void Game::initialise()
 	m_targetSprite.setOrigin(25, 25);
 
 	m_player = new Player();
+	m_miniPlayer = new Player();
+
 	// Sets the default constructor and texture of the Ground
 	for (int i = 0; i < 4; i++)
 	{
-		m_ground[i] = new Ground(m_groundTexture);
+		m_ground[i] = new Ground();
 	}
 
 	//
@@ -90,7 +92,7 @@ void Game::initialise()
 	// Sets the default constructor and texture of the Hook Points
 	for (int i = 0; i < 7; i++)
 	{
-		m_hookPoint[i] = new HookPoint(m_hookTexture);
+		m_hookPoint[i] = new HookPoint();
 	}
 	// Sets the positions of the Hook Points
 	//m_hookPoint[0]->setPosition(sf::Vector2f(600, 1000));
@@ -101,8 +103,15 @@ void Game::initialise()
 	//m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
 	//m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
 
-	m_tileMap = new TileMap();
-	m_miniMap = new MiniMap();
+	for (int i = 0; i < 30; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			determineTile(m_mapLayout[i][j], j, i);
+		}
+	}
+
+	m_miniMap = new MiniMap(m_miniPlayer);
 }
 
 /// <summary>
@@ -125,6 +134,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
+		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
 		render();
@@ -224,14 +234,36 @@ void Game::update(sf::Time deltaTime)
 	switch (gameState)
 	{
 	case GameState::SPLASH:
+		m_splashScreen->update(deltaTime);
+		//
+		if (m_splashScreen->getScreenTime() >= 1)
+		{
+			setGameState(GameState::LICENSE);
+		}
+
 		break;
 	case GameState::LICENSE:
+		m_licenseScreen->update(deltaTime);
+		//
+		if (m_licenseScreen->getScreenTime() >= 1)
+		{
+			setGameState(GameState::MAIN);
+		}
+
 		break;
 	case GameState::MAIN:
+		m_mainMenu->update(deltaTime, m_player, m_window);
+		//
+		if (m_mainMenu->getPlayTime() == true)
+		{
+			setGameState(GameState::GAME);
+			m_mainMenu->setPlayTime(false);
+		}
+
 		break;
 	case GameState::GAME:
 		//
-		m_miniMap->update(deltaTime, m_player);
+		m_miniMap->update(deltaTime, m_window, m_miniMapView);
 
 		// Updates the Ground and check if it is colliding with the player
 		for (int i = 0; i < 4; i++)
@@ -264,9 +296,14 @@ void Game::update(sf::Time deltaTime)
 			m_hookPoint[i]->update(deltaTime);
 			m_player->grapplePointCollision(*m_hookPoint[i]);
 		}
-		m_player->update(deltaTime, m_window, m_playerView);
+		m_player->update(deltaTime, m_playerView, true);
+		
+		
+		m_miniPlayer->setPosition(m_player->getPosition());
 		break;
 	}
+
+	
 }
 
 /// <summary>
@@ -280,29 +317,37 @@ void Game::render()
 	switch (gameState)
 	{
 	case GameState::SPLASH:
+		m_splashScreen->render(m_window);
 		break;
 	case GameState::LICENSE:
+		m_licenseScreen->render(m_window);
 		break;
 	case GameState::MAIN:
+		m_mainMenu->render(m_window);
+
+
+
 		break;
 	case GameState::GAME:
 		for (int k = 0, l = 0;
 			k < 4, l < 7;
 			k++, l++)
 		{
-			m_miniMap->draw(m_window, m_miniMapView, m_player, m_ground[k], m_hookPoint[l]);
+			m_miniMap->draw(m_window, m_miniMapView, m_ground[k], m_hookPoint[l]);
 		}
 
 		//
 		m_window.setView(m_playerView);
 
+		//
+		for (int i = 0; i < m_tileMap.size(); i++)
+		{
+			//m_tileMap[i].draw(&m_window);
+		}
 		
 
-		//
-		//m_tileMap->draw(m_window);
-
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
-		m_player->render(m_window);
+		m_player->render(m_window, sf::Vector2f(1.0f, 1.0f));
 		// Renders and draws the Ground Sprite
 		for (int i = 0; i < 4; i++)
 		{
@@ -339,4 +384,44 @@ void Game::setGameState(GameState gameMode)
 GameState Game::getGameState()
 {
 	return gameState;
+}
+
+void Game::determineTile(int type, int x, int y)
+{
+	// Empty
+	if (type == 0) 
+	{
+		//m_tileMap.push_back(Tile(sf::Vector2f(x, y), m_bottomLeftTileSprite, 0));
+		m_groundMap.push_back(Ground());
+	}
+
+	// Start
+	if (type == 1) 
+	{
+
+	}
+
+	// Block
+	if (type == 2) 
+	{
+
+	}
+
+	// Hook Point
+	if (type == 3) 
+	{
+		
+	}
+
+	// End
+	if (type == 4)
+	{
+
+	}
+
+	// Boundary
+	if (type == 5)
+	{
+		
+	}
 }

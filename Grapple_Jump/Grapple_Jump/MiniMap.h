@@ -21,18 +21,20 @@ class Player;
 class MiniMap
 {
 public:
-	MiniMap();
+	MiniMap(Player * player);
 	~MiniMap();
 
 	void loadTexture();
 	void initialise();
 
-	void update(sf::Time deltaTime, Player * player);
-	void draw(sf::RenderWindow& window, sf::View view, Player *player, Ground *ground, HookPoint *point);
+	void update(sf::Time deltaTime, sf::RenderWindow& window, sf::View view);
+	void draw(sf::RenderWindow& window, sf::View view, Ground *ground, HookPoint *point);
 
 private:
 	sf::Texture m_borderTexture;
 	sf::Sprite m_borderSprite;
+
+	Player * m_player;
 };
 
 #include "Player.h"

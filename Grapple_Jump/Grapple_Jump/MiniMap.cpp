@@ -9,7 +9,8 @@
 #include "MiniMap.h"
 
 //
-MiniMap::MiniMap()
+MiniMap::MiniMap(Player * player) :
+	m_player(player)
 {
 	initialise();
 }
@@ -39,18 +40,18 @@ void MiniMap::loadTexture()
 }
 
 //
-void MiniMap::update(sf::Time deltaTime, Player * player)
+void MiniMap::update(sf::Time deltaTime, sf::RenderWindow& window, sf::View view)
 {
-
+	m_player->update(deltaTime, view, false);
 }
 
 //
-void MiniMap::draw(sf::RenderWindow& window, sf::View view, Player *player, Ground *ground, HookPoint *point)
+void MiniMap::draw(sf::RenderWindow& window, sf::View view, Ground *ground, HookPoint *point)
 {
 	//
 	window.setView(view);
 	//
-	window.draw(player->getSprite());
+	m_player->render(window, sf::Vector2f(3.0f, 3.0f));
 	//
 	window.draw(ground->getSprite());
 	//

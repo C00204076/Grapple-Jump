@@ -148,7 +148,25 @@ void Player::initialise()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="window"></param>
-void Player::update(sf::Time deltaTime, sf::RenderWindow& window, sf::View & v)
+void Player::update(sf::Time deltaTime, sf::View & v, bool grapple)
+{
+	m_fsm->update(this);
+	//
+	if (grapple == true)
+	{
+		m_grapplinghook->update(this, m_mouseVector);
+	}
+
+	movePlayer();
+	jump(deltaTime);
+	//boundaryCheck();
+	changeSpriteSheet();
+
+	v.setCenter(m_sprite.getPosition());
+}
+
+//
+void Player::mouseCursor(sf::RenderWindow& window, sf::View & v)
 {
 	// Gets the current position of the mouse cursor, relative to the game window
 	m_mousePosition = sf::Mouse::getPosition(window);
@@ -158,15 +176,6 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow& window, sf::View & v)
 	m_mouseY = m_mousePosition.y;
 	m_mouseVector = window.mapPixelToCoords(m_mousePosition, v);
 	//m_mouseVector = sf::Vector2f(m_mouseX, m_mouseY);
-
-	m_fsm->update(this);
-	m_grapplinghook->update(this, m_mouseVector);	
-	movePlayer();
-	jump(deltaTime);
-	//boundaryCheck();
-	changeSpriteSheet();
-
-	v.setCenter(m_sprite.getPosition());
 }
 
 /// <summary>
@@ -366,8 +375,8 @@ void Player::checkAABBCollision(AABB * other)
 				{
 					float diff = abs((m_position.y + m_AABB->getHeight()) - other->getY());
 					m_position.y -= diff * 1.1;
-					m_falling = false;
 					m_sprite.setPosition(m_position);
+					m_falling = false;
 				}
 			}
 
@@ -514,10 +523,12 @@ void Player::changeSpriteSheet()
 /// Renders and draws Grappling Hook and Player
 /// </summary>
 /// <param name="window"></param>
-void Player::render(sf::RenderWindow& window)
+void Player::render(sf::RenderWindow& window, sf::Vector2f scale)
 {
 	m_grapplinghook->draw(window);
 
+	//
+	m_sprite.setScale(scale);
 	// Draws Player Sprite
 	window.draw(m_sprite);
 }
@@ -587,6 +598,12 @@ void Player::setPosition(sf::Vector2f position)
 {
 	m_position = position;
 	m_sprite.setPosition(m_position);
+}
+
+//
+void Player::setTexture(sf::Texture texture)
+{
+	m_sprite.setTexture(texture);
 }
 
 //

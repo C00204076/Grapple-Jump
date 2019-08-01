@@ -48,63 +48,12 @@ void GrapplingHook::initialise()
 //
 void GrapplingHook::grapplingHook(Player* player)
 {
-	// Launches the Grappling Hook if the Left Mouse button is pressed
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		// Fires Grappling Hook only if m_fired is false
-		if (m_fired == false)
-		{
-			// Sets the hooks position to the Player's and it's destination position to the mouse's
-			m_hookSprite.setPosition(player->getSprite().getPosition());
-			m_hookPosition = player->getSprite().getPosition();
-			m_tempMouseVec = m_mouseVector;
+	//
+	fire(player);
+	//
+	detach(player);
 
-			m_fired = true;
-		}
-	}
-
-	// Detaches the Grappling Hook if the Right Mouse button is pressed...
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-	{
-		//...but only if Grappling Hook is latched onto a Hook Point
-		if (m_hookLatched == true)
-		{
-			m_hookSprite.setPosition(player->getSprite().getPosition());
-			m_hookPosition = player->getSprite().getPosition();
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_pulled = false;
-			m_extend = false;
-			player->setFalling(true);
-		}
-	}
-
-	// If Grappling Hook is fired, but latched onto a Hook Point
-	if (m_fired == true && m_hookLatched == false)
-	{
-		// Normalises vector used for direction the Grappling Hook cable is pulled in
-		m_cablePullDir = normalize(m_hookPosition - m_tempMouseVec);
-		m_cablePullX = m_cablePullDir.x;
-		m_cablePullY = m_cablePullDir.y;
-		// Gets the new position of the hook on the Grappling Hook an sets it's new position
-		m_hookPosition.x -= m_cablePullDir.x * m_pullSpeed;
-		m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
-		m_hookSprite.setPosition(m_hookPosition);
-		// If the Grappling Hook gets to the position of the Hook Point but doesn't latch onto it
-		if (m_hookPosition.x >= m_tempMouseVec.x - 10 &&
-			m_hookPosition.x <= m_tempMouseVec.x + 10 &&
-			m_hookPosition.y >= m_tempMouseVec.y - 10 &&
-			m_hookPosition.y <= m_tempMouseVec.y + 10 &&
-			m_hookLatched == false)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_pulled = false;
-			m_extend = false;
-		}// End if
-	}// End if
+	
 
 	// Can be used to automatically pull Player towards Hook Point without hold retract key;
 	// code within statement must be uncommented
@@ -129,73 +78,10 @@ void GrapplingHook::grapplingHook(Player* player)
 		}*/
 	}
 
-	// The W key is press to retract the grappling hook
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_hookLatched == true)
-	{
-		// Pull and cable adjust are true
-		m_pulled = true;
-		m_cableAdjust = true;
-		// The pull direction is acquired by normalising the player position minus the destination
-		// position
-		m_pullDirection = normalize(player->getPosition() - m_tempMouseVec);
-		m_directionX = m_pullDirection.x;
-		m_directionY = m_pullDirection.y;
-		// The new Player's is found and set, making it look as though the Grappling Hook is 
-		// pulling them towards their destination
-		m_position.x -= m_pullDirection.x * m_pullSpeed;
-		m_position.y -= m_pullDirection.y * m_pullSpeed;
-		player->setPosition(m_position);
-		// If the Player reaches the destination position, Grappling Hook is reset and 
-		// Player is set to fall
-		if (player->getPosition().x >= m_tempMouseVec.x - 20 &&
-			player->getPosition().x <= m_tempMouseVec.x + 20 &&
-			player->getPosition().y >= m_tempMouseVec.y - 20 &&
-			player->getPosition().y <= m_tempMouseVec.y + 20)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_pulled = false;
-			player->setFalling(true);
-		}// End if
-	}// End if
-	// Else if W key is not pressed
-	else
-	{
-		m_pulled = false;
-	}
-
-	// The S key is pressed to extend the grappling hook
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_hookLatched == true)
-	{
-		m_extend = true;
-		m_cableAdjust = true;
-		// While is uses the same variable, the extend direction is acquired by 
-		//normalising the player position minus the destination position
-		m_pullDirection = normalize(m_position - m_tempMouseVec);
-		m_directionX = m_pullDirection.x;
-		m_directionY = m_pullDirection.y;
-
-		m_position.x += m_pullDirection.x * m_pullSpeed;
-		m_position.y += m_pullDirection.y * m_pullSpeed;
-		player->setPosition(m_position);
-		// If, somehow, the Player reaches the destination position 
-		if (m_position.x >= m_tempMouseVec.x - 10 &&
-			m_position.x <= m_tempMouseVec.x + 10 &&
-			m_position.y >= m_tempMouseVec.y - 10 &&
-			m_position.y <= m_tempMouseVec.y + 10)
-		{
-			m_hookLatched = false;
-			m_fired = false;
-			m_cableAdjust = false;
-			m_extend = false;
-		}// End if
-	}// End if
-	// Else if S key is not pressed
-	else
-	{
-		m_extend = false;
-	}
+	
+	retract(player);
+	extend(player);
+	
 
 	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the 
 	//player's position, thus adjusting the cable
@@ -250,6 +136,168 @@ void GrapplingHook::grapplingHook(Player* player)
 	m_grapplingLine[0].color = sf::Color::White;
 	m_grapplingLine[1].position = sf::Vector2f(m_hookPosition.x, m_hookPosition.y);
 	m_grapplingLine[1].color = sf::Color::White;
+}
+
+//
+void GrapplingHook::fire(Player * player)
+{
+	// Launches the Grappling Hook if the Left Mouse button is pressed
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		// Fires Grappling Hook only if m_fired is false
+		if (m_fired == false)
+		{
+			// Sets the hooks position to the Player's and it's destination position to the mouse's
+			m_hookSprite.setPosition(player->getSprite().getPosition());
+			m_hookPosition = player->getSprite().getPosition();
+			m_tempMouseVec = m_mouseVector;
+
+			m_fired = true;
+		}
+	}
+
+	// If Grappling Hook is fired, but latched onto a Hook Point
+	if (m_fired == true && m_hookLatched == false)
+	{
+		// Normalises vector used for direction the Grappling Hook cable is pulled in
+		m_cablePullDir = normalize(m_hookPosition - m_tempMouseVec);
+		m_cablePullX = m_cablePullDir.x;
+		m_cablePullY = m_cablePullDir.y;
+		// Gets the new position of the hook on the Grappling Hook an sets it's new position
+		m_hookPosition.x -= m_cablePullDir.x * m_pullSpeed;
+		m_hookPosition.y -= m_cablePullDir.y * m_pullSpeed;
+		m_hookSprite.setPosition(m_hookPosition);
+		// If the Grappling Hook gets to the position of the Hook Point but doesn't latch onto it
+		if (m_hookPosition.x >= m_tempMouseVec.x - 10 &&
+			m_hookPosition.x <= m_tempMouseVec.x + 10 &&
+			m_hookPosition.y >= m_tempMouseVec.y - 10 &&
+			m_hookPosition.y <= m_tempMouseVec.y + 10 &&
+			m_hookLatched == false)
+		{
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_pulled = false;
+			m_extend = false;
+		}// End if
+	}// End if
+}
+
+//
+void GrapplingHook::detach(Player * player)
+{
+	// Detaches the Grappling Hook if the Right Mouse button is pressed...
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		//...but only if Grappling Hook is latched onto a Hook Point
+		if (m_hookLatched == true)
+		{
+			m_hookSprite.setPosition(player->getSprite().getPosition());
+			m_hookPosition = player->getSprite().getPosition();
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_pulled = false;
+			m_extend = false;
+			player->setFalling(true);
+		}
+	}
+}
+
+//
+void GrapplingHook::extend(Player * player)
+{
+	// The S key is pressed to extend the grappling hook
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_hookLatched == true)
+	{
+		m_extend = true;
+		m_cableAdjust = true;
+		// While is uses the same variable, the extend direction is acquired by 
+		//normalising the player position minus the destination position
+		m_pullDirection = normalize(m_position - m_tempMouseVec);
+		m_directionX = m_pullDirection.x;
+		m_directionY = m_pullDirection.y;
+
+		m_position.x += m_pullDirection.x * m_pullSpeed;
+		m_position.y += m_pullDirection.y * m_pullSpeed;
+		player->setPosition(m_position);
+		// If, somehow, the Player reaches the destination position 
+		if (m_position.x >= m_tempMouseVec.x - 10 &&
+			m_position.x <= m_tempMouseVec.x + 10 &&
+			m_position.y >= m_tempMouseVec.y - 10 &&
+			m_position.y <= m_tempMouseVec.y + 10)
+		{
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_extend = false;
+		}// End if
+	}// End if
+	// Else if S key is not pressed
+	else
+	{
+		m_extend = false;
+	}
+}
+
+//
+void GrapplingHook::retract(Player * player)
+{
+	// The W key is press to retract the grappling hook
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_hookLatched == true)
+	{
+		// Pull and cable adjust are true
+		m_pulled = true;
+		m_cableAdjust = true;
+		// The pull direction is acquired by normalising the player position minus the destination
+		// position
+		m_pullDirection = normalize(player->getPosition() - m_tempMouseVec);
+		m_directionX = m_pullDirection.x;
+		m_directionY = m_pullDirection.y;
+		// The new Player's is found and set, making it look as though the Grappling Hook is 
+		// pulling them towards their destination
+		m_position.x -= m_pullDirection.x * m_pullSpeed;
+		m_position.y -= m_pullDirection.y * m_pullSpeed;
+		player->setPosition(m_position);
+		// If the Player reaches the destination position, Grappling Hook is reset and 
+		// Player is set to fall
+		if (player->getPosition().x >= m_tempMouseVec.x - 20 &&
+			player->getPosition().x <= m_tempMouseVec.x + 20 &&
+			player->getPosition().y >= m_tempMouseVec.y - 20 &&
+			player->getPosition().y <= m_tempMouseVec.y + 20)
+		{
+			m_hookLatched = false;
+			m_fired = false;
+			m_cableAdjust = false;
+			m_pulled = false;
+			player->setFalling(true);
+		}// End if
+	}// End if
+	// Else if W key is not pressed
+	else
+	{
+		m_pulled = false;
+	}
+}
+
+//
+void GrapplingHook::swing(Player * player)
+{
+	//
+	if (m_hookLatched == true)
+	{
+		//
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+
+		}
+
+		//
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+
+		}
+	}
 }
 
 //

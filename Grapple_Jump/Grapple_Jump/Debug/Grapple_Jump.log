@@ -1,6 +1,4 @@
-﻿  Animation.cpp
-  Fall.cpp
-  Game.cpp
+﻿  Game.cpp
 c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(55): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
@@ -15,53 +13,5 @@ c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(60): wa
           [
               T=float
           ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(105): error C2664: 'MiniMap::MiniMap(const MiniMap &)': cannot convert argument 1 from 'Player *' to 'const MiniMap &'
-  c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(105): note: Reason: cannot convert from 'Player *' to 'const MiniMap'
-  c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(105): note: No constructor could take the source type, or constructor overload resolution was ambiguous
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(234): error C2660: 'MiniMap::update': function does not take 1 arguments
-  c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\minimap.h(30): note: see declaration of 'MiniMap::update'
-  GrapplingHook.cpp
-  Idle.cpp
-  Jump.cpp
-  Land.cpp
-  MiniMap.cpp
-  Move.cpp
-  Player.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(131): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(157): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(158): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(335): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(336): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(338): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(339): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(368): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  TileMap.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\tilemap.cpp(73): warning C4018: '<': signed/unsigned mismatch
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\tilemap.cpp(97): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\tilemap.cpp(102): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  main.cpp
-  Generating Code...
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(343): warning C4018: '<': signed/unsigned mismatch
+  Grapple_Jump.vcxproj -> C:\Users\Brandon\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe

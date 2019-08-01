@@ -27,6 +27,9 @@ public:
 	
 	void grapplePointCollision(Player *player, HookPoint hookPoint);
 
+	
+
+
 private:
 	sf::Sprite m_hookSprite;
 	sf::Texture m_hookTexture;
@@ -47,6 +50,11 @@ private:
 	sf::Vector2f normalize(sf::Vector2f vector);
 
 	void grapplingHook(Player* player);
+	void fire(Player * player);
+	void detach(Player * player);
+	void extend(Player * player);
+	void retract(Player * player);
+	void swing(Player *  player);
 	void resetHook(Player* player);
 };
 #endif // !GRAPPLINGHOOK_H

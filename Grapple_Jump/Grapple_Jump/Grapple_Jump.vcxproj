@@ -140,12 +140,14 @@
     <ClCompile Include="Idle.cpp" />
     <ClCompile Include="Jump.cpp" />
     <ClCompile Include="Land.cpp" />
+    <ClCompile Include="LicenseScreen.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
     <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -158,12 +160,14 @@
     <ClInclude Include="Idle.h" />
     <ClInclude Include="Jump.h" />
     <ClInclude Include="Land.h" />
+    <ClInclude Include="LicenseScreen.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Tile.h" />
-    <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
