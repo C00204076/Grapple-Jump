@@ -26,15 +26,21 @@ void MainMenu::initialise()
 	loadTexture();
 	//
 	m_alpha = 255;
+	m_titleAlpha = 255;
 	//
 	m_flashOut = true;
 	m_flashIn = false;
+	m_flashTitleIn = false;
+	m_flashTitleOut = true;
+	m_moveUp = false;
+	m_moveDown = true;
 	//
 	m_playTime = false;
 
 	//
 	m_titlePosition = sf::Vector2f(750, 250);
-
+	m_titleX = m_titlePosition.x;
+	m_titleY = m_titlePosition.y;
 	//
 	m_titleSprite.setTexture(m_titleTexture);
 	m_playSprite.setTexture(m_playTexture);
@@ -72,7 +78,14 @@ void MainMenu::loadTexture()
 //
 void MainMenu::update(sf::Time deltaTime, Player * player, sf::RenderWindow& window)
 {
-	
+	//
+	juicyMainTitle();
+	mouseButtonInteraction(player, window);
+}
+
+//
+void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window)
+{
 	//
 	if (m_playSprite.getGlobalBounds().contains(player->getMousePosition()))
 	{
@@ -144,12 +157,67 @@ void MainMenu::changeButtonColour()
 	{
 		m_alpha += 3;
 	}
-
 	//
 	if (m_flashOut == true)
 	{
 		m_alpha -= 3;
 	}
+}
+
+//
+void MainMenu::juicyMainTitle()
+{
+	//
+	if (m_titleY >= m_titlePosition.y + 10)
+	{
+		m_moveUp = true;
+		m_moveDown = false;
+	}
+	else if (m_titleY <= m_titlePosition.y - 10)
+	{
+		m_moveUp = false;
+		m_moveDown = true;
+	}
+
+	//
+	if (m_moveUp == true)
+	{
+		m_titleY -= 0.5;
+	}
+
+	if (m_moveDown == true)
+	{
+		m_titleY += 0.5;
+	}
+
+
+	//
+	if (m_titleAlpha >= 255)
+	{
+		m_flashTitleOut = true;
+		m_flashTitleIn = false;
+	}
+	else if (m_titleAlpha <= 50)
+	{
+		m_flashTitleOut = false;
+		m_flashTitleIn = true;
+	}
+
+	//
+	if (m_flashTitleIn == true)
+	{
+		m_titleAlpha += 1;
+	}
+	//
+	if (m_flashTitleOut == true)
+	{
+		m_titleAlpha -= 1;
+	}
+
+	//
+	m_titleSprite.setColor(sf::Color(255, 255, 255, m_titleAlpha));
+	//
+	m_titleSprite.setPosition(m_titleX, m_titleY);
 }
 
 //

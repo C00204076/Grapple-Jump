@@ -31,16 +31,19 @@ private:
 	void initialise();
 	void loadTexture();
 
+	void mouseButtonInteraction(Player * player, sf::RenderWindow& window);
 	void changeButtonColour();
+	void juicyMainTitle();
 
 	sf::Texture m_titleTexture, m_playTexture, m_quitTexture;
 	sf::Sprite m_titleSprite, m_playSprite, m_quitSprite;
 
 	sf::Vector2f m_titlePosition;
 
-	float m_alpha;
-	bool m_flashIn, m_flashOut;
+	float m_alpha, m_titleAlpha, m_titleX, m_titleY;
+	bool m_flashIn, m_flashOut, m_flashTitleIn, m_flashTitleOut, m_moveUp, m_moveDown;
 	bool m_playTime;
+
 };
 
 #endif // !MAINMENU_H
