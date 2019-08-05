@@ -11,6 +11,7 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "HookPoint.h"
 #include "Ground.h"
@@ -92,8 +93,7 @@ public:
 	
 	void update(sf::Time deltaTime, sf::View & v, bool grapple);
 	void render(sf::RenderWindow& window, sf::Vector2f scale);
-	void initialise();
-	void loadTextures();
+
 
 	void mouseCursor(sf::RenderWindow& window, sf::View & v);
 
@@ -120,6 +120,10 @@ public:
 	AABB * getAABB();
 
 private:
+	void initialise();
+	void loadTextures();
+	void loadAudio();
+
 	void movePlayer();
 	void boundaryCheck();
 	void jump(sf::Time deltaTime);
@@ -141,6 +145,8 @@ private:
 		m_jumpRightText, m_jumpLeftText, m_landRightText, m_landLeftText;
 	sf::Texture m_JumpTexture, m_otherTexture;
 	
+	sf::SoundBuffer m_jumpBuffer, m_landBuffer;
+	sf::Sound m_jumpSound, m_landSound;
 
 	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector, m_tempMouseVec;
 		
@@ -154,7 +160,7 @@ private:
 	float  m_cablePullX, m_cablePullY;
 	float  m_angle, m_aAccel, m_aVel, m_rLength, m_damping;
 
-	bool m_jumping, m_falling, m_moving, m_landing, m_jump; 
+	bool m_jumping, m_falling, m_moving, m_landing, m_jump, m_jumpPlayed; 
 	bool m_left, m_right; 
 };
 

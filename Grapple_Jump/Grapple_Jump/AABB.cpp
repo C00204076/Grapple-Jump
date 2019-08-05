@@ -36,7 +36,6 @@ AABB::~AABB()
 //
 void AABB::initialise()
 {
-	
 	m_extends = sf::Vector2f(m_width / 2, m_height / 2);
 	m_center = sf::Vector2f(m_x + m_extends.x, m_y + m_extends.y);
 	m_size = sf::Vector2f(m_extends.x * 2, m_extends.y * 2);

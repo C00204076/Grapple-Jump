@@ -30,18 +30,70 @@ void GrapplingHook::loadTexture()
 }
 
 //
+void GrapplingHook::loadAudio()
+{
+	//
+	if (!m_firedBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Grappling_Hook_Fired.wav"))
+	{
+		std::cout << "Error! Unable to load Grappling_Hook_Fired.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_latchedBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Grappling_Hook_Latch.wav"))
+	{
+		std::cout << "Error! Unable to load Grappling_Hook_Latch.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_swingBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Rope_Swing.wav"))
+	{
+		std::cout << "Error! Unable to load Rope_Swing.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_extendBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Extend.wav"))
+	{
+		std::cout << "Error! Unable to load Extend.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_retractBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Retract.wav"))
+	{
+		std::cout << "Error! Unable to load Retract.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_detachBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Detach.wav"))
+	{
+		std::cout << "Error! Unable to load Detach.wav from game files!" << std::endl;
+	}
+}
+
+
+//
 void GrapplingHook::initialise()
 {
 	loadTexture();
-
+	loadAudio();
+	//
 	m_hookSprite.setTexture(m_hookTexture);
 	m_hookSprite.setOrigin(5, 5);
+	//
+	m_firedSound.setBuffer(m_firedBuffer); 
+	m_latchedSound.setBuffer(m_latchedBuffer); 
+	m_swingSound.setBuffer(m_swingBuffer);
+	//
+	m_extendSound.setBuffer(m_extendBuffer);
+	m_extendSound.setVolume(115);
 
+	m_retractSound.setBuffer(m_retractBuffer);
+	m_detachSound.setBuffer(m_detachBuffer);
+	//
 	m_hookLatched = false;
 	m_fired = false;
 	m_cableAdjust = false;
 	m_pulled = false;
 	m_extend = false;
+	m_retractPlayed = false;
+	m_extendPlayed = false;
+	m_leftPlayed = false; 
+	m_rightPlayed = false;
+	//
 	m_pullSpeed = 30;
 }
 
@@ -53,7 +105,6 @@ void GrapplingHook::grapplingHook(Player* player)
 	//
 	detach(player);
 
-	
 
 	// Can be used to automatically pull Player towards Hook Point without hold retract key;
 	// code within statement must be uncommented
@@ -81,7 +132,7 @@ void GrapplingHook::grapplingHook(Player* player)
 	
 	retract(player);
 	extend(player);
-	
+	swing(player);
 
 	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the 
 	//player's position, thus adjusting the cable
@@ -147,6 +198,8 @@ void GrapplingHook::fire(Player * player)
 		// Fires Grappling Hook only if m_fired is false
 		if (m_fired == false)
 		{
+			// Plays Firing sound effect
+			m_firedSound.play();
 			// Sets the hooks position to the Player's and it's destination position to the mouse's
 			m_hookSprite.setPosition(player->getSprite().getPosition());
 			m_hookPosition = player->getSprite().getPosition();
@@ -192,6 +245,9 @@ void GrapplingHook::detach(Player * player)
 		//...but only if Grappling Hook is latched onto a Hook Point
 		if (m_hookLatched == true)
 		{
+			// Plays detach sound effect
+			m_detachSound.play();
+
 			m_hookSprite.setPosition(player->getSprite().getPosition());
 			m_hookPosition = player->getSprite().getPosition();
 			m_hookLatched = false;
@@ -210,6 +266,13 @@ void GrapplingHook::extend(Player * player)
 	// The S key is pressed to extend the grappling hook
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_hookLatched == true)
 	{
+		if (m_extendPlayed == false)
+		{
+			// Plays extend sound effect
+			m_extendSound.play();
+			m_extendPlayed = true;
+		}
+
 		m_extend = true;
 		m_cableAdjust = true;
 		// While is uses the same variable, the extend direction is acquired by 
@@ -236,7 +299,11 @@ void GrapplingHook::extend(Player * player)
 	// Else if S key is not pressed
 	else
 	{
+		// Stops playing sound effect
+		m_extendSound.stop();
+
 		m_extend = false;
+		m_extendPlayed = false;
 	}
 }
 
@@ -246,6 +313,13 @@ void GrapplingHook::retract(Player * player)
 	// The W key is press to retract the grappling hook
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_hookLatched == true)
 	{
+		if (m_retractPlayed == false)
+		{
+			// Plays retract sound effect
+			m_retractSound.play();
+			m_retractPlayed = true;
+		}
+
 		// Pull and cable adjust are true
 		m_pulled = true;
 		m_cableAdjust = true;
@@ -276,7 +350,11 @@ void GrapplingHook::retract(Player * player)
 	// Else if W key is not pressed
 	else
 	{
+		// Stops playing sound effect
+		m_retractSound.stop();
+
 		m_pulled = false;
+		m_retractPlayed = false;
 	}
 }
 
@@ -289,13 +367,34 @@ void GrapplingHook::swing(Player * player)
 		//
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-
+			//
+			if (m_rightPlayed == false)
+			{ 
+				// Plays swing sound effect
+				m_swingSound.play();
+				m_rightPlayed = true;
+			}
 		}
 
 		//
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
+			//
+			if (m_leftPlayed == false)
+			{
+				m_swingSound.play();
+				m_leftPlayed = true;
+			}
+		}
 
+		//
+		else
+		{
+			// Stops playing sound effect
+			m_swingSound.stop();
+
+			m_leftPlayed = false;
+			m_rightPlayed = false;
 		}
 	}
 }
@@ -364,8 +463,14 @@ sf::Vector2f GrapplingHook::normalize(sf::Vector2f vector)
 void GrapplingHook::resetHook(Player* player)
 {
 	// Resets Grappling Hook if the R key is pressed
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_fired == true)
 	{
+		if (m_hookLatched == true)
+		{
+			// Plays detach sound effect
+			m_detachSound.play();
+		}
+
 		m_hookSprite.setPosition(player->getSprite().getPosition());
 		m_hookPosition = player->getSprite().getPosition();
 		m_hookLatched = false;
@@ -375,4 +480,10 @@ void GrapplingHook::resetHook(Player* player)
 		m_extend = false;
 		player->setFalling(true);
 	}
+}
+
+//
+bool GrapplingHook::getHookLatched()
+{
+	return m_hookLatched;
 }

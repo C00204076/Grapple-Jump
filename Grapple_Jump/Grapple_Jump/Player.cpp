@@ -103,12 +103,28 @@ void Player::loadTextures()
 	//
 }
 
+//
+void Player::loadAudio()
+{
+	//
+	if (!m_jumpBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Jump.wav"))
+	{
+		std::cout << "Error! Unable to load Jump.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_landBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Landing.wav"))
+	{
+		std::cout << "Error! Unable to load Landing.wav from game files!" << std::endl;
+	}
+}
+
 /// <summary>
 /// Initialises Player and Grappling Hook variables
 /// </summary>
 void Player::initialise()
 {
 	loadTextures();
+	loadAudio();
 
 	m_fsm = new Animation();
 	m_grapplinghook = new GrapplingHook();
@@ -122,11 +138,10 @@ void Player::initialise()
 
 	m_sprite.setTextureRect(m_sourceRectSprite);
 	m_sprite.setPosition(m_position);
-	//m_sprite.setTexture(m_idleRightText);
 	m_sprite.setOrigin(50, 50);
 	//
-	//m_sprite.setScale(0.7f, 0.7f);
-	//
+	m_jumpSound.setBuffer(m_jumpBuffer);
+	m_landSound.setBuffer(m_landBuffer);
 
 	m_AABB = new AABB(m_position.x, m_position.y, m_sourceRectSprite.width, m_sourceRectSprite.height);
 
@@ -243,8 +258,10 @@ void Player::movePlayer()
 void Player::jump(sf::Time deltaTime)
 {
 	// If Space key is pressed and Grappling Hook is not latched onto a Hook Point
-	if (m_keyboard.isKeyPressed(sf::Keyboard::Space) && m_jumping == false)// && m_hookLatched == false)
+	if (m_keyboard.isKeyPressed(sf::Keyboard::Space) && m_jumping == false && m_grapplinghook->getHookLatched() == false)
 	{
+		//
+		m_jumpSound.play();
 		// Gets the max jumping height using the Player position
 		m_maxLength = m_position.y - 450;
 
@@ -373,6 +390,7 @@ void Player::checkAABBCollision(AABB * other)
 			{
 				if (m_falling == true)
 				{
+					m_landSound.play();
 					float diff = abs((m_position.y + m_AABB->getHeight()) - other->getY());
 					m_position.y -= diff * 1.1;
 					m_sprite.setPosition(m_position);
@@ -383,6 +401,7 @@ void Player::checkAABBCollision(AABB * other)
 			else 
 			{
 				m_falling = true;
+				m_landSound.stop();
 			}
 		}
 

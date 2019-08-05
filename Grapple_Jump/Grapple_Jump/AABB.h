@@ -20,8 +20,6 @@ public:
 	AABB(float x, float y, float width, float height);
 	~AABB();
 
-	void initialise();
-
 	float getX();
 	float getY();
 	float getWidth();
@@ -40,6 +38,8 @@ public:
 	AABB minkowskiDifference(AABB *other);
 
 private:
+	void initialise();
+
 	float m_x, m_y, m_width, m_height;
 	sf::Vector2f m_center, m_extends, m_min, m_max, m_size;
 };

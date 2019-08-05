@@ -40,13 +40,13 @@ public:
 	GameState getGameState();
 	void run();
 
-	void loadTextures();
-	void initialise();
-
 protected:
 	GameState gameState;
 
 private:
+	void loadTextures();
+	void initialise();
+
 	void processEvents(); //Process all game events
 	void processGameEvents(sf::Event&);
 	void processInput();
