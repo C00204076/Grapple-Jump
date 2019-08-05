@@ -15,7 +15,7 @@ Game::Game() :
 	// sf::VideoMode{1500, 900, 32}, "Grapple Jump" } for at home work
 	m_window{ sf::VideoMode{ 1500, 900, 32 }, "Grapple Jump" } ,//sf::VideoMode{2600, 1600, 32}, "Grapple Jump" },
 	is_running{ true }, // When false, game will exit
-	gameState{ GameState::MAIN }
+	gameState{ GameState::GAME }
 {
 	initialise();
 }
@@ -67,7 +67,6 @@ void Game::initialise()
 	// Sets the mouse cursor's visiblility to false
 	m_window.setMouseCursorVisible(false);
 
-
 	// Sets the texture and origin of the new mouse Sprite
 	m_targetSprite.setTexture(m_targetTexture);
 	m_targetSprite.setOrigin(25, 25);
@@ -83,7 +82,7 @@ void Game::initialise()
 
 	//
 	//m_ground[1]->setPosition(sf::Vector2f(50, 350));
-	m_ground[2]->setPosition(sf::Vector2f(120, 800));
+	m_ground[2]->setPosition(sf::Vector2f(120, 900));
 
 	//m_ground = new Ground(m_groundTexture);
 	// Sets the psition of the Ground
@@ -103,15 +102,16 @@ void Game::initialise()
 	//m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
 	//m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
 
-	for (int i = 0; i < 30; i++)
+	/*for (int i = 0; i < 30; i++)
 	{
 		for (int j = 0; j < 25; j++)
 		{
 			determineTile(m_mapLayout[i][j], j, i);
 		}
-	}
+	}*/
 
 	m_miniMap = new MiniMap(m_miniPlayer);
+	m_musicPlayer = new MusicManager();
 }
 
 /// <summary>
@@ -134,6 +134,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
+		//m_musicPlayer->playMusic();
 		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
@@ -252,16 +253,22 @@ void Game::update(sf::Time deltaTime)
 
 		break;
 	case GameState::MAIN:
-		m_mainMenu->update(deltaTime, m_player, m_window);
+		//
+		//m_musicPlayer->playMusic();
+
+		m_mainMenu->update(deltaTime, m_player, m_window, m_musicPlayer);
 		//
 		if (m_mainMenu->getPlayTime() == true)
 		{
 			setGameState(GameState::GAME);
 			m_mainMenu->setPlayTime(false);
+
 		}
 
 		break;
 	case GameState::GAME:
+		//
+		//m_musicPlayer->setTrackNum(m_musicPlayer->getOtherTrack());
 		//
 		m_miniMap->update(deltaTime, m_window, m_miniMapView);
 
@@ -326,7 +333,6 @@ void Game::render()
 		m_mainMenu->render(m_window);
 
 
-
 		break;
 	case GameState::GAME:
 		for (int k = 0, l = 0;
@@ -340,10 +346,10 @@ void Game::render()
 		m_window.setView(m_playerView);
 
 		//
-		for (int i = 0; i < m_tileMap.size(); i++)
+		/*for (int i = 0; i < m_tileMap.size(); i++)
 		{
-			//m_tileMap[i].draw(&m_window);
-		}
+			m_tileMap[i].draw(m_window);
+		}*/
 		
 
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
@@ -386,13 +392,13 @@ GameState Game::getGameState()
 	return gameState;
 }
 
-void Game::determineTile(int type, int x, int y)
+/*void Game::determineTile(int type, int x, int y)
 {
 	// Empty
 	if (type == 0) 
 	{
 		//m_tileMap.push_back(Tile(sf::Vector2f(x, y), m_bottomLeftTileSprite, 0));
-		m_groundMap.push_back(Ground());
+		
 	}
 
 	// Start
@@ -404,7 +410,7 @@ void Game::determineTile(int type, int x, int y)
 	// Block
 	if (type == 2) 
 	{
-
+		m_groundMap.push_back(Ground(x, y));
 	}
 
 	// Hook Point
@@ -424,4 +430,4 @@ void Game::determineTile(int type, int x, int y)
 	{
 		
 	}
-}
+}*/

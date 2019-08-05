@@ -24,6 +24,9 @@ MainMenu::~MainMenu()
 void MainMenu::initialise()
 {
 	loadTexture();
+	loadAudio();
+	loadFont();
+
 	//
 	m_alpha = 255;
 	m_titleAlpha = 255;
@@ -45,15 +48,40 @@ void MainMenu::initialise()
 	m_titleSprite.setTexture(m_titleTexture);
 	m_playSprite.setTexture(m_playTexture);
 	m_quitSprite.setTexture(m_quitTexture);
+	m_titleMusicSprite.setTexture(m_titleMusicTexture);
+	m_bgmSprite.setTexture(m_bgmTexture);
 	//
 	m_titleSprite.setOrigin(sf::Vector2f(302.5f, 140.0f));
 	m_playSprite.setOrigin(sf::Vector2f(66.5f, 19.0f));
 	m_quitSprite.setOrigin(sf::Vector2f(66.5f, 19.0f));
+	m_titleMusicSprite.setOrigin(sf::Vector2f(352.0f, 25.0f));
+	m_bgmSprite.setOrigin(sf::Vector2f(229.5f, 25.0f));
 	//
 	m_titleSprite.setPosition(m_titlePosition);
 	m_playSprite.setPosition(sf::Vector2f(750, 550));
 	m_quitSprite.setPosition(sf::Vector2f(750, 750));
-	
+	m_titleMusicSprite.setPosition(sf::Vector2f(175, 750));
+	m_bgmSprite.setPosition(sf::Vector2f(145, 850));
+	//
+	m_titleMusicSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+	m_bgmSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+
+	//
+	m_btnClick.setBuffer(m_buttonClick);
+	m_trackBtnClick.setBuffer(m_trackButtonClick);
+
+	//
+	m_titleText.setFont(m_font);
+	m_titleText.setCharacterSize(14);
+	m_titleText.setFillColor(sf::Color::White);
+	m_titleText.setPosition(sf::Vector2f(20, 20));
+	m_titleText.setStyle(sf::Text::Bold);
+	//
+	m_bgmText.setFont(m_font);
+	m_bgmText.setCharacterSize(14);
+	m_bgmText.setFillColor(sf::Color::White);
+	m_bgmText.setPosition(sf::Vector2f(20, 50));
+	m_bgmText.setStyle(sf::Text::Bold);
 }
 
 //
@@ -73,18 +101,57 @@ void MainMenu::loadTexture()
 	{
 		std::cout << "Error! Unable to load Quit.png from game files!" << std::endl;
 	}
+
+	if (!m_titleMusicTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Change_Title.png"))
+	{
+		std::cout << "Error! Unable to load Change_Title.png from game files!" << std::endl;
+	}
+
+	if (!m_bgmTexture.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Change_BGM.png"))
+	{
+		std::cout << "Error! Unable to load Change_BGM.png from game files!" << std::endl;
+	}
 }
 
 //
-void MainMenu::update(sf::Time deltaTime, Player * player, sf::RenderWindow& window)
+void MainMenu::loadAudio()
 {
 	//
-	juicyMainTitle();
-	mouseButtonInteraction(player, window);
+	if (!m_buttonClick.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Click_On.wav"))
+	{
+		std::cout << "Error! Unable to load Click_On.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_trackButtonClick.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Click_2.wav"))
+	{
+		std::cout << "Error! Unable to load Click_On.wav from game files!" << std::endl;
+	}
 }
 
 //
-void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window)
+void MainMenu::loadFont()
+{
+	if (!m_font.loadFromFile("../Grapple_Jump/ASSETS/FONTS/corbel.ttf"))
+	{
+		std::cout << "Error! Unable to load corbel.ttf from game files!" << std::endl;
+	}
+}
+
+//
+void MainMenu::update(sf::Time deltaTime, Player * player, sf::RenderWindow& window, MusicManager * music)
+{
+	//
+	m_trackDisplay = music->getTrackNum();
+	m_otherTrackDisplay = music->getOtherTrack();
+	trackDisplay();
+
+	//
+	juicyMainTitle();
+	mouseButtonInteraction(player, window, music);
+}
+
+//
+void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window, MusicManager * music)
 {
 	//
 	if (m_playSprite.getGlobalBounds().contains(player->getMousePosition()))
@@ -101,7 +168,11 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window)
 		//
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
+			//
+			m_btnClick.play();
+			//
 			m_playTime = true;
+			music->setTrackNum(music->getOtherTrack());
 		}
 	}
 	//
@@ -119,9 +190,86 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window)
 		//
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
+			//
+			m_btnClick.play();
+			//
 			window.close();
 		}
 	}
+	//
+	else if (m_titleMusicSprite.getGlobalBounds().contains(player->getMousePosition()))
+	{
+		//
+		changeButtonColour();
+		//
+		m_titleMusicSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+		//
+		m_titleMusicSprite.setScale(sf::Vector2f(0.5f, 0.5f));
+		//
+		m_titleMusicSprite.setColor(sf::Color(255, 255, 255, m_alpha));
+		
+		//
+		//
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			//
+			m_trackBtnClick.play();
+
+			//
+			int trackNum = music->getTrackNum() + 1;
+
+			//
+			if (trackNum < 1)
+			{
+				trackNum = 1;
+			}
+			//
+			else if (trackNum > 2)
+			{
+				trackNum = 1;
+			}
+
+			music->setTrackNum(trackNum);
+		}
+	}
+	//
+	else if (m_bgmSprite.getGlobalBounds().contains(player->getMousePosition()))
+	{
+		//
+		changeButtonColour();
+		//
+		m_bgmSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+		//
+		m_bgmSprite.setScale(sf::Vector2f(0.5f, 0.5f));
+		//
+		m_bgmSprite.setColor(sf::Color(255, 255, 255, m_alpha));
+
+		//
+		//
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			//
+			m_trackBtnClick.play();
+
+			//
+			int otherTrack = music->getOtherTrack() + 1;
+			
+			//
+			if (otherTrack < 3)
+			{
+				otherTrack = 3;
+			}
+			//
+			else if (otherTrack > 5)
+			{
+				otherTrack = 3;
+			}
+
+			//
+			music->setOtherTrack(otherTrack);
+		}
+	}
+	//
 	else
 	{
 		//
@@ -131,9 +279,18 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window)
 		//
 		m_quitSprite.setScale(sf::Vector2f(1.0f, 1.0f));
 		//
+		m_titleMusicSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+		//
+		m_bgmSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+
+		//
 		m_playSprite.setColor(sf::Color(255, 255, 255, m_alpha));
 		//
 		m_quitSprite.setColor(sf::Color(255, 255, 255, m_alpha));
+		//
+		m_titleMusicSprite.setColor(sf::Color(255, 255, 255, m_alpha));
+		//
+		m_bgmSprite.setColor(sf::Color(255, 255, 255, m_alpha));
 	}
 }
 
@@ -221,14 +378,55 @@ void MainMenu::juicyMainTitle()
 }
 
 //
+void MainMenu::trackDisplay()
+{
+	//
+	if (m_trackDisplay == 1)
+	{
+		m_titleText.setString("Title Music: Touhou Luna Nights OST:04 - Child of Are");
+	}
+	//
+	if (m_trackDisplay == 2)
+	{
+		m_titleText.setString("Title Music: Touhou Luna Nights OST:21 - The Chaotic Space");
+	}
+
+
+	//
+	if (m_otherTrackDisplay == 3)
+	{
+		m_bgmText.setString("BGM: Touhou Luna Nights OST: 12 - The Young Descendent of Tepes");
+	}
+	//
+	if (m_otherTrackDisplay == 4)
+	{
+		m_bgmText.setString("BGM: Touhou Luna Nights OST: 22 - A Dream More Scarlet than Red");
+	}
+	//
+	if (m_otherTrackDisplay == 5)
+	{
+		m_bgmText.setString("BGM: Touhou Luna Nights OST: 11 - Locked Girl ~ The Girl's Secret Room");
+	}
+}
+
+//
 void MainMenu::render(sf::RenderWindow& window)
 {
+	//
+	window.draw(m_titleText);
+	//
+	window.draw(m_bgmText);
+
 	//
 	window.draw(m_titleSprite);
 	//
 	window.draw(m_playSprite);
 	//
 	window.draw(m_quitSprite);
+	//
+	window.draw(m_titleMusicSprite);
+	//
+	window.draw(m_bgmSprite);
 }
 
 //

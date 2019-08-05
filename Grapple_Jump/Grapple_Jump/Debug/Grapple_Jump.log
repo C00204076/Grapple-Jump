@@ -1,7 +1,2 @@
-﻿  MainMenu.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(99): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(117): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(134): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(136): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(218): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+﻿  MusicManager.cpp
   Grapple_Jump.vcxproj -> C:\Users\Brandon\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe
