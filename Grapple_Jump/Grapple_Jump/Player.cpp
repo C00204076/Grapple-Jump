@@ -198,57 +198,61 @@ void Player::mouseCursor(sf::RenderWindow& window, sf::View & v)
 /// </summary>
 void Player::movePlayer()
 {
-	// If the A key is pressed and the Player is is jumping, not falling and  the
-	// Grappling Hook cable is adjusting itself
-	if (m_keyboard.isKeyPressed(sf::Keyboard::A))// && (m_cableAdjust == false))
+	//
+	if (m_grapplinghook->getHookLatched() == false)
 	{
-		m_left = true;
-		m_right = false;
 
-		//
-		if (m_jumping == false)
+		// If the A key is pressed and the Player is is jumping, not falling and  the
+		// Grappling Hook cable is adjusting itself
+		if (m_keyboard.isKeyPressed(sf::Keyboard::A))// && (m_cableAdjust == false))
 		{
-			m_moving = true;
-		}
-		//
-		else 
+			m_left = true;
+			m_right = false;
+
+			//
+			if (m_jumping == false)
+			{
+				m_moving = true;
+			} // End if
+			//
+			else
+			{
+				m_moving = false;
+			} // End if
+
+			m_position.x -= 7;
+
+			m_sprite.setPosition(m_position);
+		} // End if
+
+		// If the D key is pressed and the Player is is jumping, not falling and  the
+		// Grappling Hook cable is adjusting itself
+		else if (m_keyboard.isKeyPressed(sf::Keyboard::D))// && (m_cableAdjust == false))
 		{
-			m_moving = false;
-		}
+			m_left = false;
+			m_right = true;
 
-		m_position.x -= 7;
+			//
+			if (m_jumping == false)
+			{
+				m_moving = true;
+			} // End if
+			//
+			else
+			{
+				m_moving = false;
+			} // End if
 
-		m_sprite.setPosition(m_position);
-	}
+			m_position.x += 7;
 
-	// If the D key is pressed and the Player is is jumping, not falling and  the
-	// Grappling Hook cable is adjusting itself
-	else if (m_keyboard.isKeyPressed(sf::Keyboard::D))// && (m_cableAdjust == false))
-	{
-		m_left = false;
-		m_right = true;
-		
-		//
-		if (m_jumping == false)
-		{
-			m_moving = true;
-		}
+			m_sprite.setPosition(m_position);
+		} // End if
 		//
 		else
 		{
 			m_moving = false;
-		}
-
-		m_position.x += 7;
-
-		m_sprite.setPosition(m_position);
-	}
-	//
-	else
-	{
-		m_moving = false;
-	}
-
+		} //End if
+	} // End if
 }
 
 /// <summary>

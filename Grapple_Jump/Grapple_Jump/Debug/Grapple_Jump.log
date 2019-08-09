@@ -1,2 +1,4 @@
 ﻿  GrapplingHook.cpp
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\grapplinghook.cpp(413): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\grapplinghook.cpp(418): warning C4305: '*=': truncation from 'double' to 'float'
   Grapple_Jump.vcxproj -> C:\Users\Brandon\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe

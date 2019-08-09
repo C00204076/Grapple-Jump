@@ -64,7 +64,6 @@ void GrapplingHook::loadAudio()
 	}
 }
 
-
 //
 void GrapplingHook::initialise()
 {
@@ -89,12 +88,18 @@ void GrapplingHook::initialise()
 	m_cableAdjust = false;
 	m_pulled = false;
 	m_extend = false;
+	m_swing = false;
 	m_retractPlayed = false;
 	m_extendPlayed = false;
 	m_leftPlayed = false; 
 	m_rightPlayed = false;
 	//
 	m_pullSpeed = 30;
+	m_angle = 40;
+	m_radius = 0;
+	//
+	m_angAccel = 0.0f;
+	m_angVel = 0.0f;
 }
 
 //
@@ -364,6 +369,7 @@ void GrapplingHook::swing(Player * player)
 	//
 	if (m_hookLatched == true)
 	{
+
 		//
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
@@ -373,7 +379,9 @@ void GrapplingHook::swing(Player * player)
 				// Plays swing sound effect
 				m_swingSound.play();
 				m_rightPlayed = true;
+				//m_radius = player->getPosition().y - m_tempMouseVec.y;
 			}
+			m_swing = true;
 		}
 
 		//
@@ -385,6 +393,8 @@ void GrapplingHook::swing(Player * player)
 				m_swingSound.play();
 				m_leftPlayed = true;
 			}
+			m_swing = true;
+
 		}
 
 		//
@@ -396,6 +406,21 @@ void GrapplingHook::swing(Player * player)
 			m_leftPlayed = false;
 			m_rightPlayed = false;
 		}
+
+		//
+		if (m_swing == true)
+		{
+			m_angAccel = -0.01 * sin(m_angle);
+
+			m_angle += m_angVel;
+			m_angVel += m_angAccel;
+
+			m_angVel *= 0.99;
+
+			m_position.x += m_tempMouseVec.x + m_radius * sin(m_angle);
+			m_position.y += m_tempMouseVec.y + m_radius * cos(m_angle);
+			player->setPosition(m_position);
+		}
 	}
 }
 
@@ -403,10 +428,12 @@ void GrapplingHook::swing(Player * player)
 void GrapplingHook::update(Player* player, sf::Vector2f mouse)
 {
 	m_mouseVector = mouse;
-	m_position = player->getPosition();
 
 	grapplingHook(player);
 	resetHook(player);
+
+	m_position = player->getPosition();
+	m_radius = player->getPosition().y - m_tempMouseVec.y;
 }
 
 /// <summary>
