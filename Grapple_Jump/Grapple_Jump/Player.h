@@ -40,7 +40,7 @@ public:
 
 	void mouseCursor(sf::RenderWindow& window, sf::View & v);
 
-	void collosionWithGround(Ground ground);
+	void collosionWithGround(Ground * ground);
 	void grapplePointCollision(HookPoint hookPoint);
 
 	void checkAABBCollision(AABB * other);
