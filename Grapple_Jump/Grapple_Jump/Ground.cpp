@@ -70,9 +70,9 @@ Ground::Ground(int x, int y, float scaleX, float scaleY)
 	//
 	m_sprite.setPosition(m_position);
 	m_topBorderBox.setPosition(m_position.x, m_position.y - 75);
-	m_bottomBorderBox.setPosition(m_position.x, m_position.y - (75 * m_scaleY));
+	m_bottomBorderBox.setPosition(m_position.x, m_position.y + (75 * m_scaleY));
 	m_leftBorderBox.setPosition(m_position.x - 75, m_position.y);
-	m_rightBorderBox.setPosition(m_position.x - (75 * m_scaleX), m_position.y);
+	m_rightBorderBox.setPosition(m_position.x + (75 * m_scaleX), m_position.y);
 	
 }
 
@@ -166,6 +166,18 @@ sf::Sprite Ground::getLeftBoundingBox()
 sf::Sprite Ground::getRightBoundingBox()
 {
 	return m_rightBorderBox;
+}
+
+//
+float Ground::getScaleX()
+{
+	return m_scaleX;
+}
+
+//
+float Ground::getScaleY()
+{
+	return m_scaleY;
 }
 
 //

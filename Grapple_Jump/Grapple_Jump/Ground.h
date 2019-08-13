@@ -33,6 +33,9 @@ public:
 	sf::Sprite getLeftBoundingBox();
 	sf::Sprite getRightBoundingBox();
 
+	float getScaleX(); 
+	float getScaleY();
+
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
 

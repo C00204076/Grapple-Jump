@@ -74,6 +74,8 @@ void Game::initialise()
 	m_player = new Player();
 	m_miniPlayer = new Player();
 
+	m_groundTest = new Ground(-250, 680, 2, 3);
+
 	// Sets the default constructor and texture of the Ground
 	for (int i = 0; i < 4; i++)
 	{
@@ -82,7 +84,7 @@ void Game::initialise()
 
 	//
 	//m_ground[1]->setPosition(sf::Vector2f(50, 350));
-	m_ground[2]->setPosition(sf::Vector2f(280, 900));
+	m_ground[2]->setPosition(sf::Vector2f(320, 750));
 
 	//m_ground = new Ground(m_groundTexture);
 	// Sets the psition of the Ground
@@ -272,15 +274,15 @@ void Game::update(sf::Time deltaTime)
 		//
 		m_miniMap->update(deltaTime, m_window, m_miniMapView);
 
+		m_player->collosionWithGround(m_groundTest);
+
 		// Updates the Ground and check if it is colliding with the player
 		for (int i = 0; i < 4; i++)
 		{
-			m_ground[i]->update(deltaTime);
-			//m_player->checkAABBCollision(m_ground[i]->getAABB());
 			m_player->collosionWithGround(m_ground[i]);
-			//AABB md = m_ground[i]->getAABB()->minkowskiDifference(m_player->getAABB());
+			/*ABB md = m_ground[i]->getAABB()->minkowskiDifference(m_player->getAABB());
 
-			/*if (md.getMin().x <= 0 &&
+			if (md.getMin().x <= 0 &&
 				md.getMax().x >= 0 &&
 				md.getMin().y <= 0 &&
 				md.getMax().y >= 0)
@@ -345,12 +347,6 @@ void Game::render()
 
 		//
 		m_window.setView(m_playerView);
-
-		//
-		/*for (int i = 0; i < m_tileMap.size(); i++)
-		{
-			m_tileMap[i].draw(m_window);
-		}*/
 		
 
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
@@ -360,6 +356,8 @@ void Game::render()
 		{
 			m_ground[i]->render(m_window);
 		}
+
+		m_groundTest->render(m_window);
 
 		//m_ground->render(m_window);
 		// Renders and draws the array of Hook Point Sprites
@@ -392,43 +390,3 @@ GameState Game::getGameState()
 {
 	return gameState;
 }
-
-/*void Game::determineTile(int type, int x, int y)
-{
-	// Empty
-	if (type == 0) 
-	{
-		//m_tileMap.push_back(Tile(sf::Vector2f(x, y), m_bottomLeftTileSprite, 0));
-		
-	}
-
-	// Start
-	if (type == 1) 
-	{
-
-	}
-
-	// Block
-	if (type == 2) 
-	{
-		m_groundMap.push_back(Ground(x, y));
-	}
-
-	// Hook Point
-	if (type == 3) 
-	{
-		
-	}
-
-	// End
-	if (type == 4)
-	{
-
-	}
-
-	// Boundary
-	if (type == 5)
-	{
-		
-	}
-}*/
