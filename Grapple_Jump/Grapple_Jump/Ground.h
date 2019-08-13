@@ -21,17 +21,20 @@ class Ground
 {
 public:
 	Ground();
-	Ground(int x, int y);
+	Ground(int x, int y, float scaleX, float scaleY);
 	~Ground();
 
 	void update(sf::Time deltaTime);
 	void render(sf::RenderWindow& window);
 	
 	sf::Sprite getSprite();
+	sf::Sprite getTopBoundingBox();
+	sf::Sprite getBottomBoundingBox();
+	sf::Sprite getLeftBoundingBox();
+	sf::Sprite getRightBoundingBox();
+
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
-
-	void setTilePosition(int x, int y);
 
 	AABB *getAABB();
 	
@@ -39,15 +42,16 @@ public:
 private:
 	void loadTexture();
 
-	sf::Sprite m_sprite;
-	sf::Texture m_texture;
+	sf::Sprite m_sprite, m_topBorderBox, m_bottomBorderBox, 
+		m_leftBorderBox, m_rightBorderBox;
+	sf::Texture m_texture, m_boundingBoxTexture;
 
 	sf::Vector2f m_position;
 	sf::IntRect m_sourceRectSprite;
 
 	AABB * m_AABB;
 
-	float scaleX, scaleY;
+	float m_scaleX, m_scaleY;
 };
 
 #endif // !GROUND_H

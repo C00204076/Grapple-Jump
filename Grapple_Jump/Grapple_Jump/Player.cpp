@@ -326,16 +326,52 @@ void Player::boundaryCheck()
 /// Detects the collisions between the Player and Ground
 /// </summary>
 /// <param name="ground"></param>
-void Player::collosionWithGround(Ground ground)
+void Player::collosionWithGround(Ground * ground)
 {
 	// If the Player Sprite intersects with the Ground Sprite
-	if (m_sprite.getGlobalBounds().intersects(ground.getSprite().getGlobalBounds()))
+	if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
 	{
+		m_landSound.play();
 		m_jumping = false;
 		m_falling = false;
 		//m_cableAdjust = false;
-		m_position.y = 850;//1350;
+		//m_position.y = ground->getPosition().y - 25;
+		//m_sprite.setPosition(m_position);
+
+		
+		//m_falling = false;
+		//m_cableAdjust = false;
+		//m_position.y = ground->getPosition().y - 25;
+		
+
+		//
+		if (m_sprite.getGlobalBounds().intersects(ground->getTopBoundingBox().getGlobalBounds()))
+		{
+			m_falling = false;
+			m_position.y = ground->getPosition().y - 26;
+		}
+
+		//
+		if (m_sprite.getGlobalBounds().intersects(ground->getBottomBoundingBox().getGlobalBounds()))
+		{
+			m_position.y = ground->getPosition().y + 26;
+		}
+
+		//
+		if (m_sprite.getGlobalBounds().intersects(ground->getLeftBoundingBox().getGlobalBounds()))
+		{
+			m_position.x = ground->getPosition().x - 26;
+		}
+
+		//
+		if (m_sprite.getGlobalBounds().intersects(ground->getRightBoundingBox().getGlobalBounds()))
+		{
+			m_position.x = ground->getPosition().x + 80;
+		}
+
 		m_sprite.setPosition(m_position);
+		
+		
 	}
 }
 

@@ -82,7 +82,7 @@ void Game::initialise()
 
 	//
 	//m_ground[1]->setPosition(sf::Vector2f(50, 350));
-	m_ground[2]->setPosition(sf::Vector2f(120, 900));
+	m_ground[2]->setPosition(sf::Vector2f(280, 900));
 
 	//m_ground = new Ground(m_groundTexture);
 	// Sets the psition of the Ground
@@ -276,8 +276,9 @@ void Game::update(sf::Time deltaTime)
 		for (int i = 0; i < 4; i++)
 		{
 			m_ground[i]->update(deltaTime);
-			m_player->checkAABBCollision(m_ground[i]->getAABB());
-			AABB md = m_ground[i]->getAABB()->minkowskiDifference(m_player->getAABB());
+			//m_player->checkAABBCollision(m_ground[i]->getAABB());
+			m_player->collosionWithGround(m_ground[i]);
+			//AABB md = m_ground[i]->getAABB()->minkowskiDifference(m_player->getAABB());
 
 			/*if (md.getMin().x <= 0 &&
 				md.getMax().x >= 0 &&
