@@ -138,7 +138,7 @@ void MainMenu::loadFont()
 }
 
 //
-void MainMenu::update(sf::Time deltaTime, Player * player, sf::RenderWindow& window, MusicManager * music)
+void MainMenu::update(sf::Time deltaTime, Player * player, sf::RenderWindow& window, MusicManager * music, sf::View & v)
 {
 	//
 	m_trackDisplay = music->getTrackNum();
@@ -148,6 +148,8 @@ void MainMenu::update(sf::Time deltaTime, Player * player, sf::RenderWindow& win
 	//
 	juicyMainTitle();
 	mouseButtonInteraction(player, window, music);
+
+	v.setCenter(750.0f, 450.0f);
 }
 
 //
@@ -229,6 +231,7 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 				trackNum = 1;
 			}
 
+			music->setTitleTrack(trackNum);
 			music->setTrackNum(trackNum);
 		}
 	}

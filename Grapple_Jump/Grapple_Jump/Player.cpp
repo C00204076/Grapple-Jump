@@ -328,52 +328,6 @@ void Player::boundaryCheck()
 /// <param name="ground"></param>
 void Player::collosionWithGround(Ground * ground)
 {
-	// If the Player Sprite intersects with the Ground Sprite
-	/*if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
-	{
-		//m_landSound.play();
-		m_jumping = false;
-		m_falling = false;
-		//m_cableAdjust = false;
-		//m_position.y = ground->getPosition().y - 25;
-		//m_sprite.setPosition(m_position);
-
-		
-		//m_falling = false;
-		//m_cableAdjust = false;
-		//m_position.y = ground->getPosition().y - 25;
-		
-
-		//
-		if (m_sprite.getGlobalBounds().intersects(ground->getTopBoundingBox().getGlobalBounds()))
-		{
-			m_falling = false;
-			m_position.y = ground->getPosition().y - 26;
-		}
-
-		//
-		else if (m_sprite.getGlobalBounds().intersects(ground->getBottomBoundingBox().getGlobalBounds()))
-		{
-			m_position.y = ground->getPosition().y + 26;
-		}
-
-		//
-		else if (m_sprite.getGlobalBounds().intersects(ground->getLeftBoundingBox().getGlobalBounds()))
-		{
-			m_position.x = ground->getPosition().x - 26;
-		}
-
-		//
-		else if (m_sprite.getGlobalBounds().intersects(ground->getRightBoundingBox().getGlobalBounds()))
-		{
-			m_position.x = ground->getPosition().x + 80;
-		}
-
-		m_sprite.setPosition(m_position);
-		
-		
-	}*/
-
 	//
 	if (m_sprite.getGlobalBounds().intersects(ground->getTopBoundingBox().getGlobalBounds()))
 	{
@@ -724,4 +678,8 @@ void Player::setFalling(bool falling)
 	m_falling = falling;
 }
 
-
+//
+void Player::reset()
+{
+	m_grapplinghook->resetHook(this);
+}

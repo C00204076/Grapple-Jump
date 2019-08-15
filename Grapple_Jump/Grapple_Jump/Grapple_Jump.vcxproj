@@ -134,6 +134,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Fall.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="GrapplingHook.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HookPoint.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="MusicManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
+    <ClCompile Include="Start.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +157,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Fall.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="GrapplingHook.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HookPoint.h" />
@@ -168,6 +171,7 @@
     <ClInclude Include="MusicManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SplashScreen.h" />
+    <ClInclude Include="Start.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>

@@ -114,6 +114,13 @@ void Game::initialise()
 
 	m_miniMap = new MiniMap(m_miniPlayer);
 	m_musicPlayer = new MusicManager();
+	m_start = new Start();
+	m_goal = new Goal();
+
+	m_start->setPosition(sf::Vector2f(100, 700));
+	m_goal->setPosition(sf::Vector2f(500, 700));
+
+	m_player->setPosition(m_start->getPosition());
 }
 
 /// <summary>
@@ -136,7 +143,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
-		//m_musicPlayer->playMusic();
+		m_musicPlayer->playMusic();
 		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
@@ -255,24 +262,36 @@ void Game::update(sf::Time deltaTime)
 
 		break;
 	case GameState::MAIN:
-		//
-		//m_musicPlayer->playMusic();
 
-		m_mainMenu->update(deltaTime, m_player, m_window, m_musicPlayer);
+		m_mainMenu->update(deltaTime, m_player, m_window, m_musicPlayer, m_playerView);
 		//
 		if (m_mainMenu->getPlayTime() == true)
 		{
 			setGameState(GameState::GAME);
+			m_player->setPosition(m_start->getPosition());
+			m_player->setFalling(true);
+			m_player->reset();
 			m_mainMenu->setPlayTime(false);
-
 		}
 
 		break;
 	case GameState::GAME:
 		//
 		//m_musicPlayer->setTrackNum(m_musicPlayer->getOtherTrack());
+
 		//
 		m_miniMap->update(deltaTime, m_window, m_miniMapView);
+		//
+		m_start->update(deltaTime);
+		//
+		m_goal->update(deltaTime);
+
+		//
+		if (m_goal->playerCollision(m_player) == true)
+		{
+			setGameState(GameState::MAIN);
+			m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
+		}
 
 		m_player->collosionWithGround(m_groundTest);
 
@@ -280,25 +299,8 @@ void Game::update(sf::Time deltaTime)
 		for (int i = 0; i < 4; i++)
 		{
 			m_player->collosionWithGround(m_ground[i]);
-			/*ABB md = m_ground[i]->getAABB()->minkowskiDifference(m_player->getAABB());
-
-			if (md.getMin().x <= 0 &&
-				md.getMax().x >= 0 &&
-				md.getMin().y <= 0 &&
-				md.getMax().y >= 0)
-			{
-				m_penetrationVector += m_player->getAABB()->closestPointOnBoundsToPoint(m_ground[i]->getPosition());
-				m_player->getAABB()->setCenter(m_player->getAABB()->getCenter().x + m_penetrationVector.x, 
-					m_player->getAABB()->getCenter().y + m_penetrationVector.y);
-					
-				m_player->setSourceRectSprite(sf::IntRect(m_player->getPosition().x + m_penetrationVector.x, 
-														  m_player->getPosition().y + m_penetrationVector.y, 75, 75));
-				m_player->setPosition(sf::Vector2f(m_player->getPosition().x + m_penetrationVector.x, m_player->getPosition().y + m_penetrationVector.y));
-			}*/
 		}
-		//m_ground->update(deltaTime);
-		//m_player->collosionWithGround(*m_ground);
-		//m_player->checkAABBCollision(m_ground->getAABB());
+		
 		// Updates the array of Hook Points and checks if the Grappling Hook is colliding with any
 		// Hook Point
 		for (int i = 0; i < 7; i++) 
@@ -335,7 +337,8 @@ void Game::render()
 	case GameState::MAIN:
 		m_mainMenu->render(m_window);
 
-
+		//
+		m_window.setView(m_playerView);
 		break;
 	case GameState::GAME:
 		for (int k = 0, l = 0;
@@ -347,6 +350,11 @@ void Game::render()
 
 		//
 		m_window.setView(m_playerView);
+
+		//
+		m_start->render(m_window);
+		//
+		m_goal->render(m_window);
 		
 
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line

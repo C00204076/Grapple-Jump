@@ -62,6 +62,11 @@ Ground::Ground(int x, int y, float scaleX, float scaleY)
 	m_leftBorderBox.setTexture(m_boundingBoxTexture);
 	m_rightBorderBox.setTexture(m_boundingBoxTexture);
 	//
+	m_topBorderBox.setColor(sf::Color(255, 255, 255, 0));
+	m_bottomBorderBox.setColor(sf::Color(255, 255, 255, 0));
+	m_leftBorderBox.setColor(sf::Color(255, 255, 255, 0));
+	m_rightBorderBox.setColor(sf::Color(255, 255, 255, 0));
+	//
 	m_sprite.setScale(m_scaleX, m_scaleY);
 	m_topBorderBox.setScale(m_scaleX, 1);
 	m_bottomBorderBox.setScale(m_scaleX, 1);

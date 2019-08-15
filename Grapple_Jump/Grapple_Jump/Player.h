@@ -60,6 +60,8 @@ public:
 	bool getMoving(), getJumping(), getFalling();
 	void setFalling(bool falling);
 
+	void reset();
+
 	AABB * getAABB();
 
 private:

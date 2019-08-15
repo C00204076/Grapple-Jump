@@ -13,7 +13,6 @@
 
 #include <iostream>
 #include <string>
-//#include "Tile.h"
 
 class Splash;
 class License;
@@ -23,6 +22,8 @@ class Ground;
 class HookPoint;
 class MiniMap;
 class MusicManager;
+class Start;
+class Goal;
 
 //Enum class for switching current gamestate
 enum class GameState
@@ -77,6 +78,8 @@ private:
 	HookPoint * m_hookPoint[7];
 	MiniMap * m_miniMap;
 	MusicManager * m_musicPlayer;
+	Start * m_start;
+	Goal * m_goal;
 
 	Ground * m_groundTest;
 };
@@ -89,5 +92,7 @@ private:
 #include "HookPoint.h"
 #include "MiniMap.h"
 #include "MusicManager.h"
+#include "Start.h"
+#include "Goal.h"
 
 #endif // !GAME_H

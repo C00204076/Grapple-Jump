@@ -193,6 +193,17 @@ void MusicManager::playMusic()
 	}
 
 	//
+	if (m_titleTrack < 1)
+	{
+		m_titleTrack = 1;
+	}
+	//
+	if (m_titleTrack > 2)
+	{
+		m_titleTrack = 2;
+	}
+
+	//
 	if (m_otherTrack < 3)
 	{
 		m_otherTrack = 3;
@@ -272,6 +283,22 @@ void MusicManager::setTrackNum(int track)
 	m_played = false;
 }
 
+void MusicManager::setTitleTrack(int track)
+{
+	//
+	if (track < 1)
+	{
+		track = 1;
+	}
+	//
+	if (track > 2)
+	{
+		track = 2;
+	}
+
+	m_titleTrack = track;
+}
+
 //
 void MusicManager::setOtherTrack(int track)
 {
@@ -293,6 +320,12 @@ void MusicManager::setOtherTrack(int track)
 int MusicManager::getTrackNum()
 {
 	return m_trackNum;
+}
+
+//
+int MusicManager::getTitleTrack()
+{
+	return m_titleTrack;
 }
 
 //

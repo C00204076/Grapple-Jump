@@ -22,7 +22,7 @@ public:
 	MainMenu();
 	~MainMenu();
 
-	void update(sf::Time deltaTime, Player * player, sf::RenderWindow& window, MusicManager * music);
+	void update(sf::Time deltaTime, Player * player, sf::RenderWindow& window, MusicManager * music, sf::View & v);
 	void render(sf::RenderWindow& window);
 
 	bool getPlayTime();

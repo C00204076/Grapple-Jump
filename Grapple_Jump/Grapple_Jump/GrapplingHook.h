@@ -126,6 +126,8 @@ public:
 
 	void draw(sf::RenderWindow& window);
 	
+	void resetHook(Player* player);
+
 	void grapplePointCollision(Player *player, HookPoint hookPoint);
 
 	bool getHookLatched();
@@ -139,7 +141,6 @@ private:
 	void extend(Player * player);
 	void retract(Player * player);
 	void swing(Player *  player);
-	void resetHook(Player* player);
 
 	sf::SoundBuffer m_firedBuffer, m_latchedBuffer, m_swingBuffer, m_extendBuffer, m_retractBuffer, m_detachBuffer;
 	sf::Sound m_firedSound, m_latchedSound, m_swingSound, m_extendSound, m_retractSound, m_detachSound;

@@ -25,9 +25,11 @@ public:
 	void playMusic();
 
 	void setTrackNum(int track);
+	void setTitleTrack(int track);
 	void setOtherTrack(int track);
 	
 	int getTrackNum();
+	int getTitleTrack();
 	int getOtherTrack();
 
 private:
@@ -37,7 +39,7 @@ private:
 	void resetMusic();
 	
 	//
-	int m_trackNum, m_state, m_otherTrack;
+	int m_trackNum, m_state, m_titleTrack, m_otherTrack;
 	//
 	sf::Music m_bmgMOne, m_bmgMTwo, m_bmgMThree;
 	sf::Music m_titleMOne, m_titleMTwo;

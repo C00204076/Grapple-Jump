@@ -15,39 +15,23 @@ c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(60): wa
           [
               T=float
           ]
+  Goal.cpp
   GrapplingHook.cpp
 c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\grapplinghook.cpp(413): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\grapplinghook.cpp(418): warning C4305: '*=': truncation from 'double' to 'float'
-  Ground.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\ground.cpp(47): warning C4244: 'argument': conversion from 'const T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\ground.cpp(55): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\ground.cpp(133): warning C4244: 'argument': conversion from 'const T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
   Idle.cpp
   Jump.cpp
   Land.cpp
-  main.cpp
   MainMenu.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(166): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(188): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(209): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(245): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(287): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(289): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(291): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(293): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(375): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(168): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(190): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(211): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(248): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(290): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(292): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(294): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(296): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(378): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
   MiniMap.cpp
   Move.cpp
   Player.cpp
@@ -66,14 +50,16 @@ c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(191):
           [
               T=int
           ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(441): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(442): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(444): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(445): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(475): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(395): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(396): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(398): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(399): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(429): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
+  Start.cpp
+  main.cpp
   Generating Code...
   Grapple_Jump.vcxproj -> C:\Users\Brandon\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe
