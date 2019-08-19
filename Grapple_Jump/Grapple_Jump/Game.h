@@ -13,6 +13,12 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+
+//minimap starting X -9000
+//minimap end X 3700
+//minimap starting Y 0
+//minimap end Y 5500
 
 class Splash;
 class License;
@@ -84,6 +90,8 @@ private:
 	Goal * m_goal;
 
 	Ground * m_groundTest;
+
+	std::vector<Ground *> m_grounds;
 };
 
 #include "SplashScreen.h"

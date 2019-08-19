@@ -12,8 +12,7 @@
 /// Default constructor
 /// </summary>
 Game::Game() :
-	// sf::VideoMode{1500, 900, 32}, "Grapple Jump" } for at home work
-	m_window{ sf::VideoMode{ 1500, 900, 32 }, "Grapple Jump" } ,//sf::VideoMode{2600, 1600, 32}, "Grapple Jump" },
+	m_window{ sf::VideoMode{ 1500, 900, 32 }, "Grapple Jump" } ,
 	is_running{ true }, // When false, game will exit
 	gameState{ GameState::GAME }
 {
@@ -56,7 +55,6 @@ void Game::initialise()
 	m_playerView.setCenter(m_window.getSize().x / 2, m_window.getSize().y / 2);
 	m_playerView.setSize(1500, 900);
 	m_playerView.zoom(1.0f);
-	//m_playerView.zoom(2.0f);
 
 	m_miniMapView.reset(sf::FloatRect(0, 0, m_window.getSize().x / 2, m_window.getSize().y / 2));
 	m_miniMapView.setViewport(sf::FloatRect(1.2f - (1.0f * m_miniMapView.getSize().x) / m_window.getSize().x - 0.04f,
@@ -75,7 +73,8 @@ void Game::initialise()
 	m_player = new Player();
 	m_miniPlayer = new Player();
 
-	m_groundTest = new Ground(-250, 680, 2, 3);
+	m_groundTest = new Ground(-250, 750, 4, 3);
+	
 
 	// Sets the default constructor and texture of the Ground
 	for (int i = 0; i < 4; i++)
@@ -104,14 +103,6 @@ void Game::initialise()
 	//m_hookPoint[4]->setPosition(sf::Vector2f(2550, 20));
 	//m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
 	//m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
-
-	/*for (int i = 0; i < 30; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			determineTile(m_mapLayout[i][j], j, i);
-		}
-	}*/
 
 	m_miniMap = new MiniMap(m_miniPlayer);
 	m_musicPlayer = new MusicManager();
@@ -144,7 +135,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
-		m_musicPlayer->playMusic();
+		//m_musicPlayer->playMusic();
 		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
@@ -383,7 +374,7 @@ void Game::render()
 			k < 4, l < 7;
 			k++, l++)
 		{
-			m_miniMap->draw(m_window, m_miniMapView, m_ground[k], m_hookPoint[l]);
+			m_miniMap->draw(m_window, m_miniMapView, m_groundTest, m_hookPoint[l]);
 		}
 
 		//

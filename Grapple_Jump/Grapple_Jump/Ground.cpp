@@ -61,11 +61,15 @@ Ground::Ground(int x, int y, float scaleX, float scaleY)
 	m_bottomBorderBox.setTexture(m_boundingBoxTexture);
 	m_leftBorderBox.setTexture(m_boundingBoxTexture);
 	m_rightBorderBox.setTexture(m_boundingBoxTexture);
+	m_topLeftBox.setTexture(m_boundingBoxTexture);
+	m_topRightBox.setTexture(m_boundingBoxTexture);
 	//
 	m_topBorderBox.setColor(sf::Color(255, 255, 255, 0));
 	m_bottomBorderBox.setColor(sf::Color(255, 255, 255, 0));
 	m_leftBorderBox.setColor(sf::Color(255, 255, 255, 0));
 	m_rightBorderBox.setColor(sf::Color(255, 255, 255, 0));
+	m_topLeftBox.setColor(sf::Color(255, 255, 255, 0));
+	m_topRightBox.setColor(sf::Color(255, 255, 255, 0));
 	//
 	m_sprite.setScale(m_scaleX, m_scaleY);
 	m_topBorderBox.setScale(m_scaleX, 1);
@@ -78,7 +82,8 @@ Ground::Ground(int x, int y, float scaleX, float scaleY)
 	m_bottomBorderBox.setPosition(m_position.x, m_position.y + (75 * m_scaleY));
 	m_leftBorderBox.setPosition(m_position.x - 75, m_position.y);
 	m_rightBorderBox.setPosition(m_position.x + (75 * m_scaleX), m_position.y);
-	
+	m_topLeftBox.setPosition(m_position.x - 75, m_position.y - 75);
+	m_topRightBox.setPosition(m_position.x + (75 * m_scaleX), m_position.y -75);
 }
 
 /// <summary>
@@ -124,6 +129,8 @@ void Ground::render(sf::RenderWindow& window)
 	window.draw(m_bottomBorderBox);
 	window.draw(m_leftBorderBox);
 	window.draw(m_rightBorderBox);
+	window.draw(m_topLeftBox);
+	window.draw(m_topRightBox);
 	//
 	window.draw(m_sprite);
 }
@@ -171,6 +178,18 @@ sf::Sprite Ground::getLeftBoundingBox()
 sf::Sprite Ground::getRightBoundingBox()
 {
 	return m_rightBorderBox;
+}
+
+//
+sf::Sprite Ground::getTopLeftBoundingBox()
+{
+	return m_topLeftBox;
+}
+
+//
+sf::Sprite Ground::getTopRightBoundingBox()
+{
+	return m_topRightBox;
 }
 
 //

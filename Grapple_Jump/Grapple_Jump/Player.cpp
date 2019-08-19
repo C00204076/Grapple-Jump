@@ -132,8 +132,7 @@ void Player::initialise()
 	m_gravity = sf::Vector2f(0, 4.0f);
 	m_velocity = sf::Vector2f(0, 0);
 	m_acceleration = sf::Vector2f(0, 0);
-	// Vector2f = (100, 700) for at home work
-	m_position = sf::Vector2f(100, 700);//1300);
+	m_position = sf::Vector2f(100, 700);
 	m_sourceRectSprite = sf::IntRect(1, 4, 75, 75);
 
 	m_sprite.setTextureRect(m_sourceRectSprite);
@@ -142,8 +141,6 @@ void Player::initialise()
 	//
 	m_jumpSound.setBuffer(m_jumpBuffer);
 	m_landSound.setBuffer(m_landBuffer);
-
-	m_AABB = new AABB(m_position.x, m_position.y, m_sourceRectSprite.width, m_sourceRectSprite.height);
 
 	
 	m_ranNumber = 1;
@@ -328,45 +325,74 @@ void Player::boundaryCheck()
 /// <param name="ground"></param>
 void Player::collosionWithGround(Ground * ground)
 {
-	//
-	if (m_sprite.getGlobalBounds().intersects(ground->getTopBoundingBox().getGlobalBounds()))
+	if (m_grapplinghook->getHookLatched() == false)
 	{
-		if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
-		{
-			m_landSound.play();
-			m_falling = false;
-			m_position.y = ground->getPosition().y - 26;
-		}
-	}
 
-	//
-	else if (m_sprite.getGlobalBounds().intersects(ground->getBottomBoundingBox().getGlobalBounds()))
-	{
-		if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+		// If player collides with top bounding box
+		if (m_sprite.getGlobalBounds().intersects(ground->getTopBoundingBox().getGlobalBounds()))
 		{
-			m_position.y = ground->getPosition().y + (26 * ground->getScaleY());
+			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+			{
+				m_landSound.play();
+				m_falling = false;
+				m_position.y = ground->getPosition().y - 25;
+			}
 		}
-	}
 
-	//
-	else if (m_sprite.getGlobalBounds().intersects(ground->getLeftBoundingBox().getGlobalBounds()))
-	{
-		if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+		//
+		else if (m_sprite.getGlobalBounds().intersects(ground->getBottomBoundingBox().getGlobalBounds()))
 		{
-			m_position.x = ground->getPosition().x - 22;
-		}
-	}
+			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+			{
+				m_position.y = ground->getPosition().y + (100 * ground->getScaleY());
 
-	//
-	else if (m_sprite.getGlobalBounds().intersects(ground->getRightBoundingBox().getGlobalBounds()))
-	{
-		if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+				//
+				if (m_jumping == true)
+				{
+					m_falling = true;
+					m_jumping = false;
+				}
+			}
+		}
+
+		//
+		else if (m_sprite.getGlobalBounds().intersects(ground->getLeftBoundingBox().getGlobalBounds()))
 		{
-			m_position.x = ground->getPosition().x + (100 * ground->getScaleX());
+			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+			{
+				m_position.x = ground->getPosition().x - 40;
+			}
 		}
-	}
 
-	m_sprite.setPosition(m_position);
+		//
+		else if (m_sprite.getGlobalBounds().intersects(ground->getRightBoundingBox().getGlobalBounds()))
+		{
+			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
+			{
+				m_position.x = ground->getPosition().x + (105 * ground->getScaleX());
+			}
+		}
+
+		//
+		else if (m_sprite.getGlobalBounds().intersects(ground->getTopLeftBoundingBox().getGlobalBounds()))
+		{
+			if (m_jumping == false)
+			{
+				m_falling = true;
+			}
+		}
+
+		//
+		else if (m_sprite.getGlobalBounds().intersects(ground->getTopRightBoundingBox().getGlobalBounds()))
+		{
+			if (m_jumping == false)
+			{
+				m_falling = true;
+			}
+		}
+
+		m_sprite.setPosition(m_position);
+	}
 }
 
 /// <summary>
@@ -378,87 +404,6 @@ void Player::grapplePointCollision(HookPoint hookPoint)
 	m_grapplinghook->grapplePointCollision(this, hookPoint);
 }
 
-//
-void Player::checkAABBCollision(AABB * other)
-{
-	bool collision = false;
-
-	/*if (m_position.x < other->getX() + other->getWidth() &&
-		m_position.x + m_AABB->getWidth() > other->getWidth() &&
-		m_position.y + m_AABB->getHeight() > other->getY() &&
-		m_position.y > other->getY() + other->getHeight())
-	{
-		std::cout << "AABB Collision!" << std::endl;
-	}*/
-
-	//
-	float w = (m_AABB->getWidth() + other->getWidth()) / 2.0;
-	float h = (m_AABB->getHeight() + other->getHeight()) / 2.0;
-	//
-	float dx = (m_position.x + (m_AABB->getWidth() / 2.0)) - (other->getX() + (other->getWidth() / 2.0));
-	float dy = (m_position.y + (m_AABB->getHeight() / 2.0)) - (other->getY() + (other->getHeight() / 2.0));
-	//
-	float diff = 0;
-	
-	//
-	if (abs(dx) <= w && abs(dy) <= h)
-	{
-		//
-		collision = true;
-		//
-		float wy = w * dy;
-		float hx = h * dx;
-
-		//
-		if (wy < hx)
-		{
-			// Check collision at right axis of other
-			/*if (wy < -hx)
-			{
-				float diff = abs(m_position.x - (other->getX() + other->getWidth()));
-				//m_position.x = diff;
-			}*/
-
-			// Check collision at top axis of other
-			if (wy > -hx)
-			{
-				if (m_falling == true)
-				{
-					m_landSound.play();
-					float diff = abs((m_position.y + m_AABB->getHeight()) - other->getY());
-					m_position.y -= diff * 1.1;
-					m_sprite.setPosition(m_position);
-					m_falling = false;
-				}
-			}
-
-			else 
-			{
-				m_falling = true;
-				m_landSound.stop();
-			}
-		}
-
-		/*else if (wy > hx)
-		{
-			// Check collision at bottom axis of other
- 			if (wy > -hx)
-			{
-				//diff = abs(m_position.y - (other->getY() + other->getHeight()));
-				//m_position.y += diff;
-			}
-
-			// Check collision at left axis of other
-			else
-			{
-				float diff = abs((m_position.x + m_AABB->getWidth()) - other->getX());
-				//m_position.x -= diff;
-			}
-		}*/	
-	}
-
-
-}
 
 /// <summary>
 /// Used to return a normalise vector
@@ -638,12 +583,6 @@ bool Player::getJumping()
 bool Player::getFalling()
 {
 	return m_falling;
-}
-
-//
-AABB * Player::getAABB()
-{
-	return m_AABB;
 }
 
 //

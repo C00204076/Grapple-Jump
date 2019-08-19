@@ -32,6 +32,8 @@ public:
 	sf::Sprite getBottomBoundingBox();
 	sf::Sprite getLeftBoundingBox();
 	sf::Sprite getRightBoundingBox();
+	sf::Sprite getTopLeftBoundingBox();
+	sf::Sprite getTopRightBoundingBox();
 
 	float getScaleX(); 
 	float getScaleY();
@@ -46,7 +48,7 @@ private:
 	void loadTexture();
 
 	sf::Sprite m_sprite, m_topBorderBox, m_bottomBorderBox, 
-		m_leftBorderBox, m_rightBorderBox;
+		m_leftBorderBox, m_rightBorderBox, m_topLeftBox, m_topRightBox;
 	sf::Texture m_texture, m_boundingBoxTexture;
 
 	sf::Vector2f m_position;

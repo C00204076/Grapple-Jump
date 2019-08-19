@@ -1,11 +1,17 @@
-﻿  MainMenu.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(185): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(219): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(252): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(301): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(349): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(351): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(353): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(355): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(437): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+﻿  Ground.cpp
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\ground.cpp(47): warning C4244: 'argument': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\ground.cpp(55): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\ground.cpp(145): warning C4244: 'argument': conversion from 'const T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
   Grapple_Jump.vcxproj -> C:\Users\Brandon\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe

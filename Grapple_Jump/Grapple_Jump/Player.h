@@ -15,7 +15,6 @@
 
 #include "HookPoint.h"
 #include "Ground.h"
-#include "AABB.h"
 
 #include <iostream>
 #include <math.h>
@@ -62,8 +61,6 @@ public:
 
 	void reset();
 
-	AABB * getAABB();
-
 private:
 	void initialise();
 	void loadTextures();
@@ -79,7 +76,6 @@ private:
 	Animation *m_fsm;
 	GrapplingHook *m_grapplinghook;
 
-	AABB * m_AABB;
 
 	sf::Keyboard m_keyboard;
 
