@@ -39,6 +39,11 @@ void MainMenu::initialise()
 	m_moveDown = true;
 	//
 	m_playTime = false;
+	//
+	m_playPlay = true; 
+	m_playQuit = true; 
+	m_playTitle = true;
+	m_playBGM = true;
 
 	//
 	m_titlePosition = sf::Vector2f(750, 250);
@@ -124,7 +129,7 @@ void MainMenu::loadAudio()
 	//
 	if (!m_trackButtonClick.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Click_2.wav"))
 	{
-		std::cout << "Error! Unable to load Click_On.wav from game files!" << std::endl;
+		std::cout << "Error! Unable to load Click_2.wav from game files!" << std::endl;
 	}
 }
 
@@ -159,6 +164,18 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 	if (m_playSprite.getGlobalBounds().contains(player->getMousePosition()))
 	{
 		//
+		if (m_playPlay == true)
+		{
+			m_trackBtnClick.play();
+			m_playPlay = false;
+		}
+
+		//
+		m_playQuit = true;
+		m_playTitle = true;
+		m_playBGM = true;
+
+		//
 		changeButtonColour();
 		//
 		m_playSprite.setScale(sf::Vector2f(2.0f, 2.0f));
@@ -181,6 +198,18 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 	else if (m_quitSprite.getGlobalBounds().contains(player->getMousePosition()))
 	{
 		//
+		if (m_playQuit == true)
+		{
+			m_trackBtnClick.play();
+			m_playQuit = false;
+		}
+
+		//
+		m_playPlay = true;
+		m_playTitle = true;
+		m_playBGM = true;
+
+		//
 		changeButtonColour();
 		//
 		m_playSprite.setScale(sf::Vector2f(1.0f, 1.0f));
@@ -201,6 +230,18 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 	//
 	else if (m_titleMusicSprite.getGlobalBounds().contains(player->getMousePosition()))
 	{
+		//
+		if (m_playTitle == true)
+		{
+			m_trackBtnClick.play();
+			m_playTitle = false;
+		}
+
+		//
+		m_playPlay = true;
+		m_playQuit= true;
+		m_playBGM = true;
+
 		//
 		changeButtonColour();
 		//
@@ -239,6 +280,18 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 	else if (m_bgmSprite.getGlobalBounds().contains(player->getMousePosition()))
 	{
 		//
+		if (m_playBGM == true)
+		{
+			m_trackBtnClick.play();
+			m_playBGM = false;
+		}
+
+		//
+		m_playPlay = true;
+		m_playQuit = true;
+		m_playTitle = true;
+
+		//
 		changeButtonColour();
 		//
 		m_bgmSprite.setScale(sf::Vector2f(0.25f, 0.25f));
@@ -256,7 +309,7 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 
 			//
 			int otherTrack = music->getOtherTrack() + 1;
-			
+
 			//
 			if (otherTrack < 3)
 			{
@@ -275,6 +328,12 @@ void MainMenu::mouseButtonInteraction(Player * player, sf::RenderWindow& window,
 	//
 	else
 	{
+		//
+		m_playPlay = true;
+		m_playQuit = true;
+		m_playTitle = true;
+		m_playBGM = true;
+
 		//
 		m_alpha = 255;
 		//

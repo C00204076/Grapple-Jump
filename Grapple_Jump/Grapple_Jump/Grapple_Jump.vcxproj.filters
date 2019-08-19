@@ -42,9 +42,6 @@
     <ClCompile Include="Jump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Land.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="AABB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,6 +73,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Start.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Land.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -141,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Start.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

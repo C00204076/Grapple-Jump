@@ -1,65 +1,11 @@
-﻿  Animation.cpp
-  Fall.cpp
-  Game.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(55): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\game.cpp(60): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-  Goal.cpp
-  GrapplingHook.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\grapplinghook.cpp(413): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\grapplinghook.cpp(418): warning C4305: '*=': truncation from 'double' to 'float'
-  Idle.cpp
-  Jump.cpp
-  Land.cpp
-  MainMenu.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(168): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(190): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(211): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(248): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(290): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(292): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(294): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(296): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(378): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-  MiniMap.cpp
-  Move.cpp
-  Player.cpp
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(146): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(190): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(191): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(395): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(396): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(398): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(399): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\player.cpp(429): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Start.cpp
-  main.cpp
-  Generating Code...
+﻿  MainMenu.cpp
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(185): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(219): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(252): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(301): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(349): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(351): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(353): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(355): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\brandon\desktop\grapple-jump\grapple_jump\grapple_jump\mainmenu.cpp(437): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
   Grapple_Jump.vcxproj -> C:\Users\Brandon\Desktop\Grapple-Jump\Grapple_Jump\Debug\Grapple_Jump.exe

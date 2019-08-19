@@ -134,6 +134,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Fall.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOverScreen.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="GrapplingHook.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Fall.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameOverScreen.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="GrapplingHook.h" />
     <ClInclude Include="Ground.h" />

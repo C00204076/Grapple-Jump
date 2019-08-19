@@ -39,10 +39,17 @@ void MusicManager::initialise()
 	//
 	m_bmgMThree.setPosition(0, 1, 10); // change its 3D position
 	m_bmgMThree.setVolume(35);
+	//
+	m_gameOverOne.setPosition(0, 1, 10); // change its 3D position
+	m_gameOverOne.setVolume(35);
+	//
+	m_gameOverTwo.setPosition(0, 1, 10); // change its 3D position
+	m_gameOverTwo.setVolume(35);
 
 	//
 	m_trackNum = 1;
 	m_otherTrack = 3;
+	m_gameOverTrack = 6;
 
 	m_played = false;
 }
@@ -130,6 +137,17 @@ void MusicManager::loadSounds()
 	{
 		std::cout << "Error! Unable to load ivent08.ogg from game files!" << std::endl;
 	}
+
+	//
+	if (!m_gameOverOne.openFromFile("../Grapple_Jump/ASSETS/AUDIO/BGM/mus_gameover.ogg"))
+	{
+		std::cout << "Error! Unable to load mus_gameover.ogg from game files!" << std::endl;
+	}
+	//
+	if (!m_gameOverTwo.openFromFile("../Grapple_Jump/ASSETS/AUDIO/BGM/mus_musicbox.ogg"))
+	{
+		std::cout << "Error! Unable to load mus_musicbox.ogg from game files!" << std::endl;
+	}
 }
 
 //
@@ -179,6 +197,20 @@ void MusicManager::playMusic()
 			m_bmgMThree.play();
 			m_played = true;
 		}
+		//
+		else if (m_trackNum == 6)
+		{
+			m_gameOverOne.setLoop(true);
+			m_gameOverOne.play();
+			m_played = true;
+		}
+		//
+		else if (m_trackNum == 7)
+		{
+			m_gameOverTwo.setLoop(true);
+			m_gameOverTwo.play();
+			m_played = true;
+		}
 	}
 
 	//
@@ -187,9 +219,9 @@ void MusicManager::playMusic()
 		m_trackNum = 1;
 	}
 	//
-	if (m_trackNum > 5)
+	if (m_trackNum > 7)
 	{
-		m_trackNum = 5;
+		m_trackNum = 7;
 	}
 
 	//
@@ -213,6 +245,17 @@ void MusicManager::playMusic()
 	{
 		m_otherTrack = 5;
 	}
+
+	//
+	if (m_gameOverTrack < 6)
+	{
+		m_gameOverTrack = 6;
+	}
+	//
+	if (m_gameOverTrack > 7)
+	{
+		m_gameOverTrack = 7;
+	}
 }
 
 //
@@ -226,6 +269,8 @@ void MusicManager::resetMusic()
 		m_bmgMOne.stop();
 		m_bmgMTwo.stop();
 		m_bmgMThree.stop();
+		m_gameOverOne.stop();
+		m_gameOverTwo.stop();
 	}
 	//
 	if (m_trackNum == 2)
@@ -235,6 +280,8 @@ void MusicManager::resetMusic()
 		m_bmgMOne.stop();
 		m_bmgMTwo.stop();
 		m_bmgMThree.stop();
+		m_gameOverOne.stop();
+		m_gameOverTwo.stop();
 	}
 	//
 	if (m_trackNum == 3)
@@ -244,6 +291,8 @@ void MusicManager::resetMusic()
 		//m_bmgMOne.stop();
 		m_bmgMTwo.stop();
 		m_bmgMThree.stop();
+		m_gameOverOne.stop();
+		m_gameOverTwo.stop();
 	}
 	//
 	if (m_trackNum == 4)
@@ -253,6 +302,8 @@ void MusicManager::resetMusic()
 		m_bmgMOne.stop();
 		//m_bmgMTwo.stop();
 		m_bmgMThree.stop();
+		m_gameOverOne.stop();
+		m_gameOverTwo.stop();
 	}
 	//
 	if (m_trackNum == 5)
@@ -262,6 +313,28 @@ void MusicManager::resetMusic()
 		m_bmgMOne.stop();
 		m_bmgMTwo.stop();
 		//m_bmgMThree.stop();
+		m_gameOverOne.stop();
+		m_gameOverTwo.stop();
+	}
+	if (m_trackNum == 6)
+	{
+		m_titleMOne.stop();
+		m_titleMTwo.stop();
+		m_bmgMOne.stop();
+		m_bmgMTwo.stop();
+		m_bmgMThree.stop();
+		//m_gameOverOne.stop(); 
+		m_gameOverTwo.stop();
+	}
+	if (m_trackNum == 7)
+	{
+		m_titleMOne.stop();
+		m_titleMTwo.stop();
+		m_bmgMOne.stop();
+		m_bmgMTwo.stop();
+		m_bmgMThree.stop();
+		m_gameOverOne.stop();
+		//m_gameOverTwo.stop();
 	}
 }
 
@@ -274,9 +347,9 @@ void MusicManager::setTrackNum(int track)
 		track = 1;
 	}
 	//
-	if (track > 5)
+	if (track > 7)
 	{
-		track = 5;
+		track = 7;
 	}
 
 	m_trackNum = track;
@@ -317,6 +390,23 @@ void MusicManager::setOtherTrack(int track)
 }
 
 //
+void MusicManager::setGameOverTrack(int track)
+{
+	//
+	if (track < 6)
+	{
+		track = 6;
+	}
+	//
+	if (track > 7)
+	{
+		track = 7;
+	}
+
+	m_gameOverTrack = track;
+}
+
+//
 int MusicManager::getTrackNum()
 {
 	return m_trackNum;
@@ -332,4 +422,10 @@ int MusicManager::getTitleTrack()
 int MusicManager::getOtherTrack()
 {
 	return m_otherTrack;
+}
+
+//
+int MusicManager::getGameOverTrack()
+{
+	return m_gameOverTrack;
 }

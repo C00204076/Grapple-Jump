@@ -27,10 +27,12 @@ public:
 	void setTrackNum(int track);
 	void setTitleTrack(int track);
 	void setOtherTrack(int track);
+	void setGameOverTrack(int track);
 	
 	int getTrackNum();
 	int getTitleTrack();
 	int getOtherTrack();
+	int getGameOverTrack();
 
 private:
 	void initialise();
@@ -39,10 +41,11 @@ private:
 	void resetMusic();
 	
 	//
-	int m_trackNum, m_state, m_titleTrack, m_otherTrack;
+	int m_trackNum, m_state, m_titleTrack, m_otherTrack, m_gameOverTrack;
 	//
 	sf::Music m_bmgMOne, m_bmgMTwo, m_bmgMThree;
 	sf::Music m_titleMOne, m_titleMTwo;
+	sf::Music m_gameOverOne, m_gameOverTwo;
 	//
 	bool m_played;
 };

@@ -17,6 +17,7 @@
 class Splash;
 class License;
 class MainMenu;
+class GameOver;
 class Player;
 class Ground;
 class HookPoint;
@@ -28,7 +29,7 @@ class Goal;
 //Enum class for switching current gamestate
 enum class GameState
 {
-	SPLASH, LICENSE, MAIN, GAME
+	SPLASH, LICENSE, MAIN, GAME, GAMEOVER
 };
 
 // Game class
@@ -72,6 +73,7 @@ private:
 	Splash * m_splashScreen;
 	License * m_licenseScreen;
 	MainMenu * m_mainMenu;
+	GameOver * m_gameOver;
 	Player * m_player;
 	Player * m_miniPlayer;
 	Ground * m_ground[4];
@@ -87,6 +89,7 @@ private:
 #include "SplashScreen.h"
 #include "LicenseScreen.h"
 #include "MainMenu.h"
+#include "GameOverScreen.h"
 #include "Player.h"
 #include "Ground.h"
 #include "HookPoint.h"

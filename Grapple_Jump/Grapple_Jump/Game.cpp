@@ -51,6 +51,7 @@ void Game::initialise()
 	m_splashScreen = new Splash();
 	m_licenseScreen = new License();
 	m_mainMenu = new MainMenu();
+	m_gameOver = new GameOver();
 
 	m_playerView.setCenter(m_window.getSize().x / 2, m_window.getSize().y / 2);
 	m_playerView.setSize(1500, 900);
@@ -223,7 +224,8 @@ void Game::processInput()
 		case GameState::MAIN:
 			break;
 		case GameState::GAME:
-
+			break;
+		case GameState::GAMEOVER:
 			break;
 		}
 	}
@@ -262,9 +264,8 @@ void Game::update(sf::Time deltaTime)
 
 		break;
 	case GameState::MAIN:
-
 		m_mainMenu->update(deltaTime, m_player, m_window, m_musicPlayer, m_playerView);
-		//
+		// If the Play button is pressed
 		if (m_mainMenu->getPlayTime() == true)
 		{
 			setGameState(GameState::GAME);
@@ -276,8 +277,6 @@ void Game::update(sf::Time deltaTime)
 
 		break;
 	case GameState::GAME:
-		//
-		//m_musicPlayer->setTrackNum(m_musicPlayer->getOtherTrack());
 
 		//
 		m_miniMap->update(deltaTime, m_window, m_miniMapView);
@@ -289,8 +288,12 @@ void Game::update(sf::Time deltaTime)
 		//
 		if (m_goal->playerCollision(m_player) == true)
 		{
-			setGameState(GameState::MAIN);
-			m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
+			setGameState(GameState::GAMEOVER);
+			m_musicPlayer->setGameOverTrack(7);
+			m_musicPlayer->setTrackNum(m_musicPlayer->getGameOverTrack());
+			m_gameOver->setPlayTrack(true);
+			m_gameOver->setWin(true);
+			m_gameOver->setLose(false);
 		}
 
 		m_player->collosionWithGround(m_groundTest);
@@ -312,6 +315,41 @@ void Game::update(sf::Time deltaTime)
 		
 		
 		m_miniPlayer->setPosition(m_player->getPosition());
+		break;
+	case GameState::GAMEOVER:
+		m_gameOver->update(deltaTime, m_player, m_window, m_musicPlayer, m_playerView);
+		
+		// If the Replay button is pressed
+		if (m_gameOver->getPlayTime() == true)
+		{
+			setGameState(GameState::GAME);
+			//
+			m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
+			//
+			m_player->setPosition(m_start->getPosition());
+			m_player->setFalling(true);
+			m_player->reset();
+			m_mainMenu->setPlayTime(false);
+			//
+			m_gameOver->setLose(false);
+			m_gameOver->setWin(false);
+			m_gameOver->setPlayTime(false);
+			m_gameOver->setPlayTrack(true);
+		}
+
+		// If the  Return to Title button is press
+		if (m_gameOver->getMainMenu() == true)
+		{
+			setGameState(GameState::MAIN);
+			//
+			m_musicPlayer->setTitleTrack(m_musicPlayer->getTitleTrack());
+			//
+			m_gameOver->setLose(false);
+			m_gameOver->setWin(false);
+			m_gameOver->setMainMenu(false);
+			m_gameOver->setPlayTrack(true);
+		}
+		
 		break;
 	}
 
@@ -373,6 +411,11 @@ void Game::render()
 		{
 			m_hookPoint[j]->render(m_window);
 		}
+		break;
+	case GameState::GAMEOVER:
+		//
+		m_window.setView(m_playerView);
+		m_gameOver->render(m_window);
 		break;
 	}
 
