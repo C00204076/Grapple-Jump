@@ -59,3 +59,11 @@ void Jump::landing(Animation * animation)
 	animation->setCurrent(new Jump());
 	delete this;
 }
+
+//
+void Jump::death(Animation * animation)
+{
+	std::cout << "Dying" << std::endl;
+	animation->setCurrent(new Jump());
+	delete this;
+}

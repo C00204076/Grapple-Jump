@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Death.cpp" />
     <ClCompile Include="Fall.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverScreen.cpp" />
@@ -157,6 +158,7 @@
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Death.h" />
     <ClInclude Include="Fall.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameOverScreen.h" />

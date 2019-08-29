@@ -31,6 +31,7 @@ public:
 	void jumping(Player* player);
 	void falling(Player * player);
 	void landing(Player* player);
+	void death(Player* player);
 
 	void update(Player* player);
 
@@ -41,6 +42,7 @@ private:
 	State* m_current;
 	sf::Clock m_clock;
 	int m_idleTimer, m_moveTimer, m_jumpingTimer;
+	bool m_go = true;
 };
 
 #endif // !ANIMATION_H

@@ -26,6 +26,7 @@ public:
 	void jumping(Animation* animation);
 	void falling(Animation * animation);
 	void landing(Animation* animation);
+	void death(Animation* animation);
 };
 
 #endif // !LAND_H

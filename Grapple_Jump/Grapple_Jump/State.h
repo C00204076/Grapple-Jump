@@ -48,6 +48,10 @@ public:
 		//std::cout << "Landing" << std::endl;
 	}
 
+	virtual void death(Animation* animation)
+	{
+		//std::cout << "Dying" << std::endl;
+	}
 };
 
 #endif // !STATE_H

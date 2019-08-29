@@ -36,14 +36,14 @@ public:
 	void update(sf::Time deltaTime, sf::View & v, bool grapple);
 	void render(sf::RenderWindow& window, sf::Vector2f scale);
 
-
 	void mouseCursor(sf::RenderWindow& window, sf::View & v);
 
 	void collosionWithGround(Ground * ground);
 	void grapplePointCollision(HookPoint hookPoint);
-
-	void checkAABBCollision(AABB * other);
 	
+	int getEndTime();
+	void setEndTime(int time);
+
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f position);
 
@@ -56,8 +56,9 @@ public:
 	void setSourceRectSprite(sf::IntRect rectangle);
 
 	bool getLeft(), getRight();
-	bool getMoving(), getJumping(), getFalling();
+	bool getMoving(), getJumping(), getFalling(), getDeath();
 	void setFalling(bool falling);
+	void setDeath(bool death);
 
 	void reset();
 
@@ -83,26 +84,27 @@ private:
 	sf::Sprite m_sprite, m_windowSprite;
 	sf::Texture m_idleRightText, m_idleLeftText, m_idleRightTextTwo, 
 		m_idleLeftTextTwo, m_moveRightText,m_moveLeftText, 
-		m_jumpRightText, m_jumpLeftText, m_landRightText, m_landLeftText;
+		m_jumpRightText, m_jumpLeftText, m_landRightText, m_landLeftText, 
+		m_deathRightText, m_deathLeftText;
 	sf::Texture m_JumpTexture, m_otherTexture;
 	
-	sf::SoundBuffer m_jumpBuffer, m_landBuffer;
-	sf::Sound m_jumpSound, m_landSound;
+	sf::SoundBuffer m_jumpBuffer, m_landBuffer, m_deathBuffer;
+	sf::Sound m_jumpSound, m_landSound, m_deathSound;
 
 	sf::Vector2f m_gravity, m_velocity, m_acceleration, m_position, m_hookPosition, m_mouseVector, m_tempMouseVec;
 		
 	sf::Vector2i m_mousePosition;
 	float m_mouseX, m_mouseY;
 
-	int m_ranNumber, m_jumpPrep;
+	int m_ranNumber, m_jumpPrep, m_endTime;
 
 	float m_pullSpeed; 
 	float m_length, m_maxLength, m_maxHeight;
 	float  m_cablePullX, m_cablePullY;
 	float  m_angle, m_aAccel, m_aVel, m_rLength, m_damping;
 
-	bool m_jumping, m_falling, m_moving, m_landing, m_jump, m_jumpPlayed; 
-	bool m_left, m_right; 
+	bool m_jumping, m_falling, m_moving, m_landing, m_jump, m_jumpPlayed, m_death; 
+	bool m_left, m_right, m_playDeath; 
 };
 
 #include "Game.h"

@@ -59,3 +59,11 @@ void Fall::landing(Animation * animation)
 	animation->setCurrent(new Fall());
 	delete this;
 }
+
+//
+void Fall::death(Animation * animation)
+{
+	std::cout << "Dying" << std::endl;
+	animation->setCurrent(new Fall());
+	delete this;
+}

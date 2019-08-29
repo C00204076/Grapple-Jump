@@ -59,3 +59,11 @@ void Idle::landing(Animation * animation)
 	animation->setCurrent(new Idle());
 	delete this;
 }
+
+//
+void Idle::death(Animation * animation)
+{
+	std::cout << "Dying" << std::endl;
+	animation->setCurrent(new Idle());
+	delete this;
+}

@@ -14,7 +14,7 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ 1500, 900, 32 }, "Grapple Jump" } ,
 	is_running{ true }, // When false, game will exit
-	gameState{ GameState::GAME }
+	gameState{ GameState::LICENSE }
 {
 	initialise();
 }
@@ -136,7 +136,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
-		//m_musicPlayer->playMusic();
+		m_musicPlayer->playMusic();
 		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
@@ -283,6 +283,7 @@ void Game::update(sf::Time deltaTime)
 			setGameState(GameState::LOADING);
 			//
 			m_player->setPosition(m_start->getPosition());
+			m_player->setDeath(false);
 			m_player->setFalling(true);
 			m_player->reset();
 			m_mainMenu->setPlayTime(false);
@@ -314,6 +315,24 @@ void Game::update(sf::Time deltaTime)
 			m_gameOver->setWin(true);
 			m_gameOver->setLose(false);
 		}
+		
+		//
+		if (m_player->getEndTime() > 100)
+		{
+			//
+			m_loading->setPlay(false);
+			m_loading->setMainMenu(false);
+			m_loading->setGameOver(true);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
+			m_musicPlayer->setGameOverTrack(6);
+			m_musicPlayer->setTrackNum(m_musicPlayer->getGameOverTrack());
+			m_gameOver->setPlayTrack(true);
+			m_gameOver->setWin(false);
+			m_gameOver->setLose(true);
+		}
+
 
 		m_player->collosionWithGround(m_groundTest);
 
@@ -349,9 +368,10 @@ void Game::update(sf::Time deltaTime)
 			//
 			setGameState(GameState::LOADING);
 			//
-			m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
+			m_musicPlayer->setTrackNum(m_musicPlayer->getOtherTrack());
 			//
 			m_player->setPosition(m_start->getPosition());
+			m_player->setDeath(false);
 			m_player->setFalling(true);
 			m_player->reset();
 			m_mainMenu->setPlayTime(false);
@@ -373,7 +393,7 @@ void Game::update(sf::Time deltaTime)
 			//
 			setGameState(GameState::LOADING);
 			//
-			m_musicPlayer->setTitleTrack(m_musicPlayer->getTitleTrack());
+			m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
 			//
 			m_gameOver->setLose(false);
 			m_gameOver->setWin(false);
@@ -392,41 +412,16 @@ void Game::update(sf::Time deltaTime)
 			if (m_loading->getPlay() == true)
 			{
 				setGameState(GameState::GAME);
-				//
-				m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
-				//
-				m_player->setPosition(m_start->getPosition());
-				m_player->setFalling(true);
-				m_player->reset();
-				m_mainMenu->setPlayTime(false);
-				//
-				m_gameOver->setLose(false);
-				m_gameOver->setWin(false);
-				m_gameOver->setPlayTime(false);
-				m_gameOver->setPlayTrack(true);
 			}
 			//
 			if (m_loading->getMainMenu() == true)
 			{
 				setGameState(GameState::MAIN);
-				//
-				m_musicPlayer->setTitleTrack(m_musicPlayer->getTitleTrack());
-				//
-				m_gameOver->setLose(false);
-				m_gameOver->setWin(false);
-				m_gameOver->setMainMenu(false);
-				m_gameOver->setPlayTrack(true);
 			}
 			//
 			if (m_loading->getGameOver() == true)
 			{
 				setGameState(GameState::GAMEOVER);
-				//
-				m_musicPlayer->setGameOverTrack(7);
-				m_musicPlayer->setTrackNum(m_musicPlayer->getGameOverTrack());
-				m_gameOver->setPlayTrack(true);
-				m_gameOver->setWin(true);
-				m_gameOver->setLose(false);
 			}
 		}
 		break;

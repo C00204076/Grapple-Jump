@@ -101,6 +101,18 @@ void Player::loadTextures()
 	//
 
 	//
+	if (!m_deathRightText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-death(right-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-death(right-small).png from game files!" << std::endl;
+	}
+	//
+	if (!m_deathLeftText.loadFromFile("../Grapple_Jump/ASSETS/IMAGES/Spritesheets/Player-death(left-small).png"))
+	{
+		std::cout << "Error! Unable to load Player-death(left-small).png from game files!" << std::endl;
+	}
+	//
+
+	//
 }
 
 //
@@ -115,6 +127,11 @@ void Player::loadAudio()
 	if (!m_landBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Landing.wav"))
 	{
 		std::cout << "Error! Unable to load Landing.wav from game files!" << std::endl;
+	}
+	//
+	if (!m_deathBuffer.loadFromFile("../Grapple_Jump/ASSETS/AUDIO/SOUNDEFFECTS/Death.wav"))
+	{
+		std::cout << "Error! Unable to load Death.wav from game files!" << std::endl;
 	}
 }
 
@@ -141,10 +158,12 @@ void Player::initialise()
 	//
 	m_jumpSound.setBuffer(m_jumpBuffer);
 	m_landSound.setBuffer(m_landBuffer);
+	m_deathSound.setBuffer(m_deathBuffer);
 
 	
 	m_ranNumber = 1;
 	m_jumpPrep = 0;
+	m_endTime = 0;
 	m_maxLength = 500.0f;
 
 	m_moving = false;
@@ -171,8 +190,17 @@ void Player::update(sf::Time deltaTime, sf::View & v, bool grapple)
 
 	movePlayer();
 	jump(deltaTime);
-	//boundaryCheck();
+	boundaryCheck();
 	changeSpriteSheet();
+
+	if (m_death == true)
+	{
+		m_endTime++;
+	}
+	else
+	{
+		m_playDeath = true;
+	}
 
 	v.setCenter(m_sprite.getPosition());
 }
@@ -299,23 +327,16 @@ void Player::jump(sf::Time deltaTime)
 /// </summary>
 void Player::boundaryCheck()
 {
-	// If Player moves too far off the left side of the window
-	if (m_position.x < -5)
+	// If Player somehow manages to fall into the void
+	if (m_position.y > 5550)
 	{
-		m_position.x = 0;
-		m_sprite.setPosition(m_position);
-	}
-	// Or if the Player move too far off the right side of the window
-	else if (m_position.x > 2600)
-	{
-		m_position.x = 2600;
-		m_sprite.setPosition(m_position);
-	}
-	// If Player somehow manages to fall through the Ground and into the void
-	if (m_position.y > 1630)
-	{
-		m_position.y = 1300;
-		m_sprite.setPosition(m_position);
+		m_death = true;
+
+		if (m_playDeath == true)
+		{
+			m_deathSound.play();
+			m_playDeath = false;
+		}
 	}
 }
 
@@ -434,42 +455,54 @@ void Player::changeSpriteSheet()
 	if (m_left == true && m_right == false)
 	{
 		//
-		if (m_moving == false)
+		if (m_death == true)
 		{
+			m_sprite.setTexture(m_deathLeftText);
+		}
+
+		//
+		else if (m_death == false)
+		{
+
 			//
-			if (m_ranNumber == 1)
+			if (m_moving == false)
 			{
-				m_sprite.setTexture(m_idleLeftText);
+				//
+				if (m_ranNumber == 1)
+				{
+					m_sprite.setTexture(m_idleLeftText);
+				}
+				//
+				if (m_ranNumber == 2)
+				{
+					m_sprite.setTexture(m_idleLeftTextTwo);
+				}
 			}
+
 			//
-			if (m_ranNumber == 2)
+			else if (m_moving == true)
 			{
-				m_sprite.setTexture(m_idleLeftTextTwo);
+				m_sprite.setTexture(m_moveLeftText);
 			}
-		}
 
-		//
-		else if (m_moving == true)
-		{
-			m_sprite.setTexture(m_moveLeftText);
-		}
 
-		//
-		if (m_jumping == true)
-		{
-			m_sprite.setTexture(m_jumpLeftText);
-		}
+			//
+			if (m_jumping == true)
+			{
+				m_sprite.setTexture(m_jumpLeftText);
+			}
 
-		//
-		else if (m_falling == true)
-		{
-			m_sprite.setTexture(m_landLeftText);
-		}
+			//
+			else if (m_falling == true)
+			{
+				m_sprite.setTexture(m_landLeftText);
+			}
 
-		//
-		else if (m_landing == true)
-		{
+			//
+			else if (m_landing == true)
+			{
 
+			}
 		}
 	}
 
@@ -477,42 +510,54 @@ void Player::changeSpriteSheet()
 	else if (m_left == false && m_right == true)
 	{
 		//
-		if (m_moving == false)
+		if (m_death == true)
+		{
+			m_sprite.setTexture(m_deathRightText);
+		}
+
+		//
+		else if (m_death == false)
 		{
 			//
-			if (m_ranNumber == 1)
+			if (m_moving == false)
 			{
-				m_sprite.setTexture(m_idleRightText);
+				//
+				if (m_ranNumber == 1)
+				{
+					m_sprite.setTexture(m_idleRightText);
+				}
+				//
+				else if (m_ranNumber == 2)
+				{
+					m_sprite.setTexture(m_idleRightTextTwo);
+				}
 			}
+
 			//
-			else if (m_ranNumber == 2)
+			else if (m_moving == true)
 			{
-				m_sprite.setTexture(m_idleRightTextTwo);
+				m_sprite.setTexture(m_moveRightText);
 			}
-		}
 
-		//
-		else if (m_moving == true)
-		{
-			m_sprite.setTexture(m_moveRightText);
-		}
 
-		//
-		if (m_jumping == true)
-		{
-			m_sprite.setTexture(m_jumpRightText);
-		}
 
-		//
-		else if (m_falling == true)
-		{
-			m_sprite.setTexture(m_landRightText);
-		}
+			//
+			if (m_jumping == true)
+			{
+				m_sprite.setTexture(m_jumpRightText);
+			}
 
-		//
-		else if (m_landing == true)
-		{
+			//
+			else if (m_falling == true)
+			{
+				m_sprite.setTexture(m_landRightText);
+			}
 
+			//
+			else if (m_landing == true)
+			{
+
+			}
 		}
 	}
 }
@@ -529,6 +574,12 @@ void Player::render(sf::RenderWindow& window, sf::Vector2f scale)
 	m_sprite.setScale(scale);
 	// Draws Player Sprite
 	window.draw(m_sprite);
+}
+
+//
+int Player::getEndTime()
+{
+	return m_endTime;
 }
 
 /// <summary>
@@ -586,6 +637,18 @@ bool Player::getFalling()
 }
 
 //
+bool Player::getDeath()
+{
+	return m_death;
+}
+
+//
+void Player::setEndTime(int time)
+{
+	m_endTime = time;
+}
+
+//
 void Player::setPosition(sf::Vector2f position)
 {
 	m_position = position;
@@ -615,6 +678,12 @@ void Player::setSourceRectSprite(sf::IntRect rectangle)
 void Player::setFalling(bool falling)
 {
 	m_falling = falling;
+}
+
+//
+void Player::setDeath(bool death)
+{
+	m_death = death;
 }
 
 //

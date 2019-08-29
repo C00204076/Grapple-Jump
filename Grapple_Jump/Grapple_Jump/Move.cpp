@@ -59,3 +59,11 @@ void Move::landing(Animation * animation)
 	animation->setCurrent(new Move());
 	delete this;
 }
+
+//
+void Move::death(Animation * animation)
+{
+	std::cout << "Dying" << std::endl;
+	animation->setCurrent(new Move());
+	delete this;
+}

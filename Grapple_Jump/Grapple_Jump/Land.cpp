@@ -59,3 +59,11 @@ void Land::landing(Animation * animation)
 	animation->setCurrent(new Land());
 	delete this;
 }
+
+//
+void Land::death(Animation * animation)
+{
+	std::cout << "Dying" << std::endl;
+	animation->setCurrent(new Land());
+	delete this;
+}

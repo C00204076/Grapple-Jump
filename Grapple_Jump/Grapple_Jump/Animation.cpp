@@ -114,26 +114,57 @@ void Animation::landing(Player* player)
 }
 
 //
+void Animation::death(Player* player)
+{
+	m_current->death(this);
+
+	//
+	if (m_clock.getElapsedTime().asSeconds() > 0.008f)
+	{
+		//
+		if (player->getSourceRectSprite().left >= 925)
+		{
+			player->setSourceRectSprite(sf::IntRect(925, 4, 75, 75));
+		}
+		//
+		else
+		{
+			player->setSourceRectSprite(sf::IntRect(player->getSourceRectSprite().left + 77, 4, 75, 75));
+		}
+	}
+}
+
+//
 void Animation::update(Player* player)
 {
 	//
-	if (player->getMoving() == false && player->getJumping() == false)
+	if (player->getDeath() == true)
 	{
-		idle(player);
-	}
-	else if (player->getMoving() == true)
-	{
-		moving(player);
+		death(player);
 	}
 
 	//
-	if (player->getJumping() == true)
+	else if (player->getDeath() == false)
 	{
-		jumping(player);
-	}
-	else if (player->getFalling() == true)
-	{
-		falling(player);
+		//
+		if (player->getMoving() == false && player->getJumping() == false)
+		{
+			idle(player);
+		}
+		else if (player->getMoving() == true)
+		{
+			moving(player);
+		}
+
+		//
+		if (player->getJumping() == true)
+		{
+			jumping(player);
+		}
+		else if (player->getFalling() == true)
+		{
+			falling(player);
+		}
 	}
 }
 
