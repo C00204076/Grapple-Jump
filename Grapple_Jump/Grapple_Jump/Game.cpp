@@ -51,6 +51,7 @@ void Game::initialise()
 	m_licenseScreen = new License();
 	m_mainMenu = new MainMenu();
 	m_gameOver = new GameOver();
+	m_loading = new Loading();
 
 	m_playerView.setCenter(m_window.getSize().x / 2, m_window.getSize().y / 2);
 	m_playerView.setSize(1500, 900);
@@ -218,6 +219,8 @@ void Game::processInput()
 			break;
 		case GameState::GAMEOVER:
 			break;
+		case GameState::LOADING:
+			break;
 		}
 	}
 }
@@ -241,7 +244,13 @@ void Game::update(sf::Time deltaTime)
 		//
 		if (m_splashScreen->getScreenTime() >= 1)
 		{
-			setGameState(GameState::LICENSE);
+			//
+			m_loading->setPlay(false);
+			m_loading->setMainMenu(true);
+			m_loading->setGameOver(false);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
 		}
 
 		break;
@@ -250,7 +259,13 @@ void Game::update(sf::Time deltaTime)
 		//
 		if (m_licenseScreen->getScreenTime() >= 1)
 		{
-			setGameState(GameState::MAIN);
+			//
+			m_loading->setPlay(false);
+			m_loading->setMainMenu(true);
+			m_loading->setGameOver(false);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
 		}
 
 		break;
@@ -259,7 +274,14 @@ void Game::update(sf::Time deltaTime)
 		// If the Play button is pressed
 		if (m_mainMenu->getPlayTime() == true)
 		{
-			setGameState(GameState::GAME);
+			//
+			m_loading->setPlay(true);
+			m_loading->setMainMenu(false);
+			m_loading->setGameOver(false);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
+			//
 			m_player->setPosition(m_start->getPosition());
 			m_player->setFalling(true);
 			m_player->reset();
@@ -279,7 +301,13 @@ void Game::update(sf::Time deltaTime)
 		//
 		if (m_goal->playerCollision(m_player) == true)
 		{
-			setGameState(GameState::GAMEOVER);
+			//
+			m_loading->setPlay(false);
+			m_loading->setMainMenu(false);
+			m_loading->setGameOver(true);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
 			m_musicPlayer->setGameOverTrack(7);
 			m_musicPlayer->setTrackNum(m_musicPlayer->getGameOverTrack());
 			m_gameOver->setPlayTrack(true);
@@ -313,7 +341,13 @@ void Game::update(sf::Time deltaTime)
 		// If the Replay button is pressed
 		if (m_gameOver->getPlayTime() == true)
 		{
-			setGameState(GameState::GAME);
+			//
+			m_loading->setPlay(true);
+			m_loading->setMainMenu(false);
+			m_loading->setGameOver(false);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
 			//
 			m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
 			//
@@ -331,7 +365,13 @@ void Game::update(sf::Time deltaTime)
 		// If the  Return to Title button is press
 		if (m_gameOver->getMainMenu() == true)
 		{
-			setGameState(GameState::MAIN);
+			//
+			m_loading->setPlay(false);
+			m_loading->setMainMenu(true);
+			m_loading->setGameOver(false);
+			m_loading->setTimer(0);
+			//
+			setGameState(GameState::LOADING);
 			//
 			m_musicPlayer->setTitleTrack(m_musicPlayer->getTitleTrack());
 			//
@@ -341,6 +381,54 @@ void Game::update(sf::Time deltaTime)
 			m_gameOver->setPlayTrack(true);
 		}
 		
+		break;
+	case GameState::LOADING:
+		m_loading->update(deltaTime, m_playerView);
+
+		//
+		if (m_loading->getTimer() > 150)
+		{
+			//
+			if (m_loading->getPlay() == true)
+			{
+				setGameState(GameState::GAME);
+				//
+				m_musicPlayer->setTrackNum(m_musicPlayer->getTitleTrack());
+				//
+				m_player->setPosition(m_start->getPosition());
+				m_player->setFalling(true);
+				m_player->reset();
+				m_mainMenu->setPlayTime(false);
+				//
+				m_gameOver->setLose(false);
+				m_gameOver->setWin(false);
+				m_gameOver->setPlayTime(false);
+				m_gameOver->setPlayTrack(true);
+			}
+			//
+			if (m_loading->getMainMenu() == true)
+			{
+				setGameState(GameState::MAIN);
+				//
+				m_musicPlayer->setTitleTrack(m_musicPlayer->getTitleTrack());
+				//
+				m_gameOver->setLose(false);
+				m_gameOver->setWin(false);
+				m_gameOver->setMainMenu(false);
+				m_gameOver->setPlayTrack(true);
+			}
+			//
+			if (m_loading->getGameOver() == true)
+			{
+				setGameState(GameState::GAMEOVER);
+				//
+				m_musicPlayer->setGameOverTrack(7);
+				m_musicPlayer->setTrackNum(m_musicPlayer->getGameOverTrack());
+				m_gameOver->setPlayTrack(true);
+				m_gameOver->setWin(true);
+				m_gameOver->setLose(false);
+			}
+		}
 		break;
 	}
 
@@ -407,6 +495,11 @@ void Game::render()
 		//
 		m_window.setView(m_playerView);
 		m_gameOver->render(m_window);
+		break;
+	case GameState::LOADING:
+		//
+		m_window.setView(m_playerView);
+		m_loading->render(m_window);
 		break;
 	}
 

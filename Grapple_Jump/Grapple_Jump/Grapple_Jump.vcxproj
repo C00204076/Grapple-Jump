@@ -143,6 +143,7 @@
     <ClCompile Include="Jump.cpp" />
     <ClCompile Include="Land.cpp" />
     <ClCompile Include="LicenseScreen.cpp" />
+    <ClCompile Include="LoadingScreen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MiniMap.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Jump.h" />
     <ClInclude Include="Land.h" />
     <ClInclude Include="LicenseScreen.h" />
+    <ClInclude Include="LoadingScreen.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Move.h" />
