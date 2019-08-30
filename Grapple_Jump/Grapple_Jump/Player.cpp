@@ -352,6 +352,8 @@ void Player::collosionWithGround(Ground * ground)
 		// If player collides with top bounding box
 		if (m_sprite.getGlobalBounds().intersects(ground->getTopBoundingBox().getGlobalBounds()))
 		{
+			m_boxCollide = true;
+
 			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
 			{
 				m_landSound.play();
@@ -365,14 +367,11 @@ void Player::collosionWithGround(Ground * ground)
 		{
 			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
 			{
-				m_position.y = ground->getPosition().y + (100 * ground->getScaleY());
-
-				//
-				if (m_jumping == true)
-				{
-					m_falling = true;
-					m_jumping = false;
-				}
+				//m_position.y = ground->getPosition().y + (100 * ground->getScaleY()) + 8;
+			
+				m_falling = true;
+				m_jumping = false;
+				m_boxCollide = true;
 			}
 		}
 
@@ -382,6 +381,7 @@ void Player::collosionWithGround(Ground * ground)
 			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
 			{
 				m_position.x = ground->getPosition().x - 40;
+				m_boxCollide = true;
 			}
 		}
 
@@ -391,6 +391,7 @@ void Player::collosionWithGround(Ground * ground)
 			if (m_sprite.getGlobalBounds().intersects(ground->getSprite().getGlobalBounds()))
 			{
 				m_position.x = ground->getPosition().x + (105 * ground->getScaleX());
+				m_boxCollide = true;
 			}
 		}
 
@@ -411,7 +412,6 @@ void Player::collosionWithGround(Ground * ground)
 				m_falling = true;
 			}
 		}
-
 		m_sprite.setPosition(m_position);
 	}
 }
@@ -640,6 +640,12 @@ bool Player::getFalling()
 bool Player::getDeath()
 {
 	return m_death;
+}
+
+//
+bool Player::getBoxCollide()
+{
+	return m_boxCollide;
 }
 
 //

@@ -84,14 +84,11 @@ private:
 	Loading * m_loading;
 	Player * m_player;
 	Player * m_miniPlayer;
-	Ground * m_ground[4];
-	HookPoint * m_hookPoint[7];
+	HookPoint * m_hookPoint[3];
 	MiniMap * m_miniMap;
 	MusicManager * m_musicPlayer;
 	Start * m_start;
 	Goal * m_goal;
-
-	Ground * m_groundTest;
 
 	std::vector<Ground *> m_grounds;
 };

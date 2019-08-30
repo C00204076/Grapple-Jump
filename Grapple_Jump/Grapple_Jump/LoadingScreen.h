@@ -41,6 +41,7 @@ private:
 	void loadTexture();
 	void loadFont();
 	void setTextMessage();
+	void juicyText();
 
 	sf::Texture m_texture;
 	sf::Sprite m_sprite;
@@ -48,8 +49,8 @@ private:
 	sf::Text m_levelText;
 
 
-	int m_timer, m_angle;
-	bool m_play, m_mainMenu, m_gameOver;
+	int m_timer, m_angle, m_alpha;
+	bool m_play, m_mainMenu, m_gameOver, m_flashIn, m_flashOut;
 };
 
 #endif // !LOADING_H

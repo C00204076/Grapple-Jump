@@ -55,7 +55,7 @@ public:
 	sf::IntRect getSourceRectSprite();
 	void setSourceRectSprite(sf::IntRect rectangle);
 
-	bool getLeft(), getRight();
+	bool getLeft(), getRight(), getBoxCollide();
 	bool getMoving(), getJumping(), getFalling(), getDeath();
 	void setFalling(bool falling);
 	void setDeath(bool death);
@@ -104,7 +104,7 @@ private:
 	float  m_angle, m_aAccel, m_aVel, m_rLength, m_damping;
 
 	bool m_jumping, m_falling, m_moving, m_landing, m_jump, m_jumpPlayed, m_death; 
-	bool m_left, m_right, m_playDeath; 
+	bool m_left, m_right, m_playDeath, m_boxCollide; 
 };
 
 #include "Game.h"

@@ -21,6 +21,12 @@ HookPoint::HookPoint()
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 	m_sprite.setScale(0.45f, 0.45f);
+
+	//
+	m_alpha = 255;
+	//
+	m_flashOut = true;
+	m_flashIn = false;
 }
 
 //
@@ -28,11 +34,15 @@ HookPoint::HookPoint(int x, int y)
 {
 	loadTexture();
 
-	m_sprite.setPosition(m_position.x * m_sprite.getTextureRect().width * m_sprite.getScale().x,
-						 m_position.y * m_sprite.getTextureRect().height * m_sprite.getScale().y);
+	m_sprite.setPosition(x, y);
 	
 	m_sprite.setTexture(m_texture);
 	m_sprite.setScale(0.45f, 0.45f);
+	//
+	m_alpha = 255;
+	//
+	m_flashOut = true;
+	m_flashIn = false;
 }
 
 /// <summary>
@@ -58,15 +68,47 @@ void HookPoint::loadTexture()
 /// <param name="deltaTime"></param>
 void HookPoint::update(sf::Time deltaTime)
 {
+	//juiciness();
+}
 
+//
+void HookPoint::juiciness()
+{
+	//
+	if (m_alpha >= 215)
+	{
+		m_flashOut = true;
+		m_flashIn = false;
+	}
+	else if (m_alpha <= 40)
+	{
+		m_flashOut = false;
+		m_flashIn = true;
+	}
+
+	//
+	if (m_flashIn == true)
+	{
+		m_alpha += 3;
+	}
+	//
+	if (m_flashOut == true)
+	{
+		m_alpha -= 3;
+	}
+
+	m_sprite.setColor(sf::Color(255, 255, 255, m_alpha));
 }
 
 /// <summary>
 /// Renders and draws Hook Point Sprites
 /// </summary>
 /// <param name="window"></param>
-void HookPoint::render(sf::RenderWindow& window)
+void HookPoint::render(sf::RenderWindow& window, sf::Vector2f scale)
 {
+	//
+	m_sprite.setScale(scale);
+	//
 	window.draw(m_sprite);
 }
 

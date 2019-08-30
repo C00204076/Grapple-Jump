@@ -14,7 +14,7 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ 1500, 900, 32 }, "Grapple Jump" } ,
 	is_running{ true }, // When false, game will exit
-	gameState{ GameState::LICENSE }
+	gameState{ GameState::GAME }
 {
 	initialise();
 }
@@ -73,45 +73,32 @@ void Game::initialise()
 
 	m_player = new Player();
 	m_miniPlayer = new Player();
+	//
+	m_grounds.push_back(new Ground(-8800, 3420, 4, 1));
+	m_grounds.push_back(new Ground(-8100, 3420, 7, 1));
+	m_grounds.push_back(new Ground(-7700, 3000, 12, 1));
+	//m_grounds.push_back(new Ground(-6800, 3420, 5, 1));
+	//m_grounds.push_back(new Ground(-7900, 3420, 5, 1));*/
 
-	m_groundTest = new Ground(-250, 750, 4, 3);
 	
 
-	// Sets the default constructor and texture of the Ground
-	for (int i = 0; i < 4; i++)
-	{
-		m_ground[i] = new Ground();
-	}
-
-	//
-	//m_ground[1]->setPosition(sf::Vector2f(50, 350));
-	m_ground[2]->setPosition(sf::Vector2f(320, 750));
-
-	//m_ground = new Ground(m_groundTexture);
-	// Sets the psition of the Ground
-	//m_ground->setPosition(sf::Vector2f(0, 1400));
-
 	// Sets the default constructor and texture of the Hook Points
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		m_hookPoint[i] = new HookPoint();
 	}
-	// Sets the positions of the Hook Points
-	//m_hookPoint[0]->setPosition(sf::Vector2f(600, 1000));
-	//m_hookPoint[1]->setPosition(sf::Vector2f(1250, 500));
-	m_hookPoint[2]->setPosition(sf::Vector2f(50, 0));
-	//m_hookPoint[3]->setPosition(sf::Vector2f(2100, 250));
-	//m_hookPoint[4]->setPosition(sf::Vector2f(2550, 20));
-	//m_hookPoint[5]->setPosition(sf::Vector2f(2550, 1350));
-	//m_hookPoint[6]->setPosition(sf::Vector2f(50, 1350));
+	// Sets the default constructors and positions of the Hook Points
+	m_hookPoint[0]->setPosition(sf::Vector2f(-8350, 3000));
+	m_hookPoint[1]->setPosition(sf::Vector2f(-7500, 2700));
+	m_hookPoint[2]->setPosition(sf::Vector2f(-6800, 2300));
 
 	m_miniMap = new MiniMap(m_miniPlayer);
 	m_musicPlayer = new MusicManager();
 	m_start = new Start();
 	m_goal = new Goal();
 
-	m_start->setPosition(sf::Vector2f(100, 700));
-	m_goal->setPosition(sf::Vector2f(500, 700));
+	m_start->setPosition(sf::Vector2f(-8700, 3370));
+	m_goal->setPosition(sf::Vector2f(-6800, 5000));
 
 	m_player->setPosition(m_start->getPosition());
 }
@@ -136,7 +123,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
-		m_musicPlayer->playMusic();
+		//m_musicPlayer->playMusic();
 		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
@@ -284,6 +271,7 @@ void Game::update(sf::Time deltaTime)
 			//
 			m_player->setPosition(m_start->getPosition());
 			m_player->setDeath(false);
+			m_player->setEndTime(0);
 			m_player->setFalling(true);
 			m_player->reset();
 			m_mainMenu->setPlayTime(false);
@@ -295,9 +283,9 @@ void Game::update(sf::Time deltaTime)
 		//
 		m_miniMap->update(deltaTime, m_window, m_miniMapView);
 		//
-		m_start->update(deltaTime);
+		//m_start->update(deltaTime);
 		//
-		m_goal->update(deltaTime);
+		//m_goal->update(deltaTime);
 
 		//
 		if (m_goal->playerCollision(m_player) == true)
@@ -333,18 +321,17 @@ void Game::update(sf::Time deltaTime)
 			m_gameOver->setLose(true);
 		}
 
-
-		m_player->collosionWithGround(m_groundTest);
-
-		// Updates the Ground and check if it is colliding with the player
-		for (int i = 0; i < 4; i++)
+		//
+		for (int i = 0; i < m_grounds.size(); i++)
 		{
-			m_player->collosionWithGround(m_ground[i]);
+			m_player->collosionWithGround(m_grounds[i]);
 		}
+
+		//m_player->collosionWithGround(m_groundTest);
 		
 		// Updates the array of Hook Points and checks if the Grappling Hook is colliding with any
 		// Hook Point
-		for (int i = 0; i < 7; i++) 
+		for (int i = 0; i < 3; i++) 
 		{
 			m_hookPoint[i]->update(deltaTime);
 			m_player->grapplePointCollision(*m_hookPoint[i]);
@@ -372,6 +359,7 @@ void Game::update(sf::Time deltaTime)
 			//
 			m_player->setPosition(m_start->getPosition());
 			m_player->setDeath(false);
+			m_player->setEndTime(0);
 			m_player->setFalling(true);
 			m_player->reset();
 			m_mainMenu->setPlayTime(false);
@@ -453,38 +441,43 @@ void Game::render()
 		m_window.setView(m_playerView);
 		break;
 	case GameState::GAME:
-		for (int k = 0, l = 0;
-			k < 4, l < 7;
-			k++, l++)
-		{
-			m_miniMap->draw(m_window, m_miniMapView, m_groundTest, m_hookPoint[l]);
-		}
+		
+		
 
 		//
-		m_window.setView(m_playerView);
-
+		m_start->render(m_window, sf::Vector2f(1.0f, 1.0f));
 		//
-		m_start->render(m_window);
-		//
-		m_goal->render(m_window);
+		m_goal->render(m_window, sf::Vector2f(1.0f, 1.0f));
 		
 
 		// Renders and draws the Player, Grappling Hook Sprites and Grappling Hook cable Line
 		m_player->render(m_window, sf::Vector2f(1.0f, 1.0f));
 		// Renders and draws the Ground Sprite
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < m_grounds.size(); i++)
 		{
-			m_ground[i]->render(m_window);
+			m_grounds[i]->render(m_window);
 		}
 
-		m_groundTest->render(m_window);
+		//m_groundTest->render(m_window);
 
 		//m_ground->render(m_window);
 		// Renders and draws the array of Hook Point Sprites
-		for (int j = 0; j < 7; j++)
+		for (int j = 0; j < 3; j++)
 		{
-			m_hookPoint[j]->render(m_window);
+			m_hookPoint[j]->render(m_window, sf::Vector2f(0.45f, 0.45f));
 		}
+
+		for (int l = 0; l < 3; l++)
+		{
+			//
+			for (int i = 0; i < m_grounds.size(); i++)
+			{
+				m_miniMap->draw(m_window, m_miniMapView, m_grounds[i], m_hookPoint[l], m_start, m_goal);
+			}
+		}
+
+		//
+		m_window.setView(m_playerView);
 		break;
 	case GameState::GAMEOVER:
 		//

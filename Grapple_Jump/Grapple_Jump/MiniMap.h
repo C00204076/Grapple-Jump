@@ -14,6 +14,8 @@
 
 #include "Ground.h"
 #include "HookPoint.h"
+#include "Start.h"
+#include "Goal.h"
 
 class Player;
 
@@ -28,7 +30,7 @@ public:
 	void initialise();
 
 	void update(sf::Time deltaTime, sf::RenderWindow& window, sf::View view);
-	void draw(sf::RenderWindow& window, sf::View view, Ground *ground, HookPoint *point);
+	void draw(sf::RenderWindow& window, sf::View view, Ground *ground, HookPoint *point, Start *start, Goal *goal);
 
 private:
 	sf::Texture m_borderTexture;

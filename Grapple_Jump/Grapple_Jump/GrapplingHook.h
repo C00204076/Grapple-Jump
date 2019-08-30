@@ -131,6 +131,12 @@ public:
 	void grapplePointCollision(Player *player, HookPoint hookPoint);
 
 	bool getHookLatched();
+	bool getPulled();
+	bool getExtend();
+	bool getSwing();
+
+	bool getCableAdjust();
+	void setcableAdjust(bool cable);
 
 private:
 	void loadAudio();
@@ -141,6 +147,7 @@ private:
 	void extend(Player * player);
 	void retract(Player * player);
 	void swing(Player *  player);
+	void cableAdjust(Player * player);
 
 	sf::SoundBuffer m_firedBuffer, m_latchedBuffer, m_swingBuffer, m_extendBuffer, m_retractBuffer, m_detachBuffer;
 	sf::Sound m_firedSound, m_latchedSound, m_swingSound, m_extendSound, m_retractSound, m_detachSound;

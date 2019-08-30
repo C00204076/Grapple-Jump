@@ -41,10 +41,13 @@ void Loading::initialise()
 	//
 	m_timer = 0;
 	m_angle = 0;
+	m_alpha = 255;
 	//
 	m_play = false;
 	m_mainMenu = false;
 	m_gameOver = false;
+	m_flashOut = true;
+	m_flashIn = false;
 }
 
 //
@@ -71,9 +74,11 @@ void Loading::update(sf::Time deltaTime, sf::View & v)
 	m_timer++;
 	m_angle += 5;
 
+
 	m_sprite.setRotation(m_angle);
 
 	setTextMessage();
+	juicyText();
 
 	//
 	if (m_angle > 360)
@@ -113,6 +118,35 @@ void Loading::setTextMessage()
 		m_levelText.setString("Loading Game Over");
 		//m_levelText.setPosition(sf::Vector2f(450.0f, 140.0f));
 	}
+}
+
+//
+void Loading::juicyText()
+{
+	//
+	if (m_alpha >= 255)
+	{
+		m_flashOut = true;
+		m_flashIn = false;
+	}
+	else if (m_alpha <= 0)
+	{
+		m_flashOut = false;
+		m_flashIn = true;
+	}
+
+	//
+	if (m_flashIn == true)
+	{
+		m_alpha += 3;
+	}
+	//
+	if (m_flashOut == true)
+	{
+		m_alpha -= 3;
+	}
+
+	m_levelText.setFillColor(sf::Color(255, 255, 255, m_alpha));
 }
 
 //

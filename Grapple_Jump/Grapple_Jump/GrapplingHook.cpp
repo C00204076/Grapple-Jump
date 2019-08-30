@@ -138,6 +138,7 @@ void GrapplingHook::grapplingHook(Player* player)
 	retract(player);
 	extend(player);
 	swing(player);
+	cableAdjust(player);
 
 	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the 
 	//player's position, thus adjusting the cable
@@ -425,6 +426,42 @@ void GrapplingHook::swing(Player * player)
 }
 
 //
+void GrapplingHook::cableAdjust(Player * player)
+{
+	sf::Vector2f newPosition;
+
+	if (m_hookLatched == true &&
+		m_cableAdjust == true)
+	{
+		
+		if (player->getSprite().getPosition().x < m_hookPosition.x)
+		{
+			newPosition.x = player->getSprite().getPosition().x + 10;
+			newPosition.y = player->getSprite().getPosition().y;
+		}
+
+		else if (player->getSprite().getPosition().x > m_hookPosition.x)
+		{
+			newPosition.x = player->getSprite().getPosition().x - 10;
+			newPosition.y = player->getSprite().getPosition().y;
+		}
+
+		else if (player->getSprite().getPosition().y < m_hookPosition.y)
+		{
+			newPosition.x = player->getSprite().getPosition().x;
+			newPosition.y = player->getSprite().getPosition().y - 10;
+		}
+
+		else
+		{
+			m_cableAdjust = false;
+		}
+
+		player->setPosition(newPosition);
+	}
+}
+
+//
 void GrapplingHook::update(Player* player, sf::Vector2f mouse)
 {
 	m_mouseVector = mouse;
@@ -513,4 +550,34 @@ void GrapplingHook::resetHook(Player* player)
 bool GrapplingHook::getHookLatched()
 {
 	return m_hookLatched;
+}
+
+//
+bool GrapplingHook::getPulled()
+{
+	return m_pulled;
+}
+
+//
+bool GrapplingHook::getExtend()
+{
+	return m_extend;
+}
+
+//
+bool GrapplingHook::getSwing()
+{
+	return m_swing;
+}
+
+//
+bool GrapplingHook::getCableAdjust()
+{
+	return m_cableAdjust;
+}
+
+//
+void GrapplingHook::setcableAdjust(bool cable)
+{
+	m_cableAdjust = cable;
 }

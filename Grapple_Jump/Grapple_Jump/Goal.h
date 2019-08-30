@@ -21,7 +21,7 @@ public:
 	~Goal();
 
 	void update(sf::Time deltaTime);
-	void render(sf::RenderWindow& window);
+	void render(sf::RenderWindow& window, sf::Vector2f scale);
 
 	bool playerCollision(Player * player);
 
@@ -32,13 +32,17 @@ public:
 private:
 	void loadTexture();
 	void initialise();
+	void juiciness();
 
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 
 	sf::Vector2f m_position;
 
-	float m_scaleX, m_scaleY;
+	float m_scaleX, m_scaleY, m_goalY;
+
+	int m_alpha;
+	bool m_flashIn, m_flashOut, m_moveUp, m_moveDown;
 };
 
 #endif // !GOAL_H

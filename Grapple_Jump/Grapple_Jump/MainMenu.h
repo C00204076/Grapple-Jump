@@ -56,7 +56,7 @@ private:
 	float m_alpha, m_titleAlpha, m_titleX, m_titleY;
 	bool m_flashIn, m_flashOut, m_flashTitleIn, m_flashTitleOut, m_moveUp, m_moveDown;
 	bool m_playTime;
-	bool m_playPlay, m_playQuit, m_playTitle, m_playBGM;
+	bool m_playPlay, m_playQuit, m_playTitle, m_playBGM; 
 
 };
 

@@ -46,7 +46,7 @@ void MiniMap::update(sf::Time deltaTime, sf::RenderWindow& window, sf::View view
 }
 
 //
-void MiniMap::draw(sf::RenderWindow& window, sf::View view, Ground *ground, HookPoint *point)
+void MiniMap::draw(sf::RenderWindow& window, sf::View view, Ground *ground, HookPoint *point, Start *start, Goal *goal)
 {
 	//
 	window.setView(view);
@@ -55,5 +55,9 @@ void MiniMap::draw(sf::RenderWindow& window, sf::View view, Ground *ground, Hook
 	//
 	window.draw(ground->getSprite());
 	//
-	window.draw(point->getSprite());
+	point->render(window, sf::Vector2f(2.5f, 2.5f));
+	//
+	start->render(window, sf::Vector2f(5.0f, 5.0f));
+	//
+	goal->render(window, sf::Vector2f(5.0f, 5.0f));
 }

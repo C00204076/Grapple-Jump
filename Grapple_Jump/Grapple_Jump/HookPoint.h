@@ -23,8 +23,7 @@ public:
 	~HookPoint();
 
 	void update(sf::Time deltaTime);
-	void render(sf::RenderWindow& window);
-
+	void render(sf::RenderWindow& window, sf::Vector2f scale);
 	sf::Sprite getSprite();
 	void setPosition(sf::Vector2f position);
 
@@ -32,11 +31,15 @@ public:
 
 private:
 	void loadTexture();
+	void juiciness();
+
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 
 	sf::Vector2f m_position;
 
+	int m_alpha;
+	bool m_flashIn, m_flashOut;
 };
 
 #endif // !HOOKPOINT_H
