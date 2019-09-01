@@ -96,7 +96,7 @@ void GrapplingHook::initialise()
 	//
 	m_pullSpeed = 30;
 	m_angle = 40;
-	m_radius = 0;
+	m_radius = 10;
 	//
 	m_angAccel = 0.0f;
 	m_angVel = 0.0f;
@@ -115,6 +115,8 @@ void GrapplingHook::grapplingHook(Player* player)
 	// code within statement must be uncommented
 	if (m_hookLatched == true)
 	{
+		//m_radius = player->getPosition().y - m_tempMouseVec.y;
+
 		//
 		/*m_pullDirection = normalize(m_position - m_tempMouseVec);
 		m_directionX = m_pullDirection.x;
@@ -215,7 +217,7 @@ void GrapplingHook::fire(Player * player)
 		}
 	}
 
-	// If Grappling Hook is fired, but latched onto a Hook Point
+	// If Grappling Hook is fired, but not latched onto a Hook Point
 	if (m_fired == true && m_hookLatched == false)
 	{
 		// Normalises vector used for direction the Grappling Hook cable is pulled in
@@ -470,7 +472,11 @@ void GrapplingHook::update(Player* player, sf::Vector2f mouse)
 	resetHook(player);
 
 	m_position = player->getPosition();
-	m_radius = player->getPosition().y - m_tempMouseVec.y;
+
+	if (m_hookLatched == true)
+	{
+		m_radius = (player->getPosition().y - m_tempMouseVec.y) / 2;
+	}
 }
 
 /// <summary>
