@@ -14,7 +14,7 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ 1500, 900, 32 }, "Grapple Jump" } ,
 	is_running{ true }, // When false, game will exit
-	gameState{ GameState::GAME }
+	gameState{ GameState::LICENSE }
 {
 	initialise();
 }
@@ -77,8 +77,6 @@ void Game::initialise()
 	m_grounds.push_back(new Ground(-8800, 3420, 4, 1));
 	m_grounds.push_back(new Ground(-8100, 3420, 7, 1));
 	m_grounds.push_back(new Ground(-7700, 3000, 12, 1));
-	//m_grounds.push_back(new Ground(-6800, 3420, 5, 1));
-	//m_grounds.push_back(new Ground(-7900, 3420, 5, 1));*/
 
 	
 
@@ -123,7 +121,7 @@ void Game::run()
 			timeSinceLastUpdate = sf::Time::Zero;
 		}
 
-		//m_musicPlayer->playMusic();
+		m_musicPlayer->playMusic();
 		m_player->mouseCursor(m_window, m_playerView);
 		m_targetSprite.setPosition(m_player->getMousePosition());
 
@@ -270,9 +268,6 @@ void Game::update(sf::Time deltaTime)
 			setGameState(GameState::LOADING);
 			//
 			m_player->setPosition(m_start->getPosition());
-			m_player->setDeath(false);
-			m_player->setEndTime(0);
-			m_player->setFalling(true);
 			m_player->reset();
 			m_mainMenu->setPlayTime(false);
 		}
@@ -282,10 +277,6 @@ void Game::update(sf::Time deltaTime)
 
 		//
 		m_miniMap->update(deltaTime, m_window, m_miniMapView);
-		//
-		//m_start->update(deltaTime);
-		//
-		//m_goal->update(deltaTime);
 
 		//
 		if (m_goal->playerCollision(m_player) == true)
@@ -327,8 +318,6 @@ void Game::update(sf::Time deltaTime)
 			m_player->collosionWithGround(m_grounds[i]);
 		}
 
-		//m_player->collosionWithGround(m_groundTest);
-		
 		// Updates the array of Hook Points and checks if the Grappling Hook is colliding with any
 		// Hook Point
 		for (int i = 0; i < 3; i++) 
@@ -358,9 +347,6 @@ void Game::update(sf::Time deltaTime)
 			m_musicPlayer->setTrackNum(m_musicPlayer->getOtherTrack());
 			//
 			m_player->setPosition(m_start->getPosition());
-			m_player->setDeath(false);
-			m_player->setEndTime(0);
-			m_player->setFalling(true);
 			m_player->reset();
 			m_mainMenu->setPlayTime(false);
 			//
@@ -458,9 +444,6 @@ void Game::render()
 			m_grounds[i]->render(m_window);
 		}
 
-		//m_groundTest->render(m_window);
-
-		//m_ground->render(m_window);
 		// Renders and draws the array of Hook Point Sprites
 		for (int j = 0; j < 3; j++)
 		{

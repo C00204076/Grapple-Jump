@@ -695,5 +695,15 @@ void Player::setDeath(bool death)
 //
 void Player::reset()
 {
-	m_grapplinghook->resetHook(this);
+	m_endTime = 0;
+	m_maxLength = 500.0f;
+
+	m_moving = false;
+	m_jumping = false;
+	m_jump = false;
+	m_falling = true;
+	m_left = false;
+	m_right = true;
+	m_death = false;
+	m_grapplinghook->totalReset(this);
 }

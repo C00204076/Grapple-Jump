@@ -138,6 +138,8 @@ public:
 	bool getCableAdjust();
 	void setcableAdjust(bool cable);
 
+	void totalReset(Player * player);
+
 private:
 	void loadAudio();
 

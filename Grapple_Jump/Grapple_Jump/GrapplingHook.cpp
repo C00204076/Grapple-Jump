@@ -141,6 +141,7 @@ void GrapplingHook::grapplingHook(Player* player)
 	extend(player);
 	swing(player);
 	cableAdjust(player);
+	resetHook(player);
 
 	// If cable is extended or retracted then m_cableAdjust is set to true and adjusts the 
 	//player's position, thus adjusting the cable
@@ -533,7 +534,7 @@ sf::Vector2f GrapplingHook::normalize(sf::Vector2f vector)
 void GrapplingHook::resetHook(Player* player)
 {
 	// Resets Grappling Hook if the R key is pressed
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_fired == true)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		if (m_hookLatched == true)
 		{
@@ -550,6 +551,33 @@ void GrapplingHook::resetHook(Player* player)
 		m_extend = false;
 		player->setFalling(true);
 	}
+}
+
+//
+void GrapplingHook::totalReset(Player * player)
+{
+	//
+	m_hookSprite.setPosition(player->getSprite().getPosition());
+	m_hookPosition = player->getSprite().getPosition();
+	player->setFalling(true);
+	//
+	m_hookLatched = false;
+	m_fired = false;
+	m_cableAdjust = false;
+	m_pulled = false;
+	m_extend = false;
+	m_swing = false;
+	m_retractPlayed = false;
+	m_extendPlayed = false;
+	m_leftPlayed = false;
+	m_rightPlayed = false;
+	//
+	m_pullSpeed = 30;
+	m_angle = 40;
+	m_radius = 10;
+	//
+	m_angAccel = 0.0f;
+	m_angVel = 0.0f;
 }
 
 //
